@@ -1,3 +1,8 @@
+/**
+ * 
+ * Le point d'entrée du projet. Ce fichier rend l'application dans le DOM, configure le store Redux et le passe à travers un Provider afin que toute l'application ait accès à l'état global.
+ */
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
