@@ -1,3 +1,16 @@
-/**
- * Définit toutes les routes de votre application avec React Router. Les routes peuvent être protégées via des PrivateRoute pour s'assurer que seules les personnes authentifiées peuvent accéder à certaines pages.
- */
+// src/routes.js
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import LandingPage from './pages/LandingPage';
+
+
+const AppRoutes = () => (
+    <Router>
+        <Routes>
+            <Route path="/" element={<LandingPage />} />
+
+        </Routes>
+    </Router>
+);
+
+export default AppRoutes;
