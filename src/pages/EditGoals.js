@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Utilisé pour naviguer en arrière
+import { useNavigate } from 'react-router-dom';
+import '../assets/styles/style.css';
 
 const EditGoals = () => {
   const [goalWeight, setGoalWeight] = useState('70');
-  const [personalObjective, setPersonalObjective] = useState('Loose weight');
-  const [place, setPlace] = useState('At home');
-  const [trainingLevel, setTrainingLevel] = useState('Advanced');
+  const [personalObjective, setPersonalObjective] = useState('Perdre du poids');
+  const [place, setPlace] = useState('À la maison');
+  const [trainingLevel, setTrainingLevel] = useState('Avancé');
 
   const navigate = useNavigate();
 
@@ -16,73 +17,101 @@ const EditGoals = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black p-4 flex flex-col justify-start">
-      {/* Flèche de retour */}
-      <div className="flex items-center mb-6">
-        <button onClick={() => navigate(-1)} className="text-white">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
-          </svg>
-        </button>
-        {/* Titre centré */}
-        <h2 className="text-white text-2xl font-semibold text-center flex-grow">Edit Goals</h2>
+      <div className="flex items-center justify-center min-h-screen bg-black text-white px-4 sm:px-6 lg:px-8 animate-fadeIn">
+        {/* Container */}
+        <div className="w-full max-w-lg p-10 bg-black bg-opacity-90 rounded-lg animate-slideUp">
+          {/* Header with back button */}
+          <div className="flex items-center mb-10 animate-fadeInFast">
+            <button
+                onClick={() => navigate(-1)}
+                className="text-white hover:text-orange-500 transition duration-200 focus:outline-none"
+            >
+              <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  className="w-8 h-8"
+              >
+                <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            </button>
+            <h2 className="flex-grow text-center text-3xl font-bold animate-fadeInFast">
+              Edit Goals
+            </h2>
+          </div>
+
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="animate-fadeIn">
+              <label className="block text-lg mb-2">Poids cible (kg)</label>
+              <input
+                  type="number"
+                  value={goalWeight}
+                  onChange={(e) => setGoalWeight(e.target.value)}
+                  className="w-full px-4 py-3 bg-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-white"
+                  placeholder="Poids cible (kg)"
+                  required
+              />
+            </div>
+
+            <div className="animate-fadeIn">
+              <label className="block text-lg mb-2">Objectif personnel</label>
+              <select
+                  value={personalObjective}
+                  onChange={(e) => setPersonalObjective(e.target.value)}
+                  className="w-full px-4 py-3 bg-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-white"
+                  required
+              >
+                <option>Perdre du poids</option>
+                <option>Gagner de la masse musculaire</option>
+                <option>Devenir plus fort</option>
+                <option>Garder la forme</option>
+              </select>
+            </div>
+
+            <div className="animate-fadeIn">
+              <label className="block text-lg mb-2">Lieu d'entraînement</label>
+              <select
+                  value={place}
+                  onChange={(e) => setPlace(e.target.value)}
+                  className="w-full px-4 py-3 bg-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-white"
+                  required
+              >
+                <option>À la maison</option>
+                <option>À la salle de sport</option>
+              </select>
+            </div>
+
+            <div className="animate-fadeIn">
+              <label className="block text-lg mb-2">Niveau d'entraînement</label>
+              <select
+                  value={trainingLevel}
+                  onChange={(e) => setTrainingLevel(e.target.value)}
+                  className="w-full px-4 py-3 bg-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-white"
+                  required
+              >
+                <option>Débutant</option>
+                <option>Entraînement irrégulier</option>
+                <option>Intermédiaire</option>
+                <option>Avancé</option>
+              </select>
+            </div>
+
+            <button
+                type="submit"
+                className="w-full py-4 mt-6 bg-orange-500 text-white text-lg font-semibold rounded-md hover:bg-orange-600 transition focus:outline-none focus:ring-2 focus:ring-orange-500 transform hover:scale-105 ease-out animate-fadeIn"
+            >
+              Sauvegarder
+            </button>
+          </form>
+        </div>
       </div>
-
-      <form
-        onSubmit={handleSubmit}
-        className="bg-gray-900 p-6 rounded-lg w-full max-w-lg mx-auto flex flex-col space-y-4"
-      >
-        <label className="block text-white mb-2">Goal Weight</label>
-        <input
-          type="number"
-          value={goalWeight}
-          onChange={(e) => setGoalWeight(e.target.value)}
-          className="w-full p-2 mb-4 bg-gray-800 text-white rounded"
-          placeholder="Enter goal weight"
-        />
-
-        <label className="block text-white mb-2">Personal Objective</label>
-        <select
-          value={personalObjective}
-          onChange={(e) => setPersonalObjective(e.target.value)}
-          className="w-full p-2 bg-gray-800 text-white rounded"
-        >
-          <option>Loose weight</option>
-          <option>Gain muscle mass</option>
-          <option>Get stronger</option>
-          <option>Keep fit</option>
-        </select>
-
-        <label className="block text-white mb-2">Place</label>
-        <select
-          value={place}
-          onChange={(e) => setPlace(e.target.value)}
-          className="w-full p-2 bg-gray-800 text-white rounded"
-        >
-          <option>At home</option>
-          <option>At the gym</option>
-        </select>
-
-        <label className="block text-white mb-2">Training Level</label>
-        <select
-          value={trainingLevel}
-          onChange={(e) => setTrainingLevel(e.target.value)}
-          className="w-full p-2 bg-gray-800 text-white rounded"
-        >
-          <option>Beginner</option>
-          <option>Irregular trainer</option>
-          <option>Intermediate</option>
-          <option>Advanced</option>
-        </select>
-
-        <button
-          type="submit"
-          className="w-full p-3 mt-4 bg-orange-600 text-white rounded"
-        >
-          Sauvegarder
-        </button>
-      </form>
-    </div>
   );
 };
 

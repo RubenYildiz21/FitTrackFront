@@ -1,67 +1,65 @@
-// src/pages/LandingPage.js
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import backgroundImage from '../assets/images/bannerhubmusculation-64109c1e8b4f3.jpg';
 import logo from '../assets/images/logooo-removebg-preview.png';
+import '../assets/styles/style.css';
 
 const LandingPage = () => {
     const navigate = useNavigate();
 
     const handleLoginClick = () => {
-        navigate('/login');
+        navigate('/LoginPage');
     };
 
     const handleSignupClick = () => {
-        navigate('/signup');
+        navigate('/MultiStepForm');
     };
 
     return (
-        // Conteneur principal
-        <div className="relative min-h-screen overflow-hidden">
-            {/* Image de fond floue */}
+        // Main container
+        <div className="relative flex items-center justify-center min-h-screen bg-black text-white px-4 sm:px-6 lg:px-8">
+            {/* Background Image */}
             <div
-                className="absolute inset-0 bg-cover bg-center filter blur-md"
+                className="absolute inset-0 bg-cover bg-center filter blur-md animate-fadeIn"
                 style={{ backgroundImage: `url(${backgroundImage})` }}
             ></div>
 
-            {/* Superposition sombre */}
-            <div className="absolute inset-0 bg-black opacity-50"></div>
+            {/* Dark Overlay - Removed animation to prevent inconsistent opacity */}
+            <div className="absolute inset-0 bg-black opacity-70"></div>
 
-            {/* Contenu de la page */}
-            <div className="relative flex items-center justify-center min-h-screen">
-                <div className="text-center px-6">
-                    {/* Logo */}
-                    <img
-                        src={logo}
-                        alt="Logo de FitTrack"
-                        className="mx-auto w-65 h-65" // Remplacez mb-6 par mb-4 ou mb-2
-                    />
+            {/* Content */}
+            <div className="relative flex flex-col items-center justify-center text-center max-w-md p-10 animate-slideUp">
+                {/* Logo */}
+                <img
+                    src={logo}
+                    alt="Logo de FitTrack"
+                    className="w-72 h-72 mb-6 animate-bounceSlow"
+                />
 
-                    {/* Titre */}
-                    <h1 className="text-4xl font-bold text-white mb-2">
-                        Bienvenue sur <span className="text-orange-500">FitTrack</span>
-                    </h1>
+                {/* Title */}
+                <h1 className="text-4xl font-bold mb-4 animate-fadeInFast">
+                    Bienvenue sur <span className="text-orange-500">FitTrack</span>
+                </h1>
 
-                    {/* Sous-titre */}
-                    <p className="text-lg text-gray-300 mb-8">
-                        Suivez votre programme d'entraînement et atteignez vos objectifs.
-                    </p>
+                {/* Subtitle */}
+                <p className="text-lg text-gray-300 mb-8 animate-fadeIn">
+                    Suivez votre programme d'entraînement et atteignez vos objectifs.
+                </p>
 
-                    {/* Boutons */}
-                    <div className="space-y-4">
-                        <button
-                            onClick={handleLoginClick}
-                            className="w-full py-3 bg-orange-500 text-white font-semibold rounded-md hover:bg-orange-600 transition duration-200"
-                        >
-                            Se connecter
-                        </button>
-                        <button
-                            onClick={handleSignupClick}
-                            className="w-full py-3 bg-orange-500 text-white font-semibold rounded-md hover:bg-orange-600 transition duration-200"
-                        >
-                            S'inscrire
-                        </button>
-                    </div>
+                {/* Buttons */}
+                <div className="space-y-4 w-full animate-fadeInSlow">
+                    <button
+                        onClick={handleLoginClick}
+                        className="w-full py-4 bg-orange-500 text-white font-semibold rounded-md hover:bg-orange-600 transition duration-200 focus:outline-none focus:ring-2 focus:ring-orange-500 transform hover:scale-105 ease-out"
+                    >
+                        Sign In
+                    </button>
+                    <button
+                        onClick={handleSignupClick}
+                        className="w-full py-4 bg-transparent border-2 border-orange-500 text-orange-500 font-semibold rounded-md hover:bg-orange-500 hover:text-white transition duration-200 focus:outline-none focus:ring-2 focus:ring-orange-500 transform hover:scale-105 ease-out"
+                    >
+                        Sign Up
+                    </button>
                 </div>
             </div>
         </div>
@@ -69,3 +67,4 @@ const LandingPage = () => {
 };
 
 export default LandingPage;
+

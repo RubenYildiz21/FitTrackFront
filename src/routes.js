@@ -2,14 +2,19 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
+import LoginPage from './pages/LoginPage';
 import EditGoals from './pages/EditGoals';
+import MultiStepForm from './pages/MultiStepForm'
+
 
 
 const AppRoutes = () => (
     <Router>
         <Routes>
             <Route path="/" element={<LandingPage />} />
-            <Route path="/edit-goals" element={<EditGoals />} />
+            <Route path="/LoginPage" element={<LoginPage />} />
+            <Route path="/EditGoals" element={<EditGoals />} />
+            <Route path="/MultiStepForm" element={<MultiStepForm />} />
         </Routes>
     </Router>
 );
