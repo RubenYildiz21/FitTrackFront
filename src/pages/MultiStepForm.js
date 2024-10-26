@@ -22,40 +22,43 @@ const MultiStepForm = () => {
         place: ''
     });
 
+    const [errors, setErrors] = useState({ email: '', password: '' });
+
+    const validateStep = () => {
+        let isValid = true;
+        const newErrors = { email: '', password: '' };
+
+        if (!validateEmail(formData.email)) {
+            newErrors.email = "Format d'email invalide.";
+            isValid = false;
+        }
+
+        if (!validatePassword(formData.password)) {
+            newErrors.password = "Le mot de passe doit contenir au moins 8 caractères, une majuscule, un chiffre et un caractère spécial.";
+            isValid = false;
+        }
+
+        setErrors(newErrors);
+        return isValid;
+    };
+
     const nextStep = () => {
-        console.log('Current Step:', step);
-        console.log('Form Data:', formData);
-        if ((selectedOption !== null || step === 1) && step < 8) {
+        if (validateStep()) {
             setStep(step + 1);
             setSelectedOption(null);
         }
     };
 
-    const selectOption = (option, key) => {
-        setSelectedOption(option);
-        setFormData({ ...formData, [key]: option });
-        console.log('Selected Option:', option, 'for key:', key);
-    };
-
     const handleInputChange = (key, value) => {
         setFormData({ ...formData, [key]: value });
-        console.log('Input Change:', key, value);
     };
 
     const handleSubmit = async () => {
-        if (!validateEmail(formData.email)) {
-            console.error('Invalid email format');
-            return;
-        }
-        if (!validatePassword(formData.password)) {
-            console.error('Password must be at least 6 characters');
-            return;
-        }
+        if (!validateStep()) return;
 
         try {
             const data = await registerUser(formData);
             console.log('User registered successfully:', data);
-            // Redirect or success message here
         } catch (error) {
             console.error('Error:', error);
         }
@@ -86,17 +89,14 @@ const MultiStepForm = () => {
                                 className="w-full px-4 py-3 bg-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
                                 onChange={(e) => handleInputChange('email', e.target.value)}
                             />
-                            <input
-                                type="tel"
-                                placeholder="Phone"
-                                className="w-full px-4 py-3 bg-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
-                            />
+                            {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
                             <input
                                 type="password"
                                 placeholder="Password"
                                 className="w-full px-4 py-3 bg-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
                                 onChange={(e) => handleInputChange('password', e.target.value)}
                             />
+                            {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
                             <div className="flex items-center mt-4">
                                 <input type="checkbox" className="mr-2" />
                                 <span className="text-sm text-gray-400">By continuing you accept our Privacy Policy</span>
