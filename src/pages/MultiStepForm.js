@@ -3,6 +3,8 @@ import '../assets/styles/style.css';
 import appleLogo from '../assets/images/apple-logo.png';
 import facebookLogo from '../assets/images/facebook-logo.png';
 import googleLogo from '../assets/images/google-logo.png';
+import { registerUser } from '../services/authService';
+import { validateEmail, validatePassword } from '../utils/validation';
 
 const MultiStepForm = () => {
     const [step, setStep] = useState(1);
@@ -41,22 +43,19 @@ const MultiStepForm = () => {
     };
 
     const handleSubmit = async () => {
+        if (!validateEmail(formData.email)) {
+            console.error('Invalid email format');
+            return;
+        }
+        if (!validatePassword(formData.password)) {
+            console.error('Password must be at least 6 characters');
+            return;
+        }
+
         try {
-            const response = await fetch('http://localhost:8080/api/auth/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
-            });
-
-            if (!response.ok) {
-                throw new Error('Something went wrong during registration.');
-            }
-
-            const data = await response.json();
+            const data = await registerUser(formData);
             console.log('User registered successfully:', data);
-            // Redirect to the next page or show a success message
+            // Redirect or success message here
         } catch (error) {
             console.error('Error:', error);
         }
