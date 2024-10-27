@@ -24,6 +24,12 @@ const MultiStepForm = () => {
 
     const [errors, setErrors] = useState({ email: '', password: '' });
 
+    // La fonction selectOption pour gérer la sélection des options
+    const selectOption = (value, field) => {
+        setSelectedOption(value);
+        setFormData({ ...formData, [field]: value });
+    };
+    
     const validateStep = () => {
         let isValid = true;
         const newErrors = { email: '', password: '' };
