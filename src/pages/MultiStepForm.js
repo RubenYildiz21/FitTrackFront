@@ -22,17 +22,18 @@ const MultiStepForm = () => {
         place: ''
     });
 
-    const [errors, setErrors] = useState({ email: '', password: '' });
+    const [errors, setErrors] = useState({ email: '', password: '', checkbox: '' });
+    const [isPrivacyChecked, setIsPrivacyChecked] = useState(false);
 
     // La fonction selectOption pour gérer la sélection des options
     const selectOption = (value, field) => {
         setSelectedOption(value);
         setFormData({ ...formData, [field]: value });
     };
-    
+
     const validateStep = () => {
         let isValid = true;
-        const newErrors = { email: '', password: '' };
+        const newErrors = { email: '', password: '', checkbox: '' };
 
         if (!validateEmail(formData.email)) {
             newErrors.email = "Format d'email invalide.";
@@ -41,6 +42,11 @@ const MultiStepForm = () => {
 
         if (!validatePassword(formData.password)) {
             newErrors.password = "Le mot de passe doit contenir au moins 8 caractères, une majuscule, un chiffre et un caractère spécial.";
+            isValid = false;
+        }
+
+        if (step === 1 && !isPrivacyChecked) {
+            newErrors.checkbox = "Vous devez accepter notre politique de confidentialité.";
             isValid = false;
         }
 
@@ -104,9 +110,14 @@ const MultiStepForm = () => {
                             />
                             {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
                             <div className="flex items-center mt-4">
-                                <input type="checkbox" className="mr-2" />
+                                <input
+                                    type="checkbox"
+                                    className="mr-2"
+                                    onChange={(e) => setIsPrivacyChecked(e.target.checked)}
+                                />
                                 <span className="text-sm text-gray-400">By continuing you accept our Privacy Policy</span>
                             </div>
+                            {errors.checkbox && <p className="text-red-500 text-sm">{errors.checkbox}</p>}
                         </div>
                         <button
                             className="w-full max-w-md py-4 mt-8 bg-orange-500 text-white font-semibold rounded-md hover:bg-orange-600 transition duration-300"

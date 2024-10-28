@@ -16,7 +16,7 @@ const LoginPage = () => {
         e.preventDefault();
         console.log('Email:', email);
         console.log('Password:', password);
-        // navigate('/dashboard');
+        navigate('/NotFound');
     };
 
     return (
