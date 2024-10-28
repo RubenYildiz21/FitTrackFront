@@ -101,7 +101,7 @@ const LoginPage = () => {
                 <p className="mt-8 text-center text-gray-400 animate-fadeIn">
                     Don't have an account?{' '}
                     <button
-                        onClick={() => navigate('/signup')}
+                        onClick={() => navigate('/MultiStepForm')}
                         className="text-orange-500 hover:underline"
                     >
                         Sign Up

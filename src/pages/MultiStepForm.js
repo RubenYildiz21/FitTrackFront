@@ -5,8 +5,10 @@ import facebookLogo from '../assets/images/facebook-logo.png';
 import googleLogo from '../assets/images/google-logo.png';
 import { registerUser } from '../services/authService';
 import { validateEmail, validatePassword } from '../utils/validation';
+import { useNavigate } from 'react-router-dom';
 
 const MultiStepForm = () => {
+    const navigate = useNavigate();
     const [step, setStep] = useState(1);
     const [selectedOption, setSelectedOption] = useState(null);
     const [formData, setFormData] = useState({
@@ -141,7 +143,7 @@ const MultiStepForm = () => {
                         </div>
                         <p className="mt-8 text-center text-gray-400">
                             Don't have an account?{' '}
-                            <button className="text-orange-500 hover:underline" onClick={() => setStep(2)}>
+                            <button className="text-orange-500 hover:underline" onClick={() => navigate("/LoginPage")}>
                                 Sign In
                             </button>
                         </p>
