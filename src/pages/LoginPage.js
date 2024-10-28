@@ -5,19 +5,36 @@ import appleLogo from '../assets/images/apple-logo.png';
 import facebookLogo from '../assets/images/facebook-logo.png';
 import googleLogo from '../assets/images/google-logo.png';
 import '../assets/styles/style.css';
+import { loginUser } from '../services/authService';
+
 
 const LoginPage = () => {
     const navigate = useNavigate();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
-        console.log('Email:', email);
-        console.log('Password:', password);
-        navigate('/NotFound');
+        setError('');
+
+        try {
+            const response = await loginUser({ email, password });
+            console.log('User logged in successfully:', response);
+            navigate('/NotFound');
+        } catch (err) {
+            console.error('Login failed:', err);
+            if (err.message.includes("401")) {
+                setError('Invalid password. Please try again.');
+            } else if (err.message.includes("404")) {
+                setError('User not found. Please check your email.');
+            } else {
+                setError('An unexpected error occurred. Please try again later.');
+            }
+        }
     };
+
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-black text-white px-4 sm:px-6 lg:px-8 animate-fadeIn">
@@ -28,6 +45,7 @@ const LoginPage = () => {
 
                 {/* Login Form */}
                 <form onSubmit={handleLogin} className="space-y-6">
+                    {error && <p className="text-red-500 text-center">{error}</p>}
                     <div className="animate-fadeIn">
                         <label className="block text-lg mb-2">Phone / Email</label>
                         <input

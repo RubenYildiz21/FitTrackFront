@@ -17,3 +17,13 @@ export const registerUser = async (userData) => {
 };
 
 
+export const loginUser = async (credentials) => {
+    try {
+        const response = await apiRequest('/auth/login', 'POST', credentials, true);
+        console.log('User logged in successfully:', response);
+        return response;
+    } catch (error) {
+        console.error('Login error:', error);
+        throw error;
+    }
+};

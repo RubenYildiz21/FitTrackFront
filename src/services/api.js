@@ -3,14 +3,17 @@
  */
 
 // services/api.js
-const apiRequest = async (endpoint, method = 'GET', body = null) => {
-    const options = {
+const apiRequest = async (endpoint, method = 'GET', body = null, isFormUrlEncoded = false) => {
+    let options = {
         method,
         headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': isFormUrlEncoded ? 'application/x-www-form-urlencoded' : 'application/json',
         },
-        body: body ? JSON.stringify(body) : null,
     };
+
+    if (body) {
+        options.body = isFormUrlEncoded ? new URLSearchParams(body).toString() : JSON.stringify(body);
+    }
 
     const response = await fetch(`http://localhost:8080/api${endpoint}`, options);
     if (!response.ok) {
@@ -20,5 +23,6 @@ const apiRequest = async (endpoint, method = 'GET', body = null) => {
 };
 
 export default apiRequest;
+
 
 
