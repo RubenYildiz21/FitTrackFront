@@ -1,19 +1,29 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../assets/styles/style.css';
+import { updateGoals } from '../services/userService';
 
 const EditGoals = () => {
-  const [goalWeight, setGoalWeight] = useState('70');
-  const [personalObjective, setPersonalObjective] = useState('Perdre du poids');
-  const [place, setPlace] = useState('À la maison');
-  const [trainingLevel, setTrainingLevel] = useState('Avancé');
+  const [goalWeight, setGoalWeight] = useState('70 kg');
+  const [personalObjective, setPersonalObjective] = useState('Loose weight');
+  const [place, setPlace] = useState('At home');
+  const [trainingLevel, setTrainingLevel] = useState('Advanced');
 
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const updatedGoals = { goalWeight, personalObjective, place, trainingLevel };
+    try{
+      await updateGoals(updatedGoals); 
+      console.log('Goals updated successfully:', updatedGoals);
+      navigate(-1);
+    }catch (error) {
+      console.error('Error updating profile:', error);
+    }
+    
     console.log(updatedGoals);
+    // Ici, tu pourrais envoyer les données mises à jour à ton backend
   };
 
   return (
@@ -49,57 +59,56 @@ const EditGoals = () => {
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="animate-fadeIn">
-              <label className="block text-lg mb-2">Poids cible (kg)</label>
+              <label className="block text-lg mb-2">Goal weight</label>
               <input
-                  type="number"
+                  type="text"
                   value={goalWeight}
                   onChange={(e) => setGoalWeight(e.target.value)}
                   className="w-full px-4 py-3 bg-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-white"
-                  placeholder="Poids cible (kg)"
+                  placeholder="Goal weight"
                   required
               />
             </div>
 
             <div className="animate-fadeIn">
-              <label className="block text-lg mb-2">Objectif personnel</label>
+              <label className="block text-lg mb-2">Personal objective</label>
               <select
                   value={personalObjective}
                   onChange={(e) => setPersonalObjective(e.target.value)}
                   className="w-full px-4 py-3 bg-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-white"
                   required
               >
-                <option>Perdre du poids</option>
-                <option>Gagner de la masse musculaire</option>
-                <option>Devenir plus fort</option>
-                <option>Garder la forme</option>
+                <option>Loose weight</option>
+                <option>Gain mass muscle</option>
+                <option>Get stronger</option>
+                <option>Keep fit</option>
               </select>
             </div>
 
             <div className="animate-fadeIn">
-              <label className="block text-lg mb-2">Lieu d'entraînement</label>
+              <label className="block text-lg mb-2">Place</label>
               <select
                   value={place}
                   onChange={(e) => setPlace(e.target.value)}
                   className="w-full px-4 py-3 bg-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-white"
                   required
               >
-                <option>À la maison</option>
-                <option>À la salle de sport</option>
+                <option>At home</option>
+                <option>Gym</option>
               </select>
             </div>
 
             <div className="animate-fadeIn">
-              <label className="block text-lg mb-2">Niveau d'entraînement</label>
+              <label className="block text-lg mb-2">Training level</label>
               <select
                   value={trainingLevel}
                   onChange={(e) => setTrainingLevel(e.target.value)}
                   className="w-full px-4 py-3 bg-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-white"
                   required
               >
-                <option>Débutant</option>
-                <option>Entraînement irrégulier</option>
-                <option>Intermédiaire</option>
-                <option>Avancé</option>
+                <option>Beginner</option>
+                <option>Intermediate</option>
+                <option>Advanced</option>
               </select>
             </div>
 
