@@ -73,6 +73,7 @@ const MultiStepForm = () => {
         try {
             const data = await registerUser(formData);
             console.log('User registered successfully:', data);
+            navigate('/LoaderPage');
         } catch (error) {
             console.error('Error:', error);
         }
@@ -127,20 +128,7 @@ const MultiStepForm = () => {
                         >
                             Sign Up
                         </button>
-                        <div className="mt-8 text-center">
-                            <p className="text-gray-400 mb-4">Sign in with</p>
-                            <div className="flex justify-center space-x-6">
-                                <button className="text-white">
-                                    <img src={appleLogo} alt="Sign in with Apple" className="w-10 h-12" />
-                                </button>
-                                <button className="text-white">
-                                    <img src={facebookLogo} alt="Sign in with Facebook" className="w-10 h-10" />
-                                </button>
-                                <button className="text-white">
-                                    <img src={googleLogo} alt="Sign in with Google" className="w-10 h-10" />
-                                </button>
-                            </div>
-                        </div>
+
                         <p className="mt-8 text-center text-gray-400">
                             Don't have an account?{' '}
                             <button className="text-orange-500 hover:underline" onClick={() => navigate("/LoginPage")}>
@@ -318,3 +306,4 @@ const MultiStepForm = () => {
 };
 
 export default MultiStepForm;
+

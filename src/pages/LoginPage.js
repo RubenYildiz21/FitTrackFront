@@ -81,21 +81,6 @@ const LoginPage = () => {
                     <button className="text-gray-400 hover:underline">Forgot Password?</button>
                 </div>
 
-                {/* Sign In With Social Accounts */}
-                <div className="mt-8 text-center animate-fadeInSlow">
-                    <p className="text-gray-400 mb-6">Sign in with</p>
-                    <div className="flex justify-center space-x-6">
-                        <button className="text-white transform hover:scale-110 transition duration-200">
-                            <img src={appleLogo} alt="Sign in with Apple" className="w-13 h-10" />
-                        </button>
-                        <button className="text-white transform hover:scale-110 transition duration-200">
-                            <img src={facebookLogo} alt="Sign in with Facebook" className="w-10 h-10" />
-                        </button>
-                        <button className="text-white transform hover:scale-110 transition duration-200">
-                            <img src={googleLogo} alt="Sign in with Google" className="w-10 h-10" />
-                        </button>
-                    </div>
-                </div>
 
                 {/* Sign Up Link */}
                 <p className="mt-8 text-center text-gray-400 animate-fadeIn">
