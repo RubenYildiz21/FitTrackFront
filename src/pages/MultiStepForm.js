@@ -6,6 +6,8 @@ import googleLogo from '../assets/images/google-logo.png';
 import { registerUser } from '../services/authService';
 import { validateEmail, validatePassword } from '../utils/validation';
 import { useNavigate } from 'react-router-dom';
+import { googleLogin } from '../services/authService';
+import { GoogleLogin } from '@react-oauth/google';
 
 const MultiStepForm = () => {
     const navigate = useNavigate();
@@ -79,6 +81,21 @@ const MultiStepForm = () => {
         }
     };
 
+    const handleGoogleSuccess = async (credentialResponse) => {
+        try {
+            console.log('Google response:', credentialResponse);
+            const response = await googleLogin(credentialResponse);
+            console.log('Backend response:', response);
+
+            if (response.status === 'success') {
+                navigate('/NotFound');
+            }
+        } catch (error) {
+            console.error('Login error:', error);
+            setErrors('Failed to authenticate with Google. Please try again.');
+        }
+    };
+
     const renderStep = () => {
         switch (step) {
             case 1:
@@ -128,7 +145,19 @@ const MultiStepForm = () => {
                         >
                             Sign Up
                         </button>
-
+                        <div className="mt-8 text-center">
+                            <p className="text-gray-400 mb-4">Sign in with</p>
+                            <div className="flex justify-center space-x-6">
+                                <GoogleLogin
+                                    onSuccess={handleGoogleSuccess}
+                                    onError={(error) => {
+                                        console.error('Google OAuth Error:', error);
+                                        setErrors(`Google OAuth Error: ${error.message || 'Unknown error'}`);
+                                    }}
+                                    useOneTap
+                                />
+                            </div>
+                        </div>
                         <p className="mt-8 text-center text-gray-400">
                             Don't have an account?{' '}
                             <button className="text-orange-500 hover:underline" onClick={() => navigate("/LoginPage")}>
@@ -306,4 +335,3 @@ const MultiStepForm = () => {
 };
 
 export default MultiStepForm;
-
