@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/images/logooo-removebg-preview.png';
-import appleLogo from '../assets/images/apple-logo.png';
-import facebookLogo from '../assets/images/facebook-logo.png';
-import googleLogo from '../assets/images/google-logo.png';
 import '../assets/styles/style.css';
-import { loginUser } from '../services/authService';
+import { loginUser, googleLogin } from '../services/authService';
+import { GoogleLogin } from '@react-oauth/google';
 
 
 const LoginPage = () => {
@@ -32,6 +30,21 @@ const LoginPage = () => {
             } else {
                 setError('An unexpected error occurred. Please try again later.');
             }
+        }
+    };
+
+    const handleGoogleSuccess = async (credentialResponse) => {
+        try {
+            console.log('Google response:', credentialResponse);
+            const response = await googleLogin(credentialResponse);
+            console.log('Backend response:', response);
+            
+            if (response.status === 'success') {
+                navigate('/NotFound');
+            }
+        } catch (error) {
+            console.error('Login error:', error);
+            setError('Failed to authenticate with Google. Please try again.');
         }
     };
 
@@ -85,15 +98,14 @@ const LoginPage = () => {
                 <div className="mt-8 text-center animate-fadeInSlow">
                     <p className="text-gray-400 mb-6">Sign in with</p>
                     <div className="flex justify-center space-x-6">
-                        <button className="text-white transform hover:scale-110 transition duration-200">
-                            <img src={appleLogo} alt="Sign in with Apple" className="w-13 h-10" />
-                        </button>
-                        <button className="text-white transform hover:scale-110 transition duration-200">
-                            <img src={facebookLogo} alt="Sign in with Facebook" className="w-10 h-10" />
-                        </button>
-                        <button className="text-white transform hover:scale-110 transition duration-200">
-                            <img src={googleLogo} alt="Sign in with Google" className="w-10 h-10" />
-                        </button>
+                        <GoogleLogin
+                            onSuccess={handleGoogleSuccess}
+                            onError={(error) => {
+                                console.error('Google OAuth Error:', error);
+                                setError(`Google OAuth Error: ${error.message || 'Unknown error'}`);
+                            }}
+                            useOneTap
+                        />
                     </div>
                 </div>
 
