@@ -7,6 +7,8 @@ import EditGoals from './pages/EditGoals';
 import MultiStepForm from './pages/MultiStepForm'
 import ProfilPage from './pages/ProfilPage'
 import EditProfile from './pages/EditProfile';
+import LoaderPage from './pages/LoaderPage';
+
 
 
 
@@ -19,6 +21,7 @@ const AppRoutes = () => (
             <Route path="/MultiStepForm" element={<MultiStepForm />} />
             <Route path="/Profil/:userId" element={<ProfilPage />} />
             <Route path='/EditProfile' element={<EditProfile />}/>
+            <Route path="/LoaderPage" element={<LoaderPage />} />
         </Routes>
     </Router>
 );

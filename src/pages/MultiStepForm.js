@@ -75,6 +75,7 @@ const MultiStepForm = () => {
         try {
             const data = await registerUser(formData);
             console.log('User registered successfully:', data);
+            navigate('/LoaderPage');
         } catch (error) {
             console.error('Error:', error);
         }
@@ -85,7 +86,7 @@ const MultiStepForm = () => {
             console.log('Google response:', credentialResponse);
             const response = await googleLogin(credentialResponse);
             console.log('Backend response:', response);
-            
+
             if (response.status === 'success') {
                 navigate('/NotFound');
             }

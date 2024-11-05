@@ -38,7 +38,7 @@ const LoginPage = () => {
             console.log('Google response:', credentialResponse);
             const response = await googleLogin(credentialResponse);
             console.log('Backend response:', response);
-            
+
             if (response.status === 'success') {
                 navigate('/NotFound');
             }
