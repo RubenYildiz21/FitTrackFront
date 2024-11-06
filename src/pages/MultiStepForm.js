@@ -417,45 +417,64 @@ const MultiStepForm = () => {
                 );
             case 9:
                 return (
-                    <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white px-4 sm:px-6 lg:px-8 animate-fadeIn">
+                    <div
+                        className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-gray-900 to-black text-white px-4 sm:px-6 lg:px-8 animate-fadeIn">
                         {renderBackButton()}
-                        <h2 className="text-4xl font-bold mb-12">Review and Submit</h2>
-                        <div className="space-y-4 w-full max-w-md">
-                            <p className="text-lg">Please review your information before submitting:</p>
-                            <ul className="text-left">
-                                <li><strong>First Name:</strong> {formData.firstName}</li>
-                                <li><strong>Last Name:</strong> {formData.lastName}</li>
-                                <li><strong>Email:</strong> {formData.email}</li>
-                                <li><strong>Age:</strong> {formData.age}</li>
-                                <li><strong>Training Level:</strong> {formData.trainingLevel}</li>
-                                <li>
-                                    <strong>Profile Picture:</strong>
+                        <h2 className="text-4xl font-bold mb-12 text-center">Review and Submit</h2>
+                        <div
+                            className="w-full max-w-2xl bg-gray-800 rounded-lg shadow-lg p-8 space-y-8 animate-fadeInFast">
+                            <p className="text-xl font-semibold text-center text-orange-400 mb-6">Please review your
+                                information before submitting:</p>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="bg-gray-700 rounded-lg p-4 shadow-md flex flex-col items-center">
+                                    <h3 className="text-lg font-bold text-orange-400 mb-2">Profile Picture</h3>
                                     {formData.profilePicture ? (
                                         <img
                                             src={URL.createObjectURL(formData.profilePicture)}
                                             alt="Profile"
-                                            style={{width: "100px", height: "100px", objectFit: "cover"}}
+                                            className="w-32 h-32 rounded-full object-cover border-2 border-orange-500"
                                         />
                                     ) : (
-                                        "No image uploaded"
+                                        <div
+                                            className="w-32 h-32 rounded-full flex items-center justify-center bg-gray-600 border-2 border-gray-500">
+                                            <span className="text-sm text-gray-300">No image uploaded</span>
+                                        </div>
                                     )}
-                                </li>
+                                </div>
 
-                                <li><strong>Gender:</strong> {formData.gender}</li>
-                                <li><strong>Main Goal:</strong> {formData.mainGoal}</li>
-                                <li><strong>Goal Weight:</strong> {formData.goalWeight} kg</li>
-                                <li><strong>Height:</strong> {formData.height} cm</li>
-                                <li><strong>Weight:</strong> {formData.weight} kg</li>
-                                <li><strong>Place:</strong> {formData.place}</li>
-                            </ul>
+                                <div className="bg-gray-700 rounded-lg p-4 shadow-md flex flex-col justify-between">
+                                    <h3 className="text-lg font-bold text-orange-400 mb-2">Basic Information</h3>
+                                    <p><strong>First Name:</strong> {formData.firstName}</p>
+                                    <p><strong>Last Name:</strong> {formData.lastName}</p>
+                                    <p><strong>Email:</strong> {formData.email}</p>
+                                    <p><strong>Age:</strong> {formData.age}</p>
+                                    <p><strong>Gender:</strong> {formData.gender}</p>
+                                </div>
+
+                                <div className="bg-gray-700 rounded-lg p-4 shadow-md flex flex-col justify-between">
+                                    <h3 className="text-lg font-bold text-orange-400 mb-2">Fitness Goals</h3>
+                                    <p><strong>Main Goal:</strong> {formData.mainGoal}</p>
+                                    <p><strong>Goal Weight:</strong> {formData.goalWeight} kg</p>
+                                    <p><strong>Training Level:</strong> {formData.trainingLevel}</p>
+                                    <p><strong>Place:</strong> {formData.place}</p>
+                                </div>
+
+                                <div className="bg-gray-700 rounded-lg p-4 shadow-md flex flex-col justify-between">
+                                    <h3 className="text-lg font-bold text-orange-400 mb-2">Physical Information</h3>
+                                    <p><strong>Height:</strong> {formData.height} cm</p>
+                                    <p><strong>Weight:</strong> {formData.weight} kg</p>
+                                </div>
+                            </div>
                         </div>
                         <button
-                            className="w-full max-w-md py-4 mt-8 bg-orange-500 text-white font-semibold rounded-md hover:bg-orange-600 transition duration-300"
+                            className="w-full max-w-xs py-4 mt-12 bg-orange-500 text-white font-semibold rounded-md hover:bg-orange-600 transition duration-300 transform hover:scale-105 ease-out shadow-lg"
                             onClick={handleSubmit}
                         >
                             Submit
                         </button>
                     </div>
+
                 );
             default:
                 return <div className="text-white">Invalid Step</div>;
