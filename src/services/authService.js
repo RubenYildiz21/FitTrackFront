@@ -28,31 +28,3 @@ export const loginUser = async (credentials) => {
         throw error;
     }
 };
-
-
-
-export const googleLogin = async (credentialResponse) => {
-    try {
-        const response = await fetch('http://localhost:8080/api/auth/google', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            credentials: 'include',
-            body: JSON.stringify({
-                token: credentialResponse.credential
-            })
-        });
-
-        if (!response.ok) {
-            const errorData = await response.text();
-            console.error('Server response:', errorData);
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        return await response.json();
-    } catch (error) {
-        console.error('Google login error:', error);
-        throw error;
-    }
-};
