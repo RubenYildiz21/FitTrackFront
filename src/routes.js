@@ -6,7 +6,8 @@ import LoginPage from './pages/LoginPage';
 import EditGoals from './pages/EditGoals';
 import MultiStepForm from './pages/MultiStepForm'
 import EditProfile from './pages/EditProfile';
-
+import LoaderPage from './pages/LoaderPage';
+import WorkoutForm from './pages/WorkoutForm';
 
 
 const AppRoutes = () => (
@@ -17,6 +18,8 @@ const AppRoutes = () => (
             <Route path="/EditGoals" element={<EditGoals />} />
             <Route path="/MultiStepForm" element={<MultiStepForm />} />
             <Route path='/EditProfile' element={<EditProfile />}/>
+            <Route path="/LoaderPage" element={<LoaderPage />} />
+            <Route path="/WorkoutForm" element={<WorkoutForm />} />
         </Routes>
     </Router>
 );
