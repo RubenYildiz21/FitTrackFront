@@ -21,6 +21,8 @@ export const registerUser = async (userData) => {
 export const loginUser = async (credentials) => {
     try {
         const response = await apiRequest('/auth/login', 'POST', credentials, true);
+        //const data = await response.json();
+        //localStorage.setItem('user', JSON.stringify(data)); // Stocke l'utilisateur dans localStorage
         console.log('User logged in successfully:', response);
         return response;
     } catch (error) {

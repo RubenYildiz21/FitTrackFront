@@ -23,7 +23,11 @@ const ProfilPage = () => {
                 }
                 const data = await response.json();
                 setUser(data);
-                setProfilePicture(require(`../assets/images/${data.profilePicture}`));
+
+                /**const storedUser = localStorage.getItem('user');
+                if (storedUser) {
+                    setUser(JSON.parse(storedUser)); // Analyser et définir l'utilisateur
+                }*/
             } catch (error) {
                 console.error("Error fetching user profile", error);
                 setError("Could not fetch user profile.");
@@ -78,7 +82,7 @@ const ProfilPage = () => {
             <div className="flex flex-col items-center mb-6">
                 <div className="w-24 h-24 rounded-full overflow-hidden mb-4">
                     <img
-                        src={profilePicture}
+                        src={user.profilePicture ? require(`../assets/images/${user.profilePicture}`) : require('../assets/images/profile.png')}
                         alt="Photo de profil"
                         className="object-cover w-full h-full"
                     />
