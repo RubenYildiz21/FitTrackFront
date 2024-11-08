@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/images/logooo-removebg-preview.png';
 import '../assets/styles/style.css';
-import { loginUser } from '../services/authService';
+import { loginUser, googleLogin } from '../services/authService';
 
 
 const LoginPage = () => {
@@ -31,6 +31,7 @@ const LoginPage = () => {
             }
         }
     };
+
 
 
     return (
@@ -77,6 +78,7 @@ const LoginPage = () => {
                 <div className="text-center mt-6 animate-fadeIn">
                     <button className="text-gray-400 hover:underline">Forgot Password?</button>
                 </div>
+
 
                 {/* Sign Up Link */}
                 <p className="mt-8 text-center text-gray-400 animate-fadeIn">

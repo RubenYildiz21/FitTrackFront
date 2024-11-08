@@ -6,13 +6,22 @@
 const apiRequest = async (endpoint, method = 'GET', body = null, isFormUrlEncoded = false) => {
     let options = {
         method,
-        headers: {
-            'Content-Type': isFormUrlEncoded ? 'application/x-www-form-urlencoded' : 'application/json',
-        },
+        credentials: 'include',
+        headers: {},
     };
 
+    // Gérer les données du corps
     if (body) {
-        options.body = isFormUrlEncoded ? new URLSearchParams(body).toString() : JSON.stringify(body);
+        if (body instanceof FormData) {
+            options.body = body;
+            // Pas de Content-Type, car le navigateur s'en occupe pour FormData
+        } else if (isFormUrlEncoded) {
+            options.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+            options.body = new URLSearchParams(body).toString();
+        } else {
+            options.headers['Content-Type'] = 'application/json';
+            options.body = JSON.stringify(body);
+        }
     }
 
     const response = await fetch(`http://localhost:8080/api${endpoint}`, options);
@@ -21,6 +30,7 @@ const apiRequest = async (endpoint, method = 'GET', body = null, isFormUrlEncode
     }
     return response.json();
 };
+
 
 
 
