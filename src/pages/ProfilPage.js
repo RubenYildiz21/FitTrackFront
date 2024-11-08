@@ -24,10 +24,13 @@ const ProfilPage = () => {
                 const data = await response.json();
                 setUser(data);
 
-                /**const storedUser = localStorage.getItem('user');
+                const storedUser = localStorage.getItem('user');
                 if (storedUser) {
-                    setUser(JSON.parse(storedUser)); // Analyser et définir l'utilisateur
-                }*/
+                    //setUser(JSON.parse(storedUser)); // Analyser et définir l'utilisateur
+                    console.log("OK");
+                    const u = JSON.parse(storedUser);
+                    console.log(u.height)
+                }
             } catch (error) {
                 console.error("Error fetching user profile", error);
                 setError("Could not fetch user profile.");
@@ -71,6 +74,15 @@ const ProfilPage = () => {
     if (error) return <div className="text-red-500">{error}</div>;
     if (!user) return <div className="text-gray-500">Loading...</div>;
 
+    const getProfilePicturePath = (base64String) => {
+        try {
+            return require(`../assets/images/${atob(base64String.replace(/^\.\/|=+$/g, ''))}`);
+        } catch (e) {
+            console.error("Failed to decode Base64 profile picture string", e);
+            return '/src/assets/images/profile.png'; // Default path
+        }
+    };
+
     return (
         <div className="bg-black text-white min-h-screen p-6">
             <button
@@ -82,7 +94,7 @@ const ProfilPage = () => {
             <div className="flex flex-col items-center mb-6">
                 <div className="w-24 h-24 rounded-full overflow-hidden mb-4">
                     <img
-                        src={user.profilePicture ? require(`../assets/images/${user.profilePicture}`) : require('../assets/images/profile.png')}
+                        src={user.profilePicture ? getProfilePicturePath(user.profilePicture) : require('../assets/images/profile.png')}
                         alt="Photo de profil"
                         className="object-cover w-full h-full"
                     />

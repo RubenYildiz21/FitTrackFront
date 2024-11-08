@@ -37,6 +37,7 @@ const UserSearchPage = () => {
             }
             const data = await response.json();
             setUsers(data);
+            console.log("OK");
         } catch (error) {
             console.error("Error fetching users", error);
             setError("Could not fetch users.");
@@ -75,6 +76,15 @@ const UserSearchPage = () => {
         }
     };
 
+    const getProfilePicturePath = (base64String) => {
+        try {
+            return require(`../assets/images/${atob(base64String.replace(/^\.\/|=+$/g, ''))}`);
+        } catch (e) {
+            console.error("Failed to decode Base64 profile picture string", e);
+            return '/src/assets/images/profile.png'; // Default path
+        }
+    };
+
     return (
         <div className="bg-gray-100 min-h-screen p-6">
             <h1 className="text-2xl font-bold mb-4">Recherche d'utilisateurs</h1>
@@ -96,7 +106,7 @@ const UserSearchPage = () => {
                     <div key={user.id} className="flex items-center justify-between p-4 bg-white shadow rounded">
                         <div className="flex items-center">
                             <img
-                                src={user.profilePicture ? require(`../assets/images/${user.profilePicture}`) : require('../assets/images/profile.png')}
+                                src={user.profilePicture ? getProfilePicturePath(user.profilePicture) : require('../assets/images/profile.png')}
                                 alt="User profile"
                                 className="w-12 h-12 rounded-full mr-4"
                             />
