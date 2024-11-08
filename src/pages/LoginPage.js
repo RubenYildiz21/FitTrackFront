@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/images/logooo-removebg-preview.png';
 import '../assets/styles/style.css';
-import { loginUser, googleLogin } from '../services/authService';
-import { GoogleLogin } from '@react-oauth/google';
+import { loginUser } from '../services/authService';
 
 
 const LoginPage = () => {
@@ -30,21 +29,6 @@ const LoginPage = () => {
             } else {
                 setError('An unexpected error occurred. Please try again later.');
             }
-        }
-    };
-
-    const handleGoogleSuccess = async (credentialResponse) => {
-        try {
-            console.log('Google response:', credentialResponse);
-            const response = await googleLogin(credentialResponse);
-            console.log('Backend response:', response);
-
-            if (response.status === 'success') {
-                navigate('/NotFound');
-            }
-        } catch (error) {
-            console.error('Login error:', error);
-            setError('Failed to authenticate with Google. Please try again.');
         }
     };
 
@@ -92,21 +76,6 @@ const LoginPage = () => {
                 {/* Forgot Password */}
                 <div className="text-center mt-6 animate-fadeIn">
                     <button className="text-gray-400 hover:underline">Forgot Password?</button>
-                </div>
-
-                {/* Sign In With Social Accounts */}
-                <div className="mt-8 text-center animate-fadeInSlow">
-                    <p className="text-gray-400 mb-6">Sign in with</p>
-                    <div className="flex justify-center space-x-6">
-                        <GoogleLogin
-                            onSuccess={handleGoogleSuccess}
-                            onError={(error) => {
-                                console.error('Google OAuth Error:', error);
-                                setError(`Google OAuth Error: ${error.message || 'Unknown error'}`);
-                            }}
-                            useOneTap
-                        />
-                    </div>
                 </div>
 
                 {/* Sign Up Link */}
