@@ -22,9 +22,22 @@ export const loginUser = async (credentials) => {
     try {
         const response = await apiRequest('/auth/login', 'POST', credentials, true);
         console.log('User logged in successfully:', response);
+        //console.log("Ok0");
         return response;
     } catch (error) {
         console.error('Login error:', error);
+        throw error;
+    }
+};
+
+export const follow = async (followData) => {
+    try {
+        const response = await apiRequest('/connection/follow', 'POST', followData);
+        //console.log('User followed successfully:', response);
+        //console.log("Ok0");
+        return response;
+    } catch (error) {
+        console.error('Follow error:', error);
         throw error;
     }
 };

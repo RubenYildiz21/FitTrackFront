@@ -18,8 +18,9 @@ const LoginPage = () => {
 
         try {
             const response = await loginUser({ email, password });
+            sessionStorage.setItem('user', JSON.stringify(response));
             console.log('User logged in successfully:', response);
-            navigate('/NotFound');
+            navigate('/Profil');
         } catch (err) {
             console.error('Login failed:', err);
             if (err.message.includes("401")) {
