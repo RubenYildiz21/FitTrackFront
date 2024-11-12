@@ -8,13 +8,9 @@ import MultiStepForm from './pages/MultiStepForm'
 import ProfilPage from './pages/ProfilPage'
 import EditProfile from './pages/EditProfile';
 import LoaderPage from './pages/LoaderPage';
-<<<<<<< HEAD
 import WorkoutForm from './pages/WorkoutForm';
-=======
 import UserSearchPage from "./pages/UserSearchPage";
 
-
->>>>>>> origin/master
 
 
 const AppRoutes = () => (
