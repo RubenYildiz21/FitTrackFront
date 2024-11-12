@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import logo from '../assets/images/logooo-removebg-preview.png';
 import '../assets/styles/style.css';
 import { loginUser, googleLogin } from '../services/authService';
-import { GoogleLogin } from '@react-oauth/google';
 
 
 const LoginPage = () => {
@@ -19,8 +18,9 @@ const LoginPage = () => {
 
         try {
             const response = await loginUser({ email, password });
+            sessionStorage.setItem('user', JSON.stringify(response));
             console.log('User logged in successfully:', response);
-            navigate('/NotFound');
+            navigate('/Profil');
         } catch (err) {
             console.error('Login failed:', err);
             if (err.message.includes("401")) {
@@ -33,20 +33,6 @@ const LoginPage = () => {
         }
     };
 
-    const handleGoogleSuccess = async (credentialResponse) => {
-        try {
-            console.log('Google response:', credentialResponse);
-            const response = await googleLogin(credentialResponse);
-            console.log('Backend response:', response);
-            
-            if (response.status === 'success') {
-                navigate('/NotFound');
-            }
-        } catch (error) {
-            console.error('Login error:', error);
-            setError('Failed to authenticate with Google. Please try again.');
-        }
-    };
 
 
     return (
@@ -94,20 +80,6 @@ const LoginPage = () => {
                     <button className="text-gray-400 hover:underline">Forgot Password?</button>
                 </div>
 
-                {/* Sign In With Social Accounts */}
-                <div className="mt-8 text-center animate-fadeInSlow">
-                    <p className="text-gray-400 mb-6">Sign in with</p>
-                    <div className="flex justify-center space-x-6">
-                        <GoogleLogin
-                            onSuccess={handleGoogleSuccess}
-                            onError={(error) => {
-                                console.error('Google OAuth Error:', error);
-                                setError(`Google OAuth Error: ${error.message || 'Unknown error'}`);
-                            }}
-                            useOneTap
-                        />
-                    </div>
-                </div>
 
                 {/* Sign Up Link */}
                 <p className="mt-8 text-center text-gray-400 animate-fadeIn">

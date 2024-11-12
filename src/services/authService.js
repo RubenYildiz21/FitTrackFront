@@ -5,6 +5,7 @@
 // services/authServices.js
 import apiRequest from './api';
 
+
 export const registerUser = async (userData) => {
     try {
         const response = await apiRequest('/auth/register', 'POST', userData);
@@ -21,6 +22,7 @@ export const loginUser = async (credentials) => {
     try {
         const response = await apiRequest('/auth/login', 'POST', credentials, true);
         console.log('User logged in successfully:', response);
+        //console.log("Ok0");
         return response;
     } catch (error) {
         console.error('Login error:', error);
@@ -28,30 +30,14 @@ export const loginUser = async (credentials) => {
     }
 };
 
-
-
-export const googleLogin = async (credentialResponse) => {
+export const follow = async (followData) => {
     try {
-        const response = await fetch('http://localhost:8080/api/auth/google', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            credentials: 'include',
-            body: JSON.stringify({
-                token: credentialResponse.credential
-            })
-        });
-
-        if (!response.ok) {
-            const errorData = await response.text();
-            console.error('Server response:', errorData);
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        return await response.json();
+        const response = await apiRequest('/connection/follow', 'POST', followData);
+        //console.log('User followed successfully:', response);
+        //console.log("Ok0");
+        return response;
     } catch (error) {
-        console.error('Google login error:', error);
+        console.error('Follow error:', error);
         throw error;
     }
 };
