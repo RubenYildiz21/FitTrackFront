@@ -20,7 +20,7 @@ const AppRoutes = () => (
             <Route path="/LoginPage" element={<LoginPage />} />
             <Route path="/EditGoals" element={<EditGoals />} />
             <Route path="/MultiStepForm" element={<MultiStepForm />} />
-            <Route path="/Profil/:userId" element={<ProfilPage />} />
+            <Route path="/Profil" element={<ProfilPage />} />
             <Route path='/EditProfile' element={<EditProfile />}/>
             <Route path="/LoaderPage" element={<LoaderPage />} />
             <Route path="/Search" element={<UserSearchPage />} />

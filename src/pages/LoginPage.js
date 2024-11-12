@@ -18,6 +18,7 @@ const LoginPage = () => {
 
         try {
             const response = await loginUser({ email, password });
+            sessionStorage.setItem('user', JSON.stringify(response));
             console.log('User logged in successfully:', response);
             navigate('/Profil');
         } catch (err) {

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import GoalsPage from './Goals';
 import height from '../assets/images/height.png';
 import weight from '../assets/images/dumbbell.png';
 import sablier from '../assets/images/sablier.png';
@@ -17,19 +16,18 @@ const ProfilPage = () => {
     useEffect(() => {
         const fetchUserProfile = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/api/auth/${userId}`);
+                /**const response = await fetch(`http://localhost:8080/api/auth/${userId}`);
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
                 const data = await response.json();
-                setUser(data);
+                setUser(data);*/
 
-                const storedUser = localStorage.getItem('user');
-                if (storedUser) {
-                    //setUser(JSON.parse(storedUser)); // Analyser et définir l'utilisateur
+                const user = JSON.parse(sessionStorage.getItem('user'));
+                if (user) {
+                    setUser(user); // Set the user state with the parsed user object
                     console.log("OK");
-                    const u = JSON.parse(storedUser);
-                    console.log(u.height)
+                    console.log(user.height); // Access user properties directly
                 }
             } catch (error) {
                 console.error("Error fetching user profile", error);
@@ -76,7 +74,8 @@ const ProfilPage = () => {
 
     const getProfilePicturePath = (base64String) => {
         try {
-            return require(`../assets/images/${atob(base64String.replace(/^\.\/|=+$/g, ''))}`);
+            return `data:image/jpeg;base64,${base64String}`;
+            //return require(`../assets/images/${atob(base64String.replace(/^\.\/|=+$/g, ''))}`);
         } catch (e) {
             console.error("Failed to decode Base64 profile picture string", e);
             return '/src/assets/images/profile.png'; // Default path
@@ -95,6 +94,7 @@ const ProfilPage = () => {
                 <div className="w-24 h-24 rounded-full overflow-hidden mb-4">
                     <img
                         src={user.profilePicture ? getProfilePicturePath(user.profilePicture) : require('../assets/images/profile.png')}
+                        //src={require('../assets/images/profile.png')}
                         alt="Photo de profil"
                         className="object-cover w-full h-full"
                     />
@@ -143,13 +143,29 @@ const ProfilPage = () => {
             </div>
             <div className="flex flex-col justify-center items-center mb-4">
                 <h2 className="font-bold text-2xl">Personnal goals</h2>
-                <span className="italic">{user.goalWeight} KG</span>
+                <div className="flex justify-center space-x-4 mb-4 items-center">
+                    <div className="flex flex-col items-center bg-blue-500 p-2 rounded">
+                        <img src={weight} alt="Poids icon" className="w-10 h-10"/>
+                    </div>
+                    <div className="text-center">
+                        <span className="font-semibold">{user.goalWeight} KG</span>
+                        <p className="text-center text-sm">Goal Weight</p>
+                    </div>
+                </div>
             </div>
             <hr className="border-white mb-4"/>
             <div className="flex flex-col space-y-4">
                 <button className="bg-orange-500 hover:bg-orange-400 py-2 rounded">Edit Goals</button>
                 <button className="bg-orange-500 hover:bg-orange-400 py-2 rounded">Edit Info</button>
-                <button className="bg-orange-500 hover:bg-orange-400 py-2 rounded">Sign Out</button>
+                <button
+                    className="bg-orange-500 hover:bg-orange-400 py-2 rounded"
+                    onClick={() => {
+                        sessionStorage.clear(); // Clear session storage
+                        navigate('/'); // Redirect to the homepage
+                    }}
+                >
+                    Sign Out
+                </button>
             </div>
         </div>
     );
