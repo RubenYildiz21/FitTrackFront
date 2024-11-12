@@ -1,30 +1,69 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import '../assets/styles/style.css';
 import { updateGoals } from '../services/userService';
 
 const EditGoals = () => {
-  const [goalWeight, setGoalWeight] = useState('70 kg');
-  const [personalObjective, setPersonalObjective] = useState('Loose weight');
-  const [place, setPlace] = useState('At home');
-  const [trainingLevel, setTrainingLevel] = useState('Advanced');
+  const [goalWeight, setGoalWeight] = useState('');
+  const [personalObjective, setPersonalObjective] = useState('');
+  const [place, setPlace] = useState('');
+  const [trainingLevel, setTrainingLevel] = useState('');
+  const [error, setError] = useState(null);
 
   const navigate = useNavigate();
+  const { userId } = useParams();
+
+  useEffect(() => {
+    const fetchUserGoals = async () => {
+      try {
+        const user = JSON.parse(sessionStorage.getItem('user'));
+        if (user) {
+          setGoalWeight(user.goalWeight || '');
+          setPersonalObjective(user.mainGoal || '');
+          setPlace(user.place || '');
+          setTrainingLevel(user.trainingLevel || '');
+        }
+      } catch (error) {
+        console.error('Error fetching user goals:', error);
+        setError('Failed to load user goals');
+      }
+    };
+
+    fetchUserGoals();
+  }, [userId]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const updatedGoals = { goalWeight, personalObjective, place, trainingLevel };
-    try{
-      await updateGoals(updatedGoals); 
-      console.log('Goals updated successfully:', updatedGoals);
-      navigate(-1);
-    }catch (error) {
-      console.error('Error updating profile:', error);
+    const updatedGoals = {
+      goalWeight,
+      mainGoal: personalObjective, // Assurez-vous que les noms correspondent à votre API
+      place,
+      trainingLevel
+    };
+
+    try {
+      await updateGoals(updatedGoals);
+      
+      // Mise à jour du sessionStorage
+    const user = JSON.parse(sessionStorage.getItem('user'));
+    if (user) {
+      const updatedUser = {
+        ...user,
+        ...updatedGoals
+      };
+      sessionStorage.setItem('user', JSON.stringify(updatedUser));
     }
-    
-    console.log(updatedGoals);
-    // Ici, tu pourrais envoyer les données mises à jour à ton backend
+      
+      navigate(-1);
+    } catch (error) {
+      console.error('Error updating goals:', error);
+      setError('Failed to update goals');
+    }
   };
+
+  if (error) {
+    return <div className="text-red-500 text-center">{error}</div>;
+  }
 
   return (
       <div className="flex items-center justify-center min-h-screen bg-black text-white px-4 sm:px-6 lg:px-8 animate-fadeIn">

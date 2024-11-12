@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import height from '../assets/images/height.png';
-import weight from '../assets/images/dumbbell.png';
-import sablier from '../assets/images/sablier.png';
+import { FaRulerVertical } from 'react-icons/fa';  // Une règle verticale pour la taille
+import { IoScaleOutline } from 'react-icons/io5';  // Une balance moderne pour le poids
+import { FaBirthdayCake } from 'react-icons/fa';   // Un gâteau d'anniversaire pour l'âge
 
 const ProfilPage = () => {
     const { userId } = useParams();
@@ -110,7 +110,7 @@ const ProfilPage = () => {
             <div className="flex justify-center space-x-4 mb-4">
                 <div className="flex justify-center space-x-4 mb-4 items-center">
                     <div className="flex flex-col items-center bg-red-500 p-2 rounded">
-                        <img src={height} alt="Taille icon" className="w-10 h-10"/>
+                        <FaRulerVertical className="w-10 h-10" />
                     </div>
                     <div className="text-center">
                         <span className="font-semibold">{user.height} CM</span>
@@ -119,7 +119,7 @@ const ProfilPage = () => {
                 </div>
                 <div className="flex justify-center space-x-4 mb-4 items-center">
                     <div className="flex flex-col items-center bg-blue-500 p-2 rounded">
-                        <img src={weight} alt="Poids icon" className="w-10 h-10"/>
+                        <IoScaleOutline className="w-10 h-10" />
                     </div>
                     <div className="text-center">
                         <span className="font-semibold">{user.weight} KG</span>
@@ -128,7 +128,7 @@ const ProfilPage = () => {
                 </div>
                 <div className="flex justify-center space-x-4 mb-4 items-center">
                     <div className="flex flex-col items-center bg-amber-300 p-2 rounded">
-                        <img src={sablier} alt="Poids icon" className="w-10 h-10"/>
+                        <FaBirthdayCake className="w-10 h-10" />
                     </div>
                     <div className="text-center">
                         <span className="font-semibold">{user.age} Year</span>
@@ -145,7 +145,7 @@ const ProfilPage = () => {
                 <h2 className="font-bold text-2xl">Personnal goals</h2>
                 <div className="flex justify-center space-x-4 mb-4 items-center">
                     <div className="flex flex-col items-center bg-blue-500 p-2 rounded">
-                        <img src={weight} alt="Poids icon" className="w-10 h-10"/>
+                        <IoScaleOutline className="w-10 h-10" />
                     </div>
                     <div className="text-center">
                         <span className="font-semibold">{user.goalWeight} KG</span>
@@ -155,8 +155,16 @@ const ProfilPage = () => {
             </div>
             <hr className="border-white mb-4"/>
             <div className="flex flex-col space-y-4">
-                <button className="bg-orange-500 hover:bg-orange-400 py-2 rounded">Edit Goals</button>
-                <button className="bg-orange-500 hover:bg-orange-400 py-2 rounded">Edit Info</button>
+                <button className="bg-orange-500 hover:bg-orange-400 py-2 rounded"
+                    onClick={() => navigate('/EditGoals')}
+                >
+                    Edit Goals
+                </button>
+                <button className="bg-orange-500 hover:bg-orange-400 py-2 rounded"
+                    onClick={() => navigate('/EditProfile')}
+                >
+                    Edit Info
+                </button>
                 <button
                     className="bg-orange-500 hover:bg-orange-400 py-2 rounded"
                     onClick={() => {
