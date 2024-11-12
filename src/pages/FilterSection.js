@@ -2,10 +2,10 @@ import React from 'react';
 
 const FilterSection = ({ activeFilters, setActiveFilters }) => {
   const filters = [
-    { id: 'haltere', label: 'Haltère' },
-    { id: 'elastique', label: 'Élastique' },
-    { id: 'poulie', label: 'Poulie' },
-    { id: 'fullbody', label: 'Full-body' },
+    { id: 'HALTERE', label: 'Haltère' },
+    { id: 'ELASTIQUE', label: 'Élastique' },
+    { id: 'POULIE', label: 'Poulie' },
+    { id: 'AUCUN', label: 'Sans équipement' },
   ];
 
   const toggleFilter = (filterId) => {

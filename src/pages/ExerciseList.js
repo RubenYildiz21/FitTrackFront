@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { PlusCircleIcon } from '@heroicons/react/24/outline';
 import { fetchExercises } from '../services/exerciseService';
 
 const ExerciseList = ({ selectedExercises, setSelectedExercises, filters }) => {
@@ -59,11 +58,13 @@ const ExerciseList = ({ selectedExercises, setSelectedExercises, filters }) => {
         >
           <div className="flex justify-between items-center p-4">
             <div className="flex space-x-4 items-center">
-              <img 
-                src={exercise.image} 
-                alt={exercise.name}
-                className="w-24 h-16 object-cover rounded"
-              />
+              {exercise.icon ? (
+                exercise.icon
+              ) : (
+                <div className="w-24 h-16 bg-zinc-700 rounded flex items-center justify-center">
+                  <span className="text-gray-400">No image</span>
+                </div>
+              )}
               <div>
                 <h3 className="text-white text-lg font-semibold">
                   {exercise.name}
