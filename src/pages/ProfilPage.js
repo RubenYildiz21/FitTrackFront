@@ -4,6 +4,7 @@ import GoalsPage from './Goals';
 import height from '../assets/images/height.png';
 import weight from '../assets/images/dumbbell.png';
 import sablier from '../assets/images/sablier.png';
+import Navbar from "./shared/Navbar";
 
 const ProfilPage = () => {
     const { userId } = useParams();
@@ -69,6 +70,7 @@ const ProfilPage = () => {
 
     return (
         <div className="bg-black text-white min-h-screen p-6">
+            <Navbar/>
             <button
                 className="text-gray-400 hover:text-white mb-4 text-2xl p-2"
                 onClick={() => navigate(-1)}

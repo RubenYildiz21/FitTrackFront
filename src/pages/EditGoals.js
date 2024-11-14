@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../assets/styles/style.css';
 import { updateGoals } from '../services/userService';
+import Navbar from "./shared/Navbar";
 
 const EditGoals = () => {
   const [goalWeight, setGoalWeight] = useState('70 kg');
@@ -28,6 +29,7 @@ const EditGoals = () => {
 
   return (
       <div className="flex items-center justify-center min-h-screen bg-black text-white px-4 sm:px-6 lg:px-8 animate-fadeIn">
+        <Navbar/>
         {/* Container */}
         <div className="w-full max-w-lg p-10 bg-black bg-opacity-90 rounded-lg animate-slideUp">
           {/* Header with back button */}
