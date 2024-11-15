@@ -3,25 +3,29 @@ import { useNavigate } from 'react-router-dom';
 import logo from '../assets/images/logooo-removebg-preview.png';
 import '../assets/styles/style.css';
 import { loginUser, googleLogin } from '../services/authService';
-import Navbar from "./shared/Navbar";
 
 
 const LoginPage = () => {
     const navigate = useNavigate();
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+    const [formData, setFormData] = useState({
+        id: 0,
+        idUser: 0,
+        title: '',
+        description: '',
+        picture: '',
 
+    });
+
+    const [errors, setErrors] = useState({ title: '', description: '', picture: '' });
     const handleLogin = async (e) => {
         e.preventDefault();
         setError('');
 
         try {
             const response = await loginUser({ email, password });
-            sessionStorage.setItem('user', JSON.stringify(response));
             console.log('User logged in successfully:', response);
-            navigate('/Profil');
+            navigate('/NotFound');
         } catch (err) {
             console.error('Login failed:', err);
             if (err.message.includes("401")) {
@@ -38,7 +42,6 @@ const LoginPage = () => {
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-black text-white px-4 sm:px-6 lg:px-8 animate-fadeIn">
-
             {/* Container */}
             <div className="w-full max-w-md p-10 bg-black bg-opacity-90 rounded-lg animate-slideUp">
                 {/* Title */}

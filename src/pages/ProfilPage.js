@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { FaRulerVertical } from 'react-icons/fa';  // Une règle verticale pour la taille
 import { IoScaleOutline } from 'react-icons/io5';  // Une balance moderne pour le poids
-import { FaBirthdayCake } from 'react-icons/fa';   // Un gâteau d'anniversaire pour l'âge
+import { FaBirthdayCake } from 'react-icons/fa';  
+import Navbar from "./shared/Navbar"; // Un gâteau d'anniversaire pour l'âge
 
 const ProfilPage = () => {
     const { userId } = useParams();
@@ -84,6 +85,7 @@ const ProfilPage = () => {
 
     return (
         <div className="bg-black text-white min-h-screen p-6">
+            <Navbar/>
             <button
                 className="text-gray-400 hover:text-white mb-4 text-2xl p-2"
                 onClick={() => navigate(-1)}

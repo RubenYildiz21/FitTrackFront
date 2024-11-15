@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Navbar from "./shared/Navbar";
 
 const GoalsPage = () => {
     const [goals, setGoals] = useState([]);
@@ -16,6 +17,7 @@ const GoalsPage = () => {
 
     return (
         <div>
+            <Navbar/>
             <h1>Goals</h1>
             <ul>
                 {goals.map(goal => (
