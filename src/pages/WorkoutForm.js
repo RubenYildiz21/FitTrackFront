@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import ExerciseList from './ExerciseList';
 import FilterSection from './FilterSection';
 import { createWorkoutSession } from '../services/workoutService';
+import Navbar from './shared/Navbar';
 
 const WorkoutForm = () => {
   const [sessionName, setSessionName] = useState('');
@@ -39,7 +40,8 @@ const WorkoutForm = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black p-4 text-white">
+    <div className="min-h-screen bg-black p-4 text-white mb-20">
+      <Navbar />
       <h1 className="text-2xl font-bold mb-6">
         Nouvelle séance
       </h1>

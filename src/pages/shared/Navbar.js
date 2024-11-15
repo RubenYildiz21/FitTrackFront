@@ -26,7 +26,7 @@ const Navbar = () => {
                     <span className="sr-only">Home</span>
                 </button>
                 <button
-                    onClick={() => handleNavigation('/Goals')}
+                    onClick={() => handleNavigation('/NotFound')}
                     data-tooltip-target="tooltip-wallet" type="button"
                     className="inline-flex flex-col items-center justify-center px-5 hover:bg-gray-800 group">
                     <svg
@@ -39,7 +39,7 @@ const Navbar = () => {
                 </button>
                 <div className="flex items-center justify-center">
                     <button
-                        onClick={() => handleNavigation('/notFound')}
+                        onClick={() => handleNavigation('/WorkoutForm')}
                         data-tooltip-target="tooltip-new" type="button"
                         className="inline-flex items-center justify-center w-10 h-10 font-medium bg-orange-500 rounded-full hover:bg-orange-600 group focus:ring-4 focus:ring-orange-700 focus:outline-none">
                         <svg className="w-4 h-4 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
@@ -63,7 +63,7 @@ const Navbar = () => {
                     <span className=" sr-only">Challenge</span>
                 </button>
                 <button
-                    onClick={() => handleNavigation('/ProfilPage')}
+                    onClick={() => handleNavigation('/Profil')}
                     data-tooltip-target="tooltip-profile" type="button"
                         className="inline-flex flex-col items-center justify-center px-5 rounded-e-full hover:bg-gray-50 dark:hover:bg-gray-800 group">
                     <svg

@@ -84,7 +84,7 @@ const ProfilPage = () => {
     };
 
     return (
-        <div className="bg-black text-white min-h-screen p-6">
+        <div className="bg-black text-white min-h-screen p-6 mb-10">
             <Navbar/>
             <button
                 className="text-gray-400 hover:text-white mb-4 text-2xl p-2"
@@ -168,10 +168,10 @@ const ProfilPage = () => {
                     Edit Info
                 </button>
                 <button
-                    className="bg-orange-500 hover:bg-orange-400 py-2 rounded"
+                    className="bg-red-500 hover:bg-orange-400 py-2 rounded"
                     onClick={() => {
                         //sessionStorage.clear(); // Clear session storage
-                        navigate('/WorkoutForm'); // Redirect to the homepage
+                        navigate('/LoginPage'); // Redirect to the homepage
                     }}
                 >
                     Sign Out
