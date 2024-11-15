@@ -168,8 +168,8 @@ const ProfilPage = () => {
                 <button
                     className="bg-orange-500 hover:bg-orange-400 py-2 rounded"
                     onClick={() => {
-                        sessionStorage.clear(); // Clear session storage
-                        navigate('/'); // Redirect to the homepage
+                        //sessionStorage.clear(); // Clear session storage
+                        navigate('/WorkoutForm'); // Redirect to the homepage
                     }}
                 >
                     Sign Out
