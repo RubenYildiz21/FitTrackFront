@@ -23,9 +23,20 @@ const ExerciseList = ({ selectedExercises, setSelectedExercises, filters }) => {
     loadExercises();
   }, []);
 
-  const filteredExercises = filters.length > 0
-    ? exercises.filter(ex => ex.equipment.some(eq => filters.includes(eq)))
-    : exercises;
+  const filteredExercises = exercises.filter(exercise => {
+    if(filters.length === 0) return true;
+
+    return filters.some(filter => {
+      if(!Array.isArray(exercise.equipment)){
+        console.warn(`Exercise ${exercise.name} has an invalid equipment type. It should be an array.`)
+        return false;
+      }
+
+      return exercise.equipment.some(
+        eq => eq.toLowerCase() === filter.toLowerCase()
+      );
+    });
+  });
 
   const addExercise = (exercise) => {
     if (!selectedExercises.find(ex => ex.id === exercise.id)) {

@@ -2,9 +2,9 @@ import React from 'react';
 
 const FilterSection = ({ activeFilters, setActiveFilters }) => {
   const filters = [
-    { id: 'HALTERE', label: 'Haltère' },
-    { id: 'ELASTIQUE', label: 'Élastique' },
-    { id: 'POULIE', label: 'Poulie' },
+    { id: 'HALTERES', label: 'Haltères' },
+    { id: 'BARRE', label: 'Barre' },
+    { id: 'TAPIS', label: 'Tapis' },
     { id: 'AUCUN', label: 'Sans équipement' },
   ];
 

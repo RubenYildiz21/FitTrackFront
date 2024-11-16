@@ -56,7 +56,7 @@ export const fetchExercises = async () => {
         id: exercise.idExercice,
         name: exercise.nom,
         icon: <IconComponent className="h-12 w-12 text-orange-500" />,
-        equipment: [exercise.equipementNecessaire.toLowerCase()]
+        equipment: exercise.equipementNecessaire ? [exercise.equipementNecessaire.toLowerCase()] : ['Aucun']
       };
     });
   } catch (error) {
