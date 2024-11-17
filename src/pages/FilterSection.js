@@ -6,6 +6,8 @@ const FilterSection = ({ activeFilters, setActiveFilters }) => {
     { id: 'BARRE', label: 'Barre' },
     { id: 'TAPIS', label: 'Tapis' },
     { id: 'AUCUN', label: 'Sans équipement' },
+    { id: 'ELASTIQUES', label: 'Élastiques' },
+    { id: 'MACHINE', label: 'Machine de musculation' }
   ];
 
   const toggleFilter = (filterId) => {

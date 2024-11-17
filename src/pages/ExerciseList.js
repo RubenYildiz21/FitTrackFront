@@ -83,6 +83,9 @@ const ExerciseList = ({ selectedExercises, setSelectedExercises, filters }) => {
                 <p className="text-gray-400 text-sm">
                   {exercise.duration}
                 </p>
+                <p className="text-gray-300 text-sm">
+                  {exercise.description}
+                </p>
               </div>
             </div>
             <button 
@@ -98,4 +101,4 @@ const ExerciseList = ({ selectedExercises, setSelectedExercises, filters }) => {
   );
 };
 
-export default ExerciseList; 
+export default ExerciseList;

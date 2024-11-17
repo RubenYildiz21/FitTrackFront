@@ -20,9 +20,8 @@ export const registerUser = async (userData) => {
 
 export const loginUser = async (credentials) => {
     try {
-        const response = await apiRequest('/auth/login', 'POST', credentials, true);
+        const response = await apiRequest('/auth/login', 'POST', credentials);
         console.log('User logged in successfully:', response);
-        //console.log("Ok0");
         return response;
     } catch (error) {
         console.error('Login error:', error);

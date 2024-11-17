@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { FaRulerVertical } from 'react-icons/fa';  // Une règle verticale pour la taille
 import { IoScaleOutline } from 'react-icons/io5';  // Une balance moderne pour le poids
-import { FaBirthdayCake } from 'react-icons/fa';  
-import Navbar from "./shared/Navbar"; // Un gâteau d'anniversaire pour l'âge
+import { FaBirthdayCake } from 'react-icons/fa';  // Un gâteau d'anniversaire pour l'âge
+import Navbar from "./shared/Navbar"; 
+import apiRequest from '../services/api';
 
 const ProfilPage = () => {
-    const { userId } = useParams();
+    const [userId, setUserId] = useState(null);
     const [user, setUser] = useState(null);
     const [profilePicture, setProfilePicture] = useState('');
     const [followersCount, setFollowersCount] = useState(0);
@@ -17,18 +18,19 @@ const ProfilPage = () => {
     useEffect(() => {
         const fetchUserProfile = async () => {
             try {
-                /**const response = await fetch(`http://localhost:8080/api/auth/${userId}`);
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const data = await response.json();
-                setUser(data);*/
+            
+                const userString = sessionStorage.getItem('user');
+                if (userString) {
+                    const user = JSON.parse(userString);
+                    setUser(user);
+                    setUserId(user.id);
 
-                const user = JSON.parse(sessionStorage.getItem('user'));
-                if (user) {
-                    setUser(user); // Set the user state with the parsed user object
-                    console.log("OK");
-                    console.log(user.height); // Access user properties directly
+                    // Maintenant que nous avons userId, nous pouvons appeler les autres fonctions
+                    await fetchFollowersCount(user.id);
+                    await fetchFollowingCount(user.id);
+                } else {
+                    console.error("Aucun utilisateur trouvé dans sessionStorage");
+                    setError("User not logged in.");
                 }
             } catch (error) {
                 console.error("Error fetching user profile", error);
@@ -36,27 +38,25 @@ const ProfilPage = () => {
             }
         };
 
-        const fetchFollowersCount = async () => {
+        const fetchFollowersCount = async (userId) => {
             try {
-                const response = await fetch(`http://localhost:8080/api/connection/followersCount/${userId}`);
-                if (!response.ok) {
+                const data = await apiRequest(`/connection/followersCount/${userId}`);
+                if (!data.ok) {
                     throw new Error('Network response was not ok');
                 }
-                const data = await response.json();
-                setFollowersCount(data); // Assurez-vous que le format de la réponse est correct
+                setFollowersCount(data.count); // Assurez-vous que le format de la réponse est correct
             } catch (error) {
                 console.error("Error fetching followers count", error);
                 //setError("Could not fetch followers count.");
             }
         };
 
-        const fetchFollowingCount = async () => {
+        const fetchFollowingCount = async (userId) => {
             try {
-                const response = await fetch(`http://localhost:8080/api/connection/followingCount/${userId}`);
-                if (!response.ok) {
+                const data = await apiRequest(`/connection/followingCount/${userId}`);
+                if (!data.ok) {
                     throw new Error('Network response was not ok');
                 }
-                const data = await response.json();
                 setFollowingCount(data); // Assurez-vous que le format de la réponse est correct
             } catch (error) {
                 console.error("Error fetching following count", error);
@@ -66,8 +66,6 @@ const ProfilPage = () => {
 
         // Appels des fonctions
         fetchUserProfile();
-        fetchFollowersCount();
-        fetchFollowingCount();
     }, [userId]);
 
     if (error) return <div className="text-red-500">{error}</div>;

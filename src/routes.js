@@ -10,6 +10,7 @@ import EditProfile from './pages/EditProfile';
 import LoaderPage from './pages/LoaderPage';
 import WorkoutForm from './pages/WorkoutForm';
 import UserSearchPage from "./pages/UserSearchPage";
+import ExerciseExplorationPage from './pages/ExerciseExploration';
 
 
 
@@ -25,6 +26,7 @@ const AppRoutes = () => (
             <Route path="/LoaderPage" element={<LoaderPage />} />
             <Route path="/WorkoutForm" element={<WorkoutForm />} />
             <Route path="/Search" element={<UserSearchPage />} />
+            <Route path="/Exercises" element={<ExerciseExplorationPage/>}/>
 
         </Routes>
     </Router>
