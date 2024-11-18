@@ -40,11 +40,8 @@ const ProfilPage = () => {
 
         const fetchFollowersCount = async (userId) => {
             try {
-                const data = await apiRequest(`/connection/followersCount/${userId}`);
-                if (!data.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                setFollowersCount(data.count); // Assurez-vous que le format de la réponse est correct
+                const count = await apiRequest(`/follows/${userId}/followers/count`, 'GET');
+                setFollowersCount(count); // Assurez-vous que le format de la réponse est correct
             } catch (error) {
                 console.error("Error fetching followers count", error);
                 //setError("Could not fetch followers count.");
@@ -53,11 +50,8 @@ const ProfilPage = () => {
 
         const fetchFollowingCount = async (userId) => {
             try {
-                const data = await apiRequest(`/connection/followingCount/${userId}`);
-                if (!data.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                setFollowingCount(data); // Assurez-vous que le format de la réponse est correct
+                const count = await apiRequest(`/follows/${userId}/following/count`, 'GET');
+                setFollowingCount(count); // Assurez-vous que le format de la réponse est correct
             } catch (error) {
                 console.error("Error fetching following count", error);
                 //setError("Could not fetch following count.");
@@ -168,7 +162,8 @@ const ProfilPage = () => {
                 <button
                     className="bg-red-500 hover:bg-orange-400 py-2 rounded"
                     onClick={() => {
-                        //sessionStorage.clear(); // Clear session storage
+                        sessionStorage.clear(); // Clear session storage
+                        localStorage.clear();
                         navigate('/LoginPage'); // Redirect to the homepage
                     }}
                 >

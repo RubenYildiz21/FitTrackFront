@@ -14,21 +14,24 @@ const LoginPage = () => {
     const handleLogin = async (e) => {
         e.preventDefault();
         setError('');
-    
+
         try {
             const data = await loginUser({ email, password });
-    
-            // Store the JWT token in local storage
-            localStorage.setItem('token', data.token);
-            // Store the user in local storage
-            sessionStorage.setItem('user', JSON.stringify(data.user));
-    
-            console.log('User logged in successfully:', data);
-            navigate('/Profil');
+
+            if (data.token) {
+                // Store the JWT token in local storage
+                localStorage.setItem('token', data.token);
+                // Store the user in local storage
+                sessionStorage.setItem('user', JSON.stringify(data.user));
+
+                console.log('User logged in successfully:', data);
+                navigate('/Profil');
+            }
+
         } catch (err) {
             console.error('Login failed:', err);
             const errorMessage = err.message || '';
-    
+
             if (errorMessage.includes("401")) {
                 setError('Invalid password. Please try again.');
             } else if (errorMessage.includes("404")) {

@@ -1,18 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from "./shared/Navbar";
+import apiRequest from '../services/api';
+
 
 const GoalsPage = () => {
     const [goals, setGoals] = useState([]);
 
     useEffect(() => {
-        fetch('http://localhost:8080/api/auth/register')
-            .then(response => response.json()) // Convertir la réponse en JSON
-            .then(data => {
-                setGoals(data); // Mettre à jour l'état avec les objectifs
-            })
-            .catch(error => {
-                console.error('There was an error fetching the goals!', error);
-            });
+        const fetchUserGoals = async () => {
+            try {
+                const userString = sessionStorage.getItem('user');
+                if (userString) {
+                    const user = JSON.parse(userString);
+                    const data = await apiRequest(`/auth/goals/${user.id}`, 'GET');
+                    setGoals(data);
+                } else {
+                    console.error("Aucun utilisateur trouvé dans sessionStorage");
+                    setError("User not logged in.");
+                }
+            } catch (error) {
+                console.error("Erreur lors de la récupération des objectifs utilisateur", error);
+                setError("Could not fetch user goals.");
+            }
+        };
+
+        fetchUserGoals();
     }, []);
 
     return (

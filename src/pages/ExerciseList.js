@@ -1,7 +1,8 @@
+// ExerciseList.js
 import React, { useState, useEffect } from 'react';
 import { fetchExercises } from '../services/exerciseService';
 
-const ExerciseList = ({ selectedExercises, setSelectedExercises, filters }) => {
+const ExerciseList = ({ selectedExercises, setSelectedExercises, filters, openModal }) => {
   const [exercises, setExercises] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -11,6 +12,7 @@ const ExerciseList = ({ selectedExercises, setSelectedExercises, filters }) => {
       try {
         setLoading(true);
         const data = await fetchExercises();
+        console.log('Exercices récupérés:', data); // Log pour vérifier les données
         setExercises(data);
       } catch (err) {
         setError('Erreur lors du chargement des exercices');
@@ -27,20 +29,19 @@ const ExerciseList = ({ selectedExercises, setSelectedExercises, filters }) => {
     if(filters.length === 0) return true;
 
     return filters.some(filter => {
-      if(!Array.isArray(exercise.equipment)){
-        console.warn(`Exercise ${exercise.name} has an invalid equipment type. It should be an array.`)
+      if(typeof exercise.equipementNecessaire !== 'string'){
+        console.warn(`Exercise ${exercise.nom} has an invalid equipementNecessaire type. It should be a string.`);
         return false;
       }
 
-      return exercise.equipment.some(
-        eq => eq.toLowerCase() === filter.toLowerCase()
-      );
+      return exercise.equipementNecessaire.toLowerCase() === filter.toLowerCase();
     });
   });
 
   const addExercise = (exercise) => {
-    if (!selectedExercises.find(ex => ex.id === exercise.id)) {
-      setSelectedExercises([...selectedExercises, exercise]);
+    console.log('Ajout de l\'exercice:', exercise); // Log pour vérifier les données
+    if (!selectedExercises.find(ex => ex.idExercice === exercise.idExercice)) {
+      setSelectedExercises([...selectedExercises, { ...exercise, sets: [{ reps: 0, weight: 0 }] }]);
     }
   };
 
@@ -64,7 +65,7 @@ const ExerciseList = ({ selectedExercises, setSelectedExercises, filters }) => {
     <div className="flex flex-col space-y-4">
       {filteredExercises.map((exercise) => (
         <div 
-          key={exercise.id}
+          key={exercise.idExercice}
           className="bg-zinc-800 rounded-lg shadow-lg overflow-hidden"
         >
           <div className="flex justify-between items-center p-4">
@@ -78,22 +79,29 @@ const ExerciseList = ({ selectedExercises, setSelectedExercises, filters }) => {
               )}
               <div>
                 <h3 className="text-white text-lg font-semibold">
-                  {exercise.name}
+                  {exercise.nom}
                 </h3>
                 <p className="text-gray-400 text-sm">
-                  {exercise.duration}
-                </p>
-                <p className="text-gray-300 text-sm">
                   {exercise.description}
                 </p>
               </div>
             </div>
-            <button 
-              onClick={() => addExercise(exercise)}
-              className="text-orange-500 hover:text-orange-400 transition-colors text-xl font-bold"
-            >
-              +
-            </button>
+            <div className="flex flex-col space-y-1">
+              {exercise.lienVideo && (
+                <button 
+                  onClick={() => openModal(exercise.lienVideo)}
+                  className="px-3 py-1 bg-orange-400 text-white rounded hover:bg-orange-500 transition-colors text-sm"
+                >
+                  Exemple
+                </button>
+              )}
+              <button 
+                onClick={() => addExercise(exercise)}
+                className="px-3 py-1 bg-orange-600 text-white rounded hover:bg-orange-500 transition-colors text-sm"
+              >
+                Ajouter
+              </button>
+            </div>
           </div>
         </div>
       ))}

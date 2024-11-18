@@ -3,7 +3,8 @@ import apiRequest from './api';
 export const createWorkoutSession = async (sessionData) => {
   try {
     const user = JSON.parse(sessionStorage.getItem('user'));
-    
+    if (!user) throw new Error('Utilisateur non authentifié.');
+
     const formattedData = {
       dateSeance: new Date(sessionData.date).toISOString(),
       nom: sessionData.name,
@@ -22,21 +23,9 @@ export const createWorkoutSession = async (sessionData) => {
 
     console.log('Données envoyées au serveur:', formattedData);
     
-    const response = await fetch('http://localhost:8080/api/seances', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formattedData)
-    });
+    const response = await apiRequest('/seances', 'POST', formattedData);
 
-    if (!response.ok) {
-      const errorData = await response.text();
-      throw new Error(errorData);
-    }
-
-    const data = await response.json();
-    return data;
+    return response;
   } catch (error) {
     console.error('Error creating workout session:', error);
     throw error;

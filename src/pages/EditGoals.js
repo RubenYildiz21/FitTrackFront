@@ -1,168 +1,149 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import '../assets/styles/style.css';
-import { updateGoals } from '../services/userService';
-import Navbar from "./shared/Navbar";
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Navbar from "./shared/Navbar"; 
+import apiRequest from '../services/api';
 
 const EditGoals = () => {
-  const [goalWeight, setGoalWeight] = useState('');
-  const [personalObjective, setPersonalObjective] = useState('');
-  const [place, setPlace] = useState('');
-  const [trainingLevel, setTrainingLevel] = useState('');
-  const [error, setError] = useState(null);
+    const [userId, setUserId] = useState(null);
+    const [user, setUser] = useState(null);
+    const [goalWeight, setGoalWeight] = useState('');
+    const [mainGoal, setMainGoal] = useState('');
+    const [place, setPlace] = useState('');
+    const [trainingLevel, setTrainingLevel] = useState('');
+    const [error, setError] = useState(null);
+    const navigate = useNavigate();
 
-  const navigate = useNavigate();
-  const { userId } = useParams();
+    useEffect(() => {
+        const fetchUserGoals = async () => {
+            try {
+                const userString = sessionStorage.getItem('user');
+                if (userString) {
+                    const user = JSON.parse(userString);
+                    setUser(user);
+                    setUserId(user.id);
+                    setGoalWeight(user.goalWeight || '');
+                    setMainGoal(user.mainGoal || '');
+                    setPlace(user.place || '');
+                    setTrainingLevel(user.trainingLevel || '');
+                } else {
+                    console.error("Aucun utilisateur trouvé dans sessionStorage");
+                    setError("User not logged in.");
+                }
+            } catch (error) {
+                console.error("Erreur lors de la récupération des objectifs utilisateur", error);
+                setError("Could not fetch user goals.");
+            }
+        };
 
-  useEffect(() => {
-    const fetchUserGoals = async () => {
+        fetchUserGoals();
+    }, []);
+
+    const handleUpdateGoals = async (e) => {
+      e.preventDefault();
       try {
-        const user = JSON.parse(sessionStorage.getItem('user'));
-        if (user) {
-          setGoalWeight(user.goalWeight || '');
-          setPersonalObjective(user.mainGoal || '');
-          setPlace(user.place || '');
-          setTrainingLevel(user.trainingLevel || '');
-        }
+          const updatedGoals = {
+              goalWeight,
+              mainGoal,
+              place,
+              trainingLevel,
+          };
+  
+          const userId = JSON.parse(sessionStorage.getItem('user')).id;
+  
+          // Utilisez apiRequest directement
+          await apiRequest(`/users/${userId}/goals`, 'PUT', updatedGoals);
+  
+          // Mettez à jour l'utilisateur dans sessionStorage
+          const user = JSON.parse(sessionStorage.getItem('user'));
+          const updatedUser = {
+              ...user,
+              ...updatedGoals,
+          };
+          sessionStorage.setItem('user', JSON.stringify(updatedUser));
+          setUser(updatedUser);
+  
+          navigate('/Profil');
       } catch (error) {
-        console.error('Error fetching user goals:', error);
-        setError('Failed to load user goals');
+          console.error("Erreur lors de la mise à jour des objectifs", error);
+          setError("Could not update goals.");
       }
-    };
-
-    fetchUserGoals();
-  }, [userId]);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const updatedGoals = {
-      goalWeight,
-      mainGoal: personalObjective, // Assurez-vous que les noms correspondent à votre API
-      place,
-      trainingLevel
-    };
-
-    try {
-      await updateGoals(updatedGoals);
-      
-      // Mise à jour du sessionStorage
-    const user = JSON.parse(sessionStorage.getItem('user'));
-    if (user) {
-      const updatedUser = {
-        ...user,
-        ...updatedGoals
-      };
-      sessionStorage.setItem('user', JSON.stringify(updatedUser));
-    }
-      
-      navigate(-1);
-    } catch (error) {
-      console.error('Error updating goals:', error);
-      setError('Failed to update goals');
-    }
   };
+  
 
-  if (error) {
-    return <div className="text-red-500 text-center">{error}</div>;
-  }
+    if (error) return <div className="text-red-500">{error}</div>;
+    if (!user) return <div className="text-gray-500">Loading...</div>;
 
-  return (
-      <div className="flex items-center justify-center min-h-screen bg-black text-white px-4 sm:px-6 lg:px-8 animate-fadeIn">
-        <Navbar/>
-        {/* Container */}
-        <div className="w-full max-w-lg p-10 bg-black bg-opacity-90 rounded-lg animate-slideUp">
-          {/* Header with back button */}
-          <div className="flex items-center mb-10 animate-fadeInFast">
+    return (
+        <div className="bg-black text-white min-h-screen p-6 mb-10">
+            <Navbar/>
             <button
+                className="text-gray-400 hover:text-white mb-4 text-2xl p-2"
                 onClick={() => navigate(-1)}
-                className="text-white hover:text-orange-500 transition duration-200 focus:outline-none"
             >
-              <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  className="w-8 h-8"
-              >
-                <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M15 19l-7-7 7-7"
-                />
-              </svg>
+                &#8592; {/* Flèche gauche */}
             </button>
-            <h2 className="flex-grow text-center text-3xl font-bold animate-fadeInFast">
-              Edit Goals
-            </h2>
-          </div>
-
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="animate-fadeIn">
-              <label className="block text-lg mb-2">Goal weight</label>
-              <input
-                  type="text"
-                  value={goalWeight}
-                  onChange={(e) => setGoalWeight(e.target.value)}
-                  className="w-full px-4 py-3 bg-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-white"
-                  placeholder="Goal weight"
-                  required
-              />
-            </div>
-
-            <div className="animate-fadeIn">
-              <label className="block text-lg mb-2">Personal objective</label>
-              <select
-                  value={personalObjective}
-                  onChange={(e) => setPersonalObjective(e.target.value)}
-                  className="w-full px-4 py-3 bg-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-white"
-                  required
-              >
-                <option>Loose weight</option>
-                <option>Gain mass muscle</option>
-                <option>Get stronger</option>
-                <option>Keep fit</option>
-              </select>
-            </div>
-
-            <div className="animate-fadeIn">
-              <label className="block text-lg mb-2">Place</label>
-              <select
-                  value={place}
-                  onChange={(e) => setPlace(e.target.value)}
-                  className="w-full px-4 py-3 bg-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-white"
-                  required
-              >
-                <option>At home</option>
-                <option>Gym</option>
-              </select>
-            </div>
-
-            <div className="animate-fadeIn">
-              <label className="block text-lg mb-2">Training level</label>
-              <select
-                  value={trainingLevel}
-                  onChange={(e) => setTrainingLevel(e.target.value)}
-                  className="w-full px-4 py-3 bg-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-white"
-                  required
-              >
-                <option>Beginner</option>
-                <option>Intermediate</option>
-                <option>Advanced</option>
-              </select>
-            </div>
-
-            <button
-                type="submit"
-                className="w-full py-4 mt-6 bg-orange-500 text-white text-lg font-semibold rounded-md hover:bg-orange-600 transition focus:outline-none focus:ring-2 focus:ring-orange-500 transform hover:scale-105 ease-out animate-fadeIn"
-            >
-              Sauvegarder
-            </button>
-          </form>
+            <form onSubmit={handleUpdateGoals}>
+                <div className="mb-4">
+                    <label className="block text-white mb-2">Goal Weight (kg)</label>
+                    <input
+                        type="number"
+                        value={goalWeight}
+                        onChange={(e) => setGoalWeight(e.target.value)}
+                        className="w-full px-4 py-2 text-white bg-gray-800 rounded-md"
+                        required
+                    />
+                </div>
+                <div className="mb-4">
+                    <label className="block text-white mb-2">Main Goal</label>
+                    <select
+                        value={mainGoal}
+                        onChange={(e) => setMainGoal(e.target.value)}
+                        className="w-full px-4 py-2 text-white bg-gray-800 rounded-md"
+                        required
+                    >
+                        <option value="">Select a goal</option>
+                        <option value="Loose weight">Loose weight</option>
+                        <option value="Gain mass muscle">Gain mass muscle</option>
+                        <option value="Get stronger">Get stronger</option>
+                        <option value="Keep fit">Keep fit</option>
+                    </select>
+                </div>
+                <div className="mb-4">
+                    <label className="block text-white mb-2">Place</label>
+                    <select
+                        value={place}
+                        onChange={(e) => setPlace(e.target.value)}
+                        className="w-full px-4 py-2 text-white bg-gray-800 rounded-md"
+                        required
+                    >
+                        <option value="">Select a place</option>
+                        <option value="At home">At home</option>
+                        <option value="Gym">Gym</option>
+                    </select>
+                </div>
+                <div className="mb-4">
+                    <label className="block text-white mb-2">Training Level</label>
+                    <select
+                        value={trainingLevel}
+                        onChange={(e) => setTrainingLevel(e.target.value)}
+                        className="w-full px-4 py-2 text-white bg-gray-800 rounded-md"
+                        required
+                    >
+                        <option value="">Select a level</option>
+                        <option value="Beginner">Beginner</option>
+                        <option value="Intermediate">Intermediate</option>
+                        <option value="Advanced">Advanced</option>
+                    </select>
+                </div>
+                <button
+                    type="submit"
+                    className="bg-orange-500 hover:bg-orange-400 py-2 px-4 rounded w-full"
+                >
+                    Save Changes
+                </button>
+            </form>
         </div>
-      </div>
-  );
+    );
 };
 
 export default EditGoals;

@@ -55,6 +55,7 @@ export const fetchExercises = async () => {
         ...exercise,
         id: exercise.idExercice,
         name: exercise.nom,
+        videoUrl: exercise.lienVideo,
         icon: <IconComponent className="h-12 w-12 text-orange-500" />,
         equipment: exercise.equipementNecessaire ? [exercise.equipementNecessaire.toLowerCase()] : ['Aucun']
       };

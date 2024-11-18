@@ -1,4 +1,4 @@
-// src/routes.js
+// routes.js
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
@@ -10,24 +10,42 @@ import EditProfile from './pages/EditProfile';
 import LoaderPage from './pages/LoaderPage';
 import WorkoutForm from './pages/WorkoutForm';
 import UserSearchPage from "./pages/UserSearchPage";
-import ExerciseExplorationPage from './pages/ExerciseExploration';
-
-
+import PrivateRoute from './components/PrivateRoutes';
 
 const AppRoutes = () => (
     <Router>
         <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/LoginPage" element={<LoginPage />} />
-            <Route path="/EditGoals" element={<EditGoals />} />
             <Route path="/MultiStepForm" element={<MultiStepForm />} />
-            <Route path="/Profil" element={<ProfilPage />} />
-            <Route path='/EditProfile' element={<EditProfile />}/>
             <Route path="/LoaderPage" element={<LoaderPage />} />
-            <Route path="/WorkoutForm" element={<WorkoutForm />} />
-            <Route path="/Search" element={<UserSearchPage />} />
-            <Route path="/Exercises" element={<ExerciseExplorationPage/>}/>
 
+            {/* Routes protégées */}
+            <Route path="/Profil" element={
+                <PrivateRoute>
+                    <ProfilPage />
+                </PrivateRoute>
+            } />
+            <Route path="/EditGoals" element={
+                <PrivateRoute>
+                    <EditGoals />
+                </PrivateRoute>
+            } />
+            <Route path="/EditProfile" element={
+                <PrivateRoute>
+                    <EditProfile />
+                </PrivateRoute>
+            } />
+            <Route path="/WorkoutForm" element={
+                <PrivateRoute>
+                    <WorkoutForm />
+                </PrivateRoute>
+            } />
+            <Route path="/Search" element={
+                <PrivateRoute>
+                    <UserSearchPage />
+                </PrivateRoute>
+            } />
         </Routes>
     </Router>
 );
