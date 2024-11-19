@@ -9,7 +9,6 @@ import apiRequest from '../services/api';
 const ProfilPage = () => {
     const [userId, setUserId] = useState(null);
     const [user, setUser] = useState(null);
-    const [profilePicture, setProfilePicture] = useState('');
     const [followersCount, setFollowersCount] = useState(0);
     const [followingCount, setFollowingCount] = useState(0);
     const [error, setError] = useState(null);
@@ -18,7 +17,6 @@ const ProfilPage = () => {
     useEffect(() => {
         const fetchUserProfile = async () => {
             try {
-            
                 const userString = sessionStorage.getItem('user');
                 if (userString) {
                     const user = JSON.parse(userString);
@@ -32,6 +30,10 @@ const ProfilPage = () => {
                     console.error("Aucun utilisateur trouvé dans sessionStorage");
                     setError("User not logged in.");
                 }
+                const user = JSON.parse(sessionStorage.getItem('user'));
+                if (user) {
+                    setUser(user);
+                }
             } catch (error) {
                 console.error("Error fetching user profile", error);
                 setError("Could not fetch user profile.");
@@ -44,7 +46,6 @@ const ProfilPage = () => {
                 setFollowersCount(count); // Assurez-vous que le format de la réponse est correct
             } catch (error) {
                 console.error("Error fetching followers count", error);
-                //setError("Could not fetch followers count.");
             }
         };
 
@@ -54,7 +55,6 @@ const ProfilPage = () => {
                 setFollowingCount(count); // Assurez-vous que le format de la réponse est correct
             } catch (error) {
                 console.error("Error fetching following count", error);
-                //setError("Could not fetch following count.");
             }
         };
 
@@ -68,7 +68,6 @@ const ProfilPage = () => {
     const getProfilePicturePath = (base64String) => {
         try {
             return `data:image/jpeg;base64,${base64String}`;
-            //return require(`../assets/images/${atob(base64String.replace(/^\.\/|=+$/g, ''))}`);
         } catch (e) {
             console.error("Failed to decode Base64 profile picture string", e);
             return '/src/assets/images/profile.png'; // Default path
@@ -76,95 +75,89 @@ const ProfilPage = () => {
     };
 
     return (
-        <div className="bg-black text-white min-h-screen p-6 mb-10">
-            <Navbar/>
+        <div className="bg-gradient-to-b from-gray-900 to-black text-white min-h-screen p-6">
             <button
-                className="text-gray-400 hover:text-white mb-4 text-2xl p-2"
+                className="text-gray-400 hover:text-white mb-4 text-2xl p-2 transition duration-200"
                 onClick={() => navigate(-1)}
             >
                 &#8592; {/* Flèche gauche */}
             </button>
-            <div className="flex flex-col items-center mb-6">
-                <div className="w-24 h-24 rounded-full overflow-hidden mb-4">
+
+            {/* Profil Utilisateur */}
+            <div className="flex flex-col items-center mb-8 bg-gray-800 p-6 rounded-lg shadow-lg space-y-4">
+                <div className="w-28 h-28 rounded-full overflow-hidden">
                     <img
                         src={user.profilePicture ? getProfilePicturePath(user.profilePicture) : require('../assets/images/profile.png')}
-                        //src={require('../assets/images/profile.png')}
-                        alt="Photo de profil"
+                        alt="Profile"
                         className="object-cover w-full h-full"
                     />
                 </div>
-                <h1 className="text-2xl font-bold text-center mb-2">
-                    {user.firstName} {user.lastName}
-                </h1>
-                <div className="flex items-center justify-between w-full mt-2">
-                    <span className="text-lg">{followersCount} Followers</span>
-                    <span className="text-lg">{followingCount} Follows</span>
-                </div>
-            </div>
-            <div className="flex justify-center space-x-4 mb-4">
-                <div className="flex justify-center space-x-4 mb-4 items-center">
-                    <div className="flex flex-col items-center bg-red-500 p-2 rounded">
-                        <FaRulerVertical className="w-10 h-10" />
+                <h1 className="text-3xl font-bold">{user.firstName} {user.lastName}</h1>
+                <div className="flex space-x-6 text-center mt-2">
+                    <div>
+                        <p className="text-lg font-semibold">{followersCount}</p>
+                        <p className="text-sm text-gray-400">Followers</p>
                     </div>
-                    <div className="text-center">
-                        <span className="font-semibold">{user.height} CM</span>
-                        <p className="text-center text-sm">Height</p>
-                    </div>
-                </div>
-                <div className="flex justify-center space-x-4 mb-4 items-center">
-                    <div className="flex flex-col items-center bg-blue-500 p-2 rounded">
-                        <IoScaleOutline className="w-10 h-10" />
-                    </div>
-                    <div className="text-center">
-                        <span className="font-semibold">{user.weight} KG</span>
-                        <p className="text-center text-sm">Weight</p>
-                    </div>
-                </div>
-                <div className="flex justify-center space-x-4 mb-4 items-center">
-                    <div className="flex flex-col items-center bg-amber-300 p-2 rounded">
-                        <FaBirthdayCake className="w-10 h-10" />
-                    </div>
-                    <div className="text-center">
-                        <span className="font-semibold">{user.age} Year</span>
-                        <p className="text-center text-sm">Age</p>
+                    <div>
+                        <p className="text-lg font-semibold">{followingCount}</p>
+                        <p className="text-sm text-gray-400">Following</p>
                     </div>
                 </div>
             </div>
-            <hr className="border-white mb-4"/>
-            <div className="flex flex-col justify-center items-center mb-4">
-                <h2 className="font-bold text-2xl">Main goal</h2>
-                <span className="italic">{user.mainGoal}</span>
-            </div>
-            <div className="flex flex-col justify-center items-center mb-4">
-                <h2 className="font-bold text-2xl">Personnal goals</h2>
-                <div className="flex justify-center space-x-4 mb-4 items-center">
-                    <div className="flex flex-col items-center bg-blue-500 p-2 rounded">
-                        <IoScaleOutline className="w-10 h-10" />
-                    </div>
-                    <div className="text-center">
-                        <span className="font-semibold">{user.goalWeight} KG</span>
-                        <p className="text-center text-sm">Goal Weight</p>
-                    </div>
+
+            {/* Informations sur l'utilisateur */}
+            <div className="flex flex-wrap justify-center gap-6 mb-6">
+                <div className="flex flex-col items-center bg-gray-800 p-4 rounded-lg shadow-md space-y-2">
+                    <img src={height} alt="Height Icon" className="w-12 h-12" />
+                    <span className="font-semibold">{user.height} CM</span>
+                    <p className="text-sm text-gray-400">Height</p>
+                </div>
+
+                <div className="flex flex-col items-center bg-gray-800 p-4 rounded-lg shadow-md space-y-2">
+                    <img src={weight} alt="Weight Icon" className="w-12 h-12" />
+                    <span className="font-semibold">{user.weight} KG</span>
+                    <p className="text-sm text-gray-400">Weight</p>
+                </div>
+
+                <div className="flex flex-col items-center bg-gray-800 p-4 rounded-lg shadow-md space-y-2">
+                    <img src={sablier} alt="Age Icon" className="w-12 h-12" />
+                    <span className="font-semibold">{user.age} Years</span>
+                    <p className="text-sm text-gray-400">Age</p>
                 </div>
             </div>
-            <hr className="border-white mb-4"/>
+
+            <hr className="border-gray-600 mb-6" />
+
+            {/* Objectifs */}
+            <div className="text-center mb-6">
+                <h2 className="font-bold text-2xl mb-4">Main Goal</h2>
+                <span className="text-lg italic text-orange-400">{user.mainGoal}</span>
+            </div>
+
+            <div className="text-center mb-6">
+                <h2 className="font-bold text-2xl mb-4">Personal Goals</h2>
+                <div className="flex flex-col items-center bg-gray-800 p-4 rounded-lg shadow-md space-y-2">
+                    <img src={weight} alt="Goal Weight Icon" className="w-12 h-12" />
+                    <span className="font-semibold">{user.goalWeight} KG</span>
+                    <p className="text-sm text-gray-400">Goal Weight</p>
+                </div>
+            </div>
+
+            <hr className="border-gray-600 mb-6" />
+
+            {/* Boutons */}
             <div className="flex flex-col space-y-4">
-                <button className="bg-orange-500 hover:bg-orange-400 py-2 rounded"
-                    onClick={() => navigate('/EditGoals')}
-                >
+                <button className="bg-orange-500 hover:bg-orange-600 py-3 rounded-md font-semibold shadow-md transition duration-300">
                     Edit Goals
                 </button>
-                <button className="bg-orange-500 hover:bg-orange-400 py-2 rounded"
-                    onClick={() => navigate('/EditProfile')}
-                >
+                <button className="bg-orange-500 hover:bg-orange-600 py-3 rounded-md font-semibold shadow-md transition duration-300">
                     Edit Info
                 </button>
                 <button
-                    className="bg-red-500 hover:bg-orange-400 py-2 rounded"
+                    className="bg-red-600 hover:bg-red-500 py-3 rounded-md font-semibold shadow-md transition duration-300"
                     onClick={() => {
                         sessionStorage.clear(); // Clear session storage
-                        localStorage.clear();
-                        navigate('/LoginPage'); // Redirect to the homepage
+                        navigate('/'); // Redirect to the homepage
                     }}
                 >
                     Sign Out

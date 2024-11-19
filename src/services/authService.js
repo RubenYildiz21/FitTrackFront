@@ -18,6 +18,22 @@ export const registerUser = async (userData) => {
 };
 
 
+export const getLoggedInUser = () => {
+    const userJson = sessionStorage.getItem('user');
+    if (userJson) {
+        return JSON.parse(userJson);
+    } else {
+        return null;
+    }
+};
+
+
+// Déconnexion (supprime l'utilisateur de LocalStorage)
+export const logoutUser = () => {
+    localStorage.removeItem('user');
+};
+
+
 export const loginUser = async (credentials) => {
     try {
         const response = await apiRequest('/auth/login', 'POST', credentials);

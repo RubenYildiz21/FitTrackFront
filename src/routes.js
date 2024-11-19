@@ -10,6 +10,11 @@ import EditProfile from './pages/EditProfile';
 import LoaderPage from './pages/LoaderPage';
 import WorkoutForm from './pages/WorkoutForm';
 import UserSearchPage from "./pages/UserSearchPage";
+import MenuPage from "./pages/MenuPage";
+import CreatePostPage from "./pages/CreatePostPage";
+
+
+
 import PrivateRoute from './components/PrivateRoutes';
 
 const AppRoutes = () => (
@@ -19,6 +24,9 @@ const AppRoutes = () => (
             <Route path="/LoginPage" element={<LoginPage />} />
             <Route path="/MultiStepForm" element={<MultiStepForm />} />
             <Route path="/LoaderPage" element={<LoaderPage />} />
+            <Route path="/Search" element={<UserSearchPage />} />
+            <Route path="/MenuPage" element={<MenuPage />} />
+            <Route path="/create-post" element={<CreatePostPage />} />
 
             {/* Routes protégées */}
             <Route path="/Profil" element={
