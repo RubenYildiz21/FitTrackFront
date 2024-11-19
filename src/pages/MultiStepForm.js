@@ -420,7 +420,7 @@ const MultiStepForm = () => {
                     <div
                         className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-gray-900 to-black text-white px-4 sm:px-6 lg:px-8 animate-fadeIn">
                         {renderBackButton()}
-                        <h2 className="text-4xl font-bold mb-12 text-center">Review and Submit</h2>
+                        <h2 className="text-4xl font-bold mb-12 text-center"></h2>
                         <div
                             className="w-full max-w-2xl bg-gray-800 rounded-lg shadow-lg p-8 space-y-8 animate-fadeInFast">
                             <p className="text-xl font-semibold text-center text-orange-400 mb-6">Please review your

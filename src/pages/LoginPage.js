@@ -20,7 +20,8 @@ const LoginPage = () => {
             const response = await loginUser({ email, password });
             sessionStorage.setItem('user', JSON.stringify(response));
             console.log('User logged in successfully:', response);
-            navigate('/Profil');
+            console.log('Utilisateur stocké dans sessionStorage :', sessionStorage.getItem('user'));
+            navigate('/MenuPage');
         } catch (err) {
             console.error('Login failed:', err);
             if (err.message.includes("401")) {
