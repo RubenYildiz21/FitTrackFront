@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { FaRulerVertical } from 'react-icons/fa';  // Une règle verticale pour la taille
-import { IoScaleOutline } from 'react-icons/io5';  // Une balance moderne pour le poids
-import { FaBirthdayCake } from 'react-icons/fa';  // Un gâteau d'anniversaire pour l'âge
+import height from '../assets/images/height.png';
+import weight from '../assets/images/dumbbell.png';
+import sablier from '../assets/images/sablier.png';
+
 import Navbar from "./shared/Navbar"; 
 import apiRequest from '../services/api';
 
@@ -75,7 +76,8 @@ const ProfilPage = () => {
     };
 
     return (
-        <div className="bg-gradient-to-b from-gray-900 to-black text-white min-h-screen p-6">
+        <div className="bg-gradient-to-b from-gray-900 to-black text-white min-h-screen p-6 pb-20 mb-10">
+            <Navbar/>
             <button
                 className="text-gray-400 hover:text-white mb-4 text-2xl p-2 transition duration-200"
                 onClick={() => navigate(-1)}
@@ -147,10 +149,12 @@ const ProfilPage = () => {
 
             {/* Boutons */}
             <div className="flex flex-col space-y-4">
-                <button className="bg-orange-500 hover:bg-orange-600 py-3 rounded-md font-semibold shadow-md transition duration-300">
+                <button className="bg-orange-500 hover:bg-orange-600 py-3 rounded-md font-semibold shadow-md transition duration-300"
+                onClick={() => navigate('/EditGoals')}>
                     Edit Goals
                 </button>
-                <button className="bg-orange-500 hover:bg-orange-600 py-3 rounded-md font-semibold shadow-md transition duration-300">
+                <button className="bg-orange-500 hover:bg-orange-600 py-3 rounded-md font-semibold shadow-md transition duration-300"
+                onClick={() => navigate('/EditProfile')}>
                     Edit Info
                 </button>
                 <button
