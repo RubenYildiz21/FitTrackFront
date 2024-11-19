@@ -4,24 +4,28 @@
 
 import apiRequest from './api';
 
-export const updateProfile = async (profileData) => {
-    const response = await apiRequest('/auth/edit/user/{id}', 'POST', profileData);;
-  
-    if (!response.ok) {
-      throw new Error('Failed to update profile');
-    }
-  
-    return response.json();
+export const updateProfile = async (updatedProfile) => {
+  try {
+      const user = JSON.parse(sessionStorage.getItem('user'));
+      const userId = user.id;
+
+      const response = await apiRequest(`/auth/edit/user/${userId}`, 'PUT', {
+          ...updatedProfile,
+          profilePicture: updatedProfile.profilePicture
+      });
+
+      return response;
+  } catch (error) {
+      console.error('Erreur lors de la mise à jour du profil:', error);
+      throw error;
+  }
 };
 
 
-export const updateGoals = async (goalsData) => {
-    const response = await apiRequest('/auth/editGoals/user/{id}', 'POST', goalsData);;
-  
-    if (!response.ok) {
-      throw new Error('Failed to update profile');
-    }
-  
-    return response.json();
+export const updateGoals = async (updatedGoals) => {
+  const user = JSON.parse(sessionStorage.getItem('user'));
+  if (!user) throw new Error('User not logged in');
+  const userId = user.id;
+  return await apiRequest(`/auth/update/${userId}`, 'PUT', updatedGoals);
 };
 

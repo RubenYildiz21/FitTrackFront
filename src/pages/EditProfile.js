@@ -1,132 +1,220 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../assets/styles/style.css';
-import { updateProfile } from '../services/userService';
+import { FaRulerVertical } from 'react-icons/fa';
+import { IoScaleOutline } from 'react-icons/io5';
+import { FaBirthdayCake } from 'react-icons/fa';
+import Navbar from "./shared/Navbar";
+import apiRequest from '../services/api';
 
 const EditProfile = () => {
-  const [firstName, setFirstName] = useState('jotaro');
-  const [lastName, setLastName] = useState('kujo');
-  const [height, setHeight] = useState('180cm');
-  const [weight, setWeight] = useState('83 kg');
-
+  const [userId, setUserId] = useState(null);
+  const [user, setUser] = useState(null);
+  const [profilePicture, setProfilePicture] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [height, setHeight] = useState('');
+  const [weight, setWeight] = useState('');
+  const [age, setAge] = useState('');
+  const [mainGoal, setMainGoal] = useState('');
+  const [goalWeight, setGoalWeight] = useState('');
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const userString = sessionStorage.getItem('user');
+        if (userString) {
+          const user = JSON.parse(userString);
+          setUser(user);
+          setUserId(user.id);
+          setFirstName(user.firstName || '');
+          setLastName(user.lastName || '');
+          setHeight(user.height || '');
+          setWeight(user.weight || '');
+          setAge(user.age || '');
+          setMainGoal(user.mainGoal || '');
+          setGoalWeight(user.goalWeight || '');
+          setProfilePicture(user.profilePicture || '');
+        } else {
+          console.error("Aucun utilisateur trouvé dans sessionStorage");
+          setError("User not logged in.");
+        }
+      } catch (error) {
+        console.error("Erreur lors de la récupération du profil utilisateur", error);
+        setError("Could not fetch user profile.");
+      }
+    };
+
+    fetchUserProfile();
+  }, []);
+
+  const handleUpdateProfile = async (e) => {
     e.preventDefault();
-    const updatedProfile = { firstName, lastName, height, weight };
     try {
-      await updateProfile(updatedProfile);
-      console.log('Profile updated successfully:', updatedProfile);
-      navigate(-1);
+      const updatedProfile = {
+        firstName,
+        lastName,
+        height,
+        weight,
+        age,
+        mainGoal,
+        goalWeight,
+        profilePicture,
+        // Inclure d'autres champs si nécessaire
+      };
+      console.log(updatedProfile);
+
+      // Récupérer l'ID utilisateur depuis le stockage utilisateur
+      const user = JSON.parse(sessionStorage.getItem('user'));
+      if (!user || !user.id) {
+        throw new Error('Utilisateur non authentifié.');
+      }
+
+      // Appel à l'API pour mettre à jour le profil
+      await apiRequest(`/users/${user.id}`, 'PUT', updatedProfile);
+      console.log("API Request Success");
+
+      // Mettre à jour l'utilisateur dans le sessionStorage
+      const updatedUser = {
+        ...user,
+        ...updatedProfile,
+      };
+
+      console.log(updatedUser)
+      sessionStorage.setItem('user', JSON.stringify(updatedUser));
+      setUser(updatedUser);
+
+      navigate('/Profil'); // Redirige vers la page de profil
     } catch (error) {
-      console.error('Error updating profile:', error);
+      console.error("Erreur lors de la mise à jour du profil", error);
+      setError("Could not update profile.");
     }
   };
 
+  const getProfilePicturePath = (base64String) => {
+    try {
+      return `data:image/jpeg;base64,${base64String}`;
+    } catch (e) {
+      console.error("Échec du décodage de l'image de profil", e);
+      return require('../assets/images/profile.png'); // Chemin par défaut
+    }
+  };
+
+  if (error) return <div className="text-red-500">{error}</div>;
+  if (!user) return <div className="text-gray-500">Loading...</div>;
+
   return (
-    <div className="flex items-center justify-center min-h-screen bg-black text-white px-4 sm:px-6 lg:px-8 animate-fadeIn">
-      {/* Container */}
-      <div className="w-full max-w-lg p-10 bg-black bg-opacity-90 rounded-lg animate-slideUp">
-        {/* Header with back button */}
-        <div className="flex items-center mb-10 animate-fadeInFast">
-          <button
-            onClick={() => navigate(-1)}
-            className="text-white hover:text-orange-500 transition duration-200 focus:outline-none"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              className="w-8 h-8"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M15 19l-7-7 7-7"
-              />
-            </svg>
-          </button>
-          <h2 className="flex-grow text-center text-3xl font-bold animate-fadeInFast">
-            Edit Personal Informations
-          </h2>
-        </div>
-
-        {/* Profile Picture */}
-        <div className="flex justify-center mb-6">
-          <div className="relative">
+    <div className="bg-black text-white min-h-screen p-6 mb-10">
+      <Navbar />
+      <button
+        className="text-gray-400 hover:text-white mb-4 text-2xl p-2"
+        onClick={() => navigate(-1)}
+      >
+        &#8592; {/* Flèche gauche */}
+      </button>
+      <form onSubmit={handleUpdateProfile}>
+        <div className="flex flex-col items-center mb-6">
+          <div className="w-24 h-24 rounded-full overflow-hidden mb-4">
             <img
-              src="https://via.placeholder.com/150"
-              alt="Profile"
-              className="w-24 h-24 rounded-full object-cover border-4 border-orange-500"
+              src={profilePicture ? getProfilePicturePath(profilePicture) : require('../assets/images/profile.png')}
+              alt="Photo de profil"
+              className="object-cover w-full h-full"
             />
-            <button className="absolute bottom-0 right-0 bg-orange-500 p-2 rounded-full">
-              Change Picture
-            </button>
           </div>
+          <label className="text-center mb-2">
+            <input
+              type="file"
+              accept="image/*"
+              onChange={async (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                  const base64 = await convertToBase64(file);
+                  setProfilePicture(base64.split(',')[1]);
+                }
+              }}
+              className="hidden"
+            />
+            <span className="bg-orange-500 hover:bg-orange-400 py-2 px-4 rounded cursor-pointer">
+              Changer la photo de profil
+            </span>
+          </label>
         </div>
-
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="animate-fadeIn">
-            <label className="block text-lg mb-2">Name</label>
+        <div className="mb-4">
+          <label className="block text-white mb-2">Prénom</label>
+          <input
+            type="text"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            className="w-full px-4 py-2 text-white bg-gray-800 rounded-md"
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-white mb-2">Nom</label>
+          <input
+            type="text"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            className="w-full px-4 py-2 text-white bg-gray-800 rounded-md"
+            required
+          />
+        </div>
+        <div className="flex space-x-4 mb-4">
+          <div className="w-1/2">
+            <label className="block text-white mb-2">Taille (cm)</label>
             <input
-              type="text"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              className="w-full px-4 py-3 bg-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-white"
-              placeholder="Name"
-              required
-            />
-          </div>
-
-          <div className="animate-fadeIn">
-            <label className="block text-lg mb-2">Surname</label>
-            <input
-              type="text"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              className="w-full px-4 py-3 bg-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-white"
-              placeholder="Surname"
-              required
-            />
-          </div>
-
-          <div className="animate-fadeIn">
-            <label className="block text-lg mb-2">Tall</label>
-            <input
-              type="text"
+              type="number"
               value={height}
               onChange={(e) => setHeight(e.target.value)}
-              className="w-full px-4 py-3 bg-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-white"
-              placeholder="Tall"
+              className="w-full px-4 py-2 text-white bg-gray-800 rounded-md"
               required
             />
           </div>
-
-          <div className="animate-fadeIn">
-            <label className="block text-lg mb-2">Weight</label>
+          <div className="w-1/2">
+            <label className="block text-white mb-2">Poids (kg)</label>
             <input
-              type="text"
+              type="number"
               value={weight}
               onChange={(e) => setWeight(e.target.value)}
-              className="w-full px-4 py-3 bg-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-white"
-              placeholder="Weight"
+              className="w-full px-4 py-2 text-white bg-gray-800 rounded-md"
               required
             />
           </div>
-
-          <button
-            type="submit"
-            className="w-full py-4 mt-6 bg-orange-500 text-white text-lg font-semibold rounded-md hover:bg-orange-600 transition focus:outline-none focus:ring-2 focus:ring-orange-500 transform hover:scale-105 ease-out animate-fadeIn"
-          >
-            Sauvegarder
-          </button>
-        </form>
-      </div>
+        </div>
+        <div className="mb-4">
+          <label className="block text-white mb-2">Âge</label>
+          <input
+            type="number"
+            value={age}
+            onChange={(e) => setAge(e.target.value)}
+            className="w-full px-4 py-2 text-white bg-gray-800 rounded-md"
+            required
+          />
+        </div>
+        {/* Ajouter d'autres champs si nécessaire */}
+        <button
+          type="submit"
+          className="bg-orange-500 hover:bg-orange-400 py-2 px-4 rounded w-full"
+        >
+          Sauvegarder les modifications
+        </button>
+      </form>
     </div>
   );
+};
+
+const convertToBase64 = (file) => {
+  return new Promise((resolve, reject) => {
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(file);
+    fileReader.onload = () => {
+      resolve(fileReader.result);
+    };
+    fileReader.onerror = (error) => {
+      reject(error);
+    };
+  });
 };
 
 export default EditProfile;

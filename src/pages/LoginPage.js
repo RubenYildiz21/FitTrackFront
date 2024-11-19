@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import logo from '../assets/images/logooo-removebg-preview.png';
 import '../assets/styles/style.css';
-import { loginUser, googleLogin } from '../services/authService';
+import { loginUser, } from '../services/authService';
 
 
 const LoginPage = () => {
@@ -17,15 +16,25 @@ const LoginPage = () => {
         setError('');
 
         try {
-            const response = await loginUser({ email, password });
-            sessionStorage.setItem('user', JSON.stringify(response));
-            console.log('User logged in successfully:', response);
-            navigate('/Profil');
+            const data = await loginUser({ email, password });
+
+            if (data.token) {
+                // Store the JWT token in local storage
+                localStorage.setItem('token', data.token);
+                // Store the user in local storage
+                sessionStorage.setItem('user', JSON.stringify(data.user));
+
+                console.log('User logged in successfully:', data);
+                navigate('/Profil');
+            }
+
         } catch (err) {
             console.error('Login failed:', err);
-            if (err.message.includes("401")) {
+            const errorMessage = err.message || '';
+
+            if (errorMessage.includes("401")) {
                 setError('Invalid password. Please try again.');
-            } else if (err.message.includes("404")) {
+            } else if (errorMessage.includes("404")) {
                 setError('User not found. Please check your email.');
             } else {
                 setError('An unexpected error occurred. Please try again later.');
@@ -37,6 +46,7 @@ const LoginPage = () => {
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-black text-white px-4 sm:px-6 lg:px-8 animate-fadeIn">
+
             {/* Container */}
             <div className="w-full max-w-md p-10 bg-black bg-opacity-90 rounded-lg animate-slideUp">
                 {/* Title */}

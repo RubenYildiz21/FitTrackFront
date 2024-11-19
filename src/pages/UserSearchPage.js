@@ -17,7 +17,7 @@ const UserSearchPage = () => {
         // Fonction pour lancer la recherche à chaque modification du terme
         const searchUsers = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/api/auth/users/search?query=${searchTerm}`);
+                const response = await fetch(`http://localhost:8080/api/users/search?query=${searchTerm}`);
                 if (!response.ok) {
                     throw new Error('Erreur lors de la recherche d\'utilisateurs');
                 }
@@ -44,7 +44,7 @@ const UserSearchPage = () => {
     // Fonction pour récupérer tous les utilisateurs si le terme de recherche est vide
     const fetchAllUsers = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/api/auth/users`);
+            const response = await fetch(`http://localhost:8080/api/users/all`);
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -61,7 +61,7 @@ const UserSearchPage = () => {
     // Fonction pour récupérer les user deja follow
     const userFollow = async (filteredUsers) => {
         try {
-            const response = await fetch(`http://localhost:8080/api/connection/allFollow/${loggedInUserId}`);
+            const response = await fetch(`http://localhost:8080/api/follows/${loggedInUserId}/following`);
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }

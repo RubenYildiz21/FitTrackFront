@@ -4,12 +4,21 @@
 
 // services/api.js
 const apiRequest = async (endpoint, method = 'GET', body = null, isFormUrlEncoded = false) => {
+
+    const baseUrl = 'http://localhost:8080/api';
     let options = {
         method,
         credentials: 'include',
         headers: {},
     };
-
+    // Ajouter le token JWT si il est présent dans le local storage
+    const token = localStorage.getItem('token');
+    if(token){
+        options.headers['Authorization'] = `Bearer ${token}`;
+    }else{
+        console.warn("Token JWT non trouvé dans le stockage local.");
+    }
+    
     // Gérer les données du corps
     if (body) {
         if (body instanceof FormData) {
@@ -24,11 +33,17 @@ const apiRequest = async (endpoint, method = 'GET', body = null, isFormUrlEncode
         }
     }
 
-    const response = await fetch(`http://localhost:8080/api${endpoint}`, options);
-    if (!response.ok) {
-        throw new Error(`Request failed: ${response.statusText}`);
+    try {
+        const response = await fetch(`${baseUrl}${endpoint}`, options);
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Request failed: ${response.status} - ${errorText}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error(`API Request Error: ${error.message}`);
+        throw error;
     }
-    return response.json();
 };
 
 

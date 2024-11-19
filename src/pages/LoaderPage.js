@@ -29,7 +29,7 @@ const LoaderPage = () => {
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white">
-            <h2 className="text-3xl font-semibold mb-4">Inscription terminée !</h2>
+            <h2 className="text-3xl font-semibold mb-4">Créer</h2>
             <p className="mb-8 text-lg">Redirection vers la page de connexion...</p>
             <div className="w-64 h-4 bg-gray-700 rounded-full overflow-hidden">
                 <div

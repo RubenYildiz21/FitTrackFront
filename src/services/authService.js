@@ -18,11 +18,33 @@ export const registerUser = async (userData) => {
 };
 
 
+export const getLoggedInUser = () => {
+    const userJson = sessionStorage.getItem('user');
+    if (userJson) {
+        return JSON.parse(userJson);
+    } else {
+        return null;
+    }
+};
+
+
+// Déconnexion (supprime l'utilisateur de LocalStorage)
+export const logoutUser = () => {
+    localStorage.removeItem('user');
+};
+
+
 export const loginUser = async (credentials) => {
     try {
-        const response = await apiRequest('/auth/login', 'POST', credentials, true);
+        const response = await apiRequest('/auth/login', 'POST', credentials);
         console.log('User logged in successfully:', response);
-        //console.log("Ok0");
+
+        if(response.token){
+            localStorage.setItem('token', response.token);
+        }
+        if(response.user){
+            sessionStorage.setItem('user', JSON.stringify(response.user));
+        }
         return response;
     } catch (error) {
         console.error('Login error:', error);
@@ -32,7 +54,7 @@ export const loginUser = async (credentials) => {
 
 export const follow = async (followData) => {
     try {
-        const response = await apiRequest('/connection/follow', 'POST', followData);
+        const response = await apiRequest('/follows', 'POST', followData);
         //console.log('User followed successfully:', response);
         //console.log("Ok0");
         return response;
