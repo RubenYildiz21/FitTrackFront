@@ -11,6 +11,7 @@ import LoaderPage from './pages/LoaderPage';
 import UserSearchPage from "./pages/UserSearchPage";
 import Challenges from "./pages/Challenges";
 import CreateChallenge from "./pages/CreateChallenge";
+import Classement from "./pages/Classement";
 
 
 
@@ -28,6 +29,7 @@ const AppRoutes = () => (
             <Route path="/Search" element={<UserSearchPage />} />
             <Route path="/CreateChallenge" element={<CreateChallenge/>} />
             <Route path="/Challenges" element={<Challenges/>} />
+            <Route path="/Classement/:challengeId" element={<Classement />} />
         </Routes>
     </Router>
 );

@@ -51,7 +51,7 @@ const Navbar = () => {
                     </button>
                 </div>
                 <button
-                    onClick={() => handleNavigation('/Challenge')}
+                    onClick={() => handleNavigation('/Challenges')}
                     data-tooltip-target="tooltip-settings" type="button"
                     className="inline-flex flex-col items-center justify-center px-5 hover:bg-gray-800 group">
                     <svg

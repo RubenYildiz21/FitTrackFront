@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaRulerVertical } from 'react-icons/fa';
-import { IoScaleOutline } from 'react-icons/io5';
-import { FaBirthdayCake } from 'react-icons/fa';
 import Navbar from "./shared/Navbar";
 import apiRequest from '../services/api';
 
