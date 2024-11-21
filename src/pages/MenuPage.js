@@ -40,6 +40,7 @@ const MenuPage = () => {
             return;
         }
 
+
         const commentData = {
             message: newComments[postId],
             user: { id: user.id },
@@ -71,6 +72,7 @@ const MenuPage = () => {
                 );
 
                 setNewComments((prev) => ({ ...prev, [postId]: '' }));
+
             } else {
                 console.error("Erreur lors de l'ajout du commentaire");
             }
@@ -90,17 +92,19 @@ const MenuPage = () => {
                     <div className="text-gray-500">Aucune publication disponible.</div>
                 ) : (
                     posts.map((post) => (
-                        <div key={post.idPost} className="bg-gray-800 p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                        <div key={post.idPost}
+                             className="bg-gray-800 p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
                             {/* Affichage de l'utilisateur */}
                             <div className="flex items-center mb-4">
                                 <img
-                                    src={`data:image/jpeg;base64,${post.user?.profilePicture}`}
+                                    src={post.user?.profilePicture} // Utilisation directe de l'URL
                                     alt={`${post.user?.firstName} ${post.user?.lastName}`}
                                     className="w-12 h-12 rounded-full mr-4"
                                 />
                                 <div>
                                     <h3 className="text-lg font-semibold">{post.user?.firstName} {post.user?.lastName}</h3>
-                                    <p className="text-gray-400 text-sm">Posté le {new Date(post.dateCreation).toLocaleString()}</p>
+                                    <p className="text-gray-400 text-sm">Posté
+                                        le {new Date(post.dateCreation).toLocaleString()}</p>
                                 </div>
                             </div>
 
@@ -112,7 +116,7 @@ const MenuPage = () => {
                                 onClick={() => toggleComments(post.idPost)}
                                 className="text-orange-500 hover:text-orange-600 flex items-center"
                             >
-                                <ChatBubbleLeftEllipsisIcon className="h-6 w-6" />
+                                <ChatBubbleLeftEllipsisIcon className="h-6 w-6"/>
                                 <span className="ml-2">
                                     {showComments[post.idPost] ? 'Masquer les commentaires' : 'Voir les commentaires'}
                                 </span>
@@ -124,14 +128,16 @@ const MenuPage = () => {
                                     <h3 className="text-lg font-semibold">Commentaires :</h3>
                                     {post.commentaires && post.commentaires.length > 0 ? (
                                         post.commentaires.map((comment) => (
-                                            <div key={comment.idCommentaire} className="mt-2 pl-4 border-l border-orange-500">
+                                            <div key={comment.idCommentaire}
+                                                 className="mt-2 pl-4 border-l border-orange-500">
                                                 <div className="flex items-center mb-2">
                                                     <img
-                                                        src={`data:image/jpeg;base64,${comment.user?.profilePicture}`}
+                                                        src={comment.user?.profilePicture} // Utilisation directe de l'URL
                                                         alt={`${comment.user?.firstName} ${comment.user?.lastName}`}
                                                         className="w-8 h-8 rounded-full mr-2"
                                                     />
-                                                    <span className="font-semibold">{comment.user?.firstName} {comment.user?.lastName}</span>
+                                                    <span
+                                                        className="font-semibold">{comment.user?.firstName} {comment.user?.lastName}</span>
                                                     <span className="text-gray-400 text-sm ml-2">
                                                         - {new Date(comment.dateCommentaire).toLocaleString()}
                                                     </span>
@@ -147,7 +153,7 @@ const MenuPage = () => {
                                     <div className="mt-4">
                                         <textarea
                                             value={newComments[post.idPost] || ''}
-                                            onChange={(e) => setNewComments({ ...newComments, [post.idPost]: e.target.value })}
+                                            onChange={(e) => setNewComments({...newComments, [post.idPost]: e.target.value})}
                                             placeholder="Ajouter un commentaire..."
                                             className="w-full p-2 bg-gray-800 text-white rounded resize-none"
                                         ></textarea>
@@ -161,6 +167,7 @@ const MenuPage = () => {
                                 </div>
                             )}
                         </div>
+
                     ))
                 )}
             </div>
