@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getLoggedInUser } from '../services/authService';
+import Navbar from "./shared/Navbar";
+import Searchbar from "./shared/Searchbar";
 
 const CreatePostPage = () => {
     const navigate = useNavigate();
@@ -48,7 +50,9 @@ const CreatePostPage = () => {
 
     return (
         <div className="bg-gradient-to-b from-gray-900 to-black text-white min-h-screen p-6">
-            <h1 className="text-3xl font-bold mb-6">Créer une Publication</h1>
+            <Searchbar/>
+            <Navbar/>
+            <h1 className="text-3xl font-bold mb-6 mt-3">Créer une Publication</h1>
 
             {error && <div className="text-red-500 mb-4">{error}</div>}
 
