@@ -17,7 +17,7 @@ const MultiStepForm = () => {
         password: '',
         age: 0,
         trainingLevel: '',
-        profilePicture: '', // Stocke le chemin de l’image ici
+        profilePicture: "", // Stocke le chemin de l’image ici
         gender: '',
         mainGoal: '',
         goalWeight: 0,
@@ -84,7 +84,6 @@ const MultiStepForm = () => {
     const handleSubmit = async () => {
         if (!validateStep()) return;
 
-        // Créer un FormData pour envoyer les données, y compris l'image
         const formDataToSend = new FormData();
         formDataToSend.append("firstName", formData.firstName);
         formDataToSend.append("lastName", formData.lastName);
@@ -103,18 +102,15 @@ const MultiStepForm = () => {
             formDataToSend.append("profilePicture", formData.profilePicture);
         }
 
-        for (let [key, value] of formDataToSend.entries()) {
-            console.log(key, value);
-        }
-
         try {
-            const data = await registerUser(formDataToSend);
-            console.log('User registered successfully:', data);
-            navigate('/LoaderPage');
+            const response = await registerUser(formDataToSend);
+            console.log("User registered successfully:", response);
+            navigate("/LoaderPage");
         } catch (error) {
-            console.error('Error:', error);
+            console.error("Error:", error);
         }
     };
+
 
     const renderBackButton = () => {
         return (
