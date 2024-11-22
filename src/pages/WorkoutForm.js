@@ -1,10 +1,11 @@
-// WorkoutForm.js
-import React, { useState, useEffect } from 'react';
+// src/pages/WorkoutForm.js
+import React, { useState } from 'react';
 import ExerciseList from './ExerciseList';
 import FilterSection from './FilterSection';
 import { createWorkoutSession } from '../services/workoutService';
 import Navbar from './shared/Navbar';
 import Modal from 'react-modal'; // Import de react-modal
+import { useNavigate } from 'react-router-dom';
 
 // Définir l'élément racine pour react-modal
 Modal.setAppElement('#root');
@@ -18,6 +19,8 @@ const WorkoutForm = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentVideoUrl, setCurrentVideoUrl] = useState('');
 
+  const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!sessionName || !sessionDate || selectedExercises.length === 0) {
@@ -26,26 +29,41 @@ const WorkoutForm = () => {
     }
 
     try {
+      const userData = sessionStorage.getItem('user');
+      if (!userData) throw new Error('Utilisateur non authentifié.');
+      const user = JSON.parse(userData);
+
       const workoutSession = {
         name: sessionName,
         date: sessionDate,
-        exercises: selectedExercises.map(ex => ({
-          ...ex,
-          sets: ex.sets || [{ reps: 0, weight: 0 }] // Assure qu'il y a au moins une série
+        user: {
+          id: user.id
+        },
+        blocs: selectedExercises.map(ex => ({
+          exercice: { 
+            idExercice: ex.idExercice // Assurez-vous que 'idExercice' est le bon champ
+          },
+          reps: ex.sets.reduce((acc, set) => acc + set.reps, 0), // Total des répétitions
+          serie: ex.sets.length,
+          poids: ex.sets.reduce((acc, set) => acc + set.weight, 0) / ex.sets.length, // Moyenne des poids
+          tempsRepos: ex.tempsRepos, // Temps de repos dynamique
+          tempsDeRepetition: ex.tempsDeRepetition // Temps de répétition dynamique
         }))
       };
 
       console.log('Session à créer:', workoutSession); // Pour déboguer
       
       await createWorkoutSession(workoutSession);
-      // Redirection ou message de succès
-      alert('Séance enregistrée avec succès !');
+      
       // Optionnel : Réinitialiser le formulaire
       setSessionName('');
       setSessionDate('');
       setSelectedExercises([]);
       setActiveFilters([]);
       setError('');
+
+      // Redirection ou message de succès
+      navigate('/Profil');
     } catch (err) {
       setError('Erreur lors de la création de la séance');
       console.error('Error creating session:', err);
@@ -69,6 +87,18 @@ const WorkoutForm = () => {
   const updateSet = (idExercice, newSets) => {
     setSelectedExercises(selectedExercises.map(ex => 
       ex.idExercice === idExercice ? { ...ex, sets: newSets } : ex
+    ));
+  };
+
+  const updateTempsRepos = (idExercice, newTempsRepos) => {
+    setSelectedExercises(selectedExercises.map(ex => 
+      ex.idExercice === idExercice ? { ...ex, tempsRepos: newTempsRepos } : ex
+    ));
+  };
+
+  const updateTempsDeRepetition = (idExercice, newTempsDeRepetition) => {
+    setSelectedExercises(selectedExercises.map(ex => 
+      ex.idExercice === idExercice ? { ...ex, tempsDeRepetition: newTempsDeRepetition } : ex
     ));
   };
 
@@ -121,6 +151,33 @@ const WorkoutForm = () => {
                         Supprimer
                       </button>
                     </div>
+
+                    {/* Champs pour tempsRepos et tempsDeRepetition */}
+                    <div className="flex flex-col md:flex-row gap-4 mb-4">
+                      <div className="flex flex-col">
+                        <label className="text-sm text-gray-400 mb-1">Temps de repos (HH:mm:ss)</label>
+                        <input
+                          type="time"
+                          step="1"
+                          value={exercise.tempsRepos || ""}
+                          onChange={(e) => updateTempsRepos(exercise.idExercice, e.target.value)}
+                          className="w-full p-2 rounded bg-zinc-700 text-white"
+                          required
+                        />
+                      </div>
+                      <div className="flex flex-col">
+                        <label className="text-sm text-gray-400 mb-1">Temps de répétition (HH:mm:ss)</label>
+                        <input
+                          type="time"
+                          step="1"
+                          value={exercise.tempsDeRepetition || ""}
+                          onChange={(e) => updateTempsDeRepetition(exercise.idExercice, e.target.value)}
+                          className="w-full p-2 rounded bg-zinc-700 text-white"
+                          required
+                        />
+                      </div>
+                    </div>
+
                     <button
                       type="button"
                       onClick={() => {

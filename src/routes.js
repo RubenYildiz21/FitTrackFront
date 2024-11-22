@@ -12,6 +12,7 @@ import WorkoutForm from './pages/WorkoutForm';
 import UserSearchPage from "./pages/UserSearchPage";
 import MenuPage from "./pages/MenuPage";
 import CreatePostPage from "./pages/CreatePostPage";
+import ProgressPage from "./pages/ProgressPage";
 
 
 
@@ -25,7 +26,6 @@ const AppRoutes = () => (
             <Route path="/LoginPage" element={<LoginPage />} />
             <Route path="/MultiStepForm" element={<MultiStepForm />} />
             <Route path="/LoaderPage" element={<LoaderPage />} />
-            <Route path="/Search" element={<UserSearchPage />} />
             <Route path="/MenuPage" element={<MenuPage />} />
             <Route path="/create-post" element={<CreatePostPage />} />
             <Route path="/AdminPanel" element={<AdminPanel />} />
@@ -54,6 +54,12 @@ const AppRoutes = () => (
             <Route path="/Search" element={
                 <PrivateRoute>
                     <UserSearchPage />
+                </PrivateRoute>
+            } />
+
+            <Route path="/progress" element={
+                <PrivateRoute>
+                    <ProgressPage />
                 </PrivateRoute>
             } />
         </Routes>

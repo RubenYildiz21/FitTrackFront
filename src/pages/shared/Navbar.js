@@ -26,7 +26,7 @@ const Navbar = () => {
                     <span className="sr-only">Home</span>
                 </button>
                 <button
-                    onClick={() => handleNavigation('/NotFound')}
+                    onClick={() => handleNavigation('/progress')}
                     data-tooltip-target="tooltip-wallet" type="button"
                     className="inline-flex flex-col items-center justify-center px-5 hover:bg-gray-800 group">
                     <svg
