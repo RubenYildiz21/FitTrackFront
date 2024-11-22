@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { follow } from '../services/authService';
-import apiRequest from "../services/api";
+import { follow } from '../../services/authService';
+import apiRequest from "../../services/api";
 
-const UserSearchPage = () => {
+const Searchbar = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [users, setUsers] = useState([]);
     const [error, setError] = useState(null);
@@ -19,14 +19,14 @@ const UserSearchPage = () => {
         const searchUsers = async () => {
             try {
                 /**const response = await fetch(`http://localhost:8080/api/users/search?query=${searchTerm}`);
-                 if (!response.ok) {
-                 throw new Error('Erreur lors de la recherche d\'utilisateurs');
-                 }
-                 const data = await response.json();*/
+                if (!response.ok) {
+                    throw new Error('Erreur lors de la recherche d\'utilisateurs');
+                }
+                const data = await response.json();*/
                 const data = await apiRequest(`/users/search?query=${searchTerm}`, "GET")
-
                 const filteredUsers = data.filter(user => user.id !== loggedInUserId);
                 setUsers(filteredUsers);
+                userFollow();
 
                 // Check if the logged-in user follows each user
                 //checkFollowStatus(filteredUsers);
@@ -38,19 +38,13 @@ const UserSearchPage = () => {
 
         if (searchTerm) {
             searchUsers();
-        } else {
-            fetchAllUsers();
         }
     }, [searchTerm]);
 
     // Fonction pour récupérer tous les utilisateurs si le terme de recherche est vide
-    const fetchAllUsers = async () => {
+    /**const fetchAllUsers = async () => {
         try {
             const response = await apiRequest("/users/all", "GET");
-            /**if (!response.ok) {
-             throw new Error('Network response was not ok');
-             }
-             const data = await response.json();*/
             const filteredUsers = response.filter(user => user.id !== loggedInUserId);
             setUsers(filteredUsers);
             userFollow(filteredUsers);
@@ -58,16 +52,16 @@ const UserSearchPage = () => {
             console.error("Error fetching users", error);
             setError("Could not fetch users.");
         }
-    };
+    };*/
 
     // Fonction pour récupérer les user deja follow
-    const userFollow = async (filteredUsers) => {
+    const userFollow = async () => {
         try {
             /**const response = await fetch(`http://localhost:8080/api/follows/${loggedInUserId}/following`);
-             if (!response.ok) {
-             throw new Error('Network response was not ok');
-             }
-             const data = await response.json();*/
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();*/
             const data = await apiRequest(`/follows/${loggedInUserId}/following`, "GET");
             //const filteredUsers = data.filter(user => user.id !== loggedInUserId);
             setFollowingUsers(data);
@@ -79,7 +73,12 @@ const UserSearchPage = () => {
 
     // Gestion du changement de la barre de recherche
     const handleSearchChange = (e) => {
+        if (e.target.value === "") {
+            let data = [];
+            setUsers(data);
+        }
         setSearchTerm(e.target.value);
+        setError(null);
     };
 
     // Fonction pour suivre un utilisateur
@@ -119,47 +118,40 @@ const UserSearchPage = () => {
     };
 
     return (
-        <div className="bg-gray-100 min-h-screen p-6">
-            <h1 className="text-2xl font-bold mb-4">Recherche d'utilisateurs</h1>
-
-            <div className="mb-4">
-                <input
-                    type="text"
-                    value={searchTerm}
-                    onChange={handleSearchChange}
-                    placeholder="Recherchez par nom ou prénom"
-                    className="p-2 border border-gray-300 rounded w-full"
-                />
-            </div>
+        <div>
+            {/* Barre de recherche en haut de la page avec largeur complète */}
+            <input
+                type="text"
+                value={searchTerm}
+                onChange={handleSearchChange}
+                placeholder="Recherchez par nom ou prénom"
+                className="w-full p-2 border border-gray-300 rounded text-white bg-gray-800"
+            />
 
             {error && <div className="text-red-500 mb-4">{error}</div>}
 
-            <div className="space-y-4">
-                {users.map((user) => (
-                    <div key={user.id} className="flex items-center justify-between p-4 bg-white shadow rounded">
-                        <div className="flex items-center">
-                            <img
-                                src={user.profilePicture ? getProfilePicturePath(user.profilePicture) : require('../assets/images/profile.png')}
-                                alt="User profile"
-                                className="w-12 h-12 rounded-full mr-4"
-                            />
-                            <h2 className="text-lg font-semibold">{user.firstName} {user.lastName}</h2>
-                        </div>
-                        <button
-                            onClick={() => {
-                                followUser(user.id);
-                            }}
-                            className={`p-2 rounded text-white ${
-                                followingUsers.includes(user.id) ? 'bg-red-500' : 'bg-green-500'
-                            }`}
-                        >
-                            {followingUsers.includes(user.id) ? 'Unfollow' : 'Follow'}
-                        </button>
+            {users.map((user) => (
+                <div key={user.id} className="flex items-center justify-between p-4 bg-gray-800 shadow">
+                    <div className="flex items-center">
+                        <img
+                            src={user.profilePicture ? getProfilePicturePath(user.profilePicture) : require('../../assets/images/profile.png')}
+                            alt="User profile"
+                            className="w-12 h-12 rounded-full mr-4"
+                        />
+                        <h2 className="text-lg font-semibold text-white">{user.firstName} {user.lastName}</h2>
                     </div>
-                ))}
-            </div>
+                    <button
+                        onClick={() => followUser(user.id)}
+                        className={`p-2 rounded text-white ${
+                            followingUsers.includes(user.id) ? 'bg-red-500' : 'bg-green-500'
+                        }`}
+                    >
+                        {followingUsers.includes(user.id) ? 'Unfollow' : 'Follow'}
+                    </button>
+                </div>
+            ))}
         </div>
     );
 };
 
-export default UserSearchPage;
+export default Searchbar;
