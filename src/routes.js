@@ -16,6 +16,7 @@ import CreatePostPage from "./pages/CreatePostPage";
 
 
 import PrivateRoute from './components/PrivateRoutes';
+import AdminPanel from "./pages/AdminPanel";
 
 const AppRoutes = () => (
     <Router>
@@ -27,6 +28,7 @@ const AppRoutes = () => (
             <Route path="/Search" element={<UserSearchPage />} />
             <Route path="/MenuPage" element={<MenuPage />} />
             <Route path="/create-post" element={<CreatePostPage />} />
+            <Route path="/AdminPanel" element={<AdminPanel />} />
 
             {/* Routes protégées */}
             <Route path="/Profil" element={
