@@ -41,7 +41,10 @@ const ExerciseList = ({ selectedExercises, setSelectedExercises, filters, openMo
   const addExercise = (exercise) => {
     console.log('Ajout de l\'exercice:', exercise); // Log pour vérifier les données
     if (!selectedExercises.find(ex => ex.idExercice === exercise.idExercice)) {
-      setSelectedExercises([...selectedExercises, { ...exercise, sets: [{ reps: 0, weight: 0 }] }]);
+      setSelectedExercises([...selectedExercises, { ...exercise, sets: [{ reps: 0, weight: 0 }],
+        tempsRepos: "", // Initialiser le temps de repos
+        tempsDeRepetition: "" 
+      }]);
     }
   };
 

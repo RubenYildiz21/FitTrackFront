@@ -8,22 +8,26 @@ const apiRequest = async (endpoint, method = 'GET', body = null, isFormUrlEncode
     const baseUrl = 'http://localhost:8080/api';
     let options = {
         method,
-        credentials: 'include',
         headers: {},
     };
     // Ajouter le token JWT si il est présent dans le local storage
-    const token = localStorage.getItem('token');
-    if(token){
-        options.headers['Authorization'] = `Bearer ${token}`;
-    }else{
-        console.warn("Token JWT non trouvé dans le stockage local.");
+    if (!endpoint.startsWith('/auth/login') && !endpoint.startsWith('/auth/register')) {
+        const token = localStorage.getItem('token');
+        if(token){
+            options.headers['Authorization'] = `Bearer ${token}`;
+        } else {
+            console.warn("Token JWT non trouvé dans le stockage local.");
+        }
+        // Inclure les credentials uniquement pour les requêtes nécessitant une authentification
+        options.credentials = 'include';
+    } else {
+        options.credentials = 'omit';
     }
     
     // Gérer les données du corps
     if (body) {
         if (body instanceof FormData) {
             options.body = body;
-            // Pas de Content-Type, car le navigateur s'en occupe pour FormData
         } else if (isFormUrlEncoded) {
             options.headers['Content-Type'] = 'application/x-www-form-urlencoded';
             options.body = new URLSearchParams(body).toString();
