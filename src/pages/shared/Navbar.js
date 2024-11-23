@@ -14,7 +14,7 @@ const Navbar = () => {
         className="fixed z-50 w-full h-16 max-w-lg -translate-x-1/2 bg-black border border-orange-500 rounded-full bottom-4 left-1/2 dark:bg-gray-900 dark:border-orange-500">
             <div className="grid h-full max-w-lg grid-cols-5 mx-auto">
                 <button
-                    onClick={() => handleNavigation('/create-post')}
+                    onClick={() => handleNavigation('/MenuPage')}
                     data-tooltip-target="tooltip-home" type="button"
                     className="inline-flex flex-col items-center justify-center px-5 rounded-s-full hover:bg-gray-800 group">
                     <svg

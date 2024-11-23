@@ -28,9 +28,13 @@ const AppRoutes = () => (
             <Route path="/LoaderPage" element={<LoaderPage />} />
             <Route path="/MenuPage" element={<MenuPage />} />
             <Route path="/create-post" element={<CreatePostPage />} />
-            <Route path="/AdminPanel" element={<AdminPanel />} />
 
             {/* Routes protégées */}
+            <Route path="/AdminPanel" element={
+                <PrivateRoute>
+                    <AdminPanel />
+                </PrivateRoute>
+            } />
             <Route path="/Profil" element={
                 <PrivateRoute>
                     <ProfilPage />

@@ -50,7 +50,6 @@ const CreatePostPage = () => {
 
     return (
         <div className="bg-gradient-to-b from-gray-900 to-black text-white min-h-screen p-6">
-            <Searchbar/>
             <Navbar/>
             <h1 className="text-3xl font-bold mb-6 mt-3">Créer une Publication</h1>
 

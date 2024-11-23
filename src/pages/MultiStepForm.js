@@ -17,7 +17,7 @@ const MultiStepForm = () => {
         password: '',
         age: 0,
         trainingLevel: '',
-        profilePicture: '', // Stocke le chemin de l’image ici
+        profilePicture: null, 
         gender: '',
         mainGoal: '',
         goalWeight: 0,
@@ -28,6 +28,7 @@ const MultiStepForm = () => {
 
     const [errors, setErrors] = useState({ email: '', password: '', checkbox: '' });
     const [isPrivacyChecked, setIsPrivacyChecked] = useState(false);
+    const [uploadedImageUrl, setUploadedImageUrl] = useState(null);
 
     const selectOption = (value, field) => {
         setSelectedOption(value);
@@ -110,6 +111,9 @@ const MultiStepForm = () => {
         try {
             const data = await registerUser(formDataToSend);
             console.log('User registered successfully:', data);
+            if(data.user && data.user.profilePicture){
+                setUploadedImageUrl(data.user.profilePicture);
+            }
             navigate('/LoaderPage');
         } catch (error) {
             console.error('Error:', error);
@@ -418,7 +422,7 @@ const MultiStepForm = () => {
             case 9:
                 return (
                     <div
-                        className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-gray-900 to-black text-white px-4 sm:px-6 lg:px-8 animate-fadeIn">
+                        className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-gray-900 to-black text-white px-4 sm:px-6 lg:px-8 animate-fadeIn mb-8">
                         {renderBackButton()}
                         <h2 className="text-4xl font-bold mb-12 text-center"></h2>
                         <div

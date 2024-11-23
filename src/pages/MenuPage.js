@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getLoggedInUser } from '../services/authService';
 import { ChatBubbleLeftEllipsisIcon } from '@heroicons/react/24/outline';
+import Navbar from './shared/Navbar';
+import SearchBar from './shared/Searchbar';
 
 const MenuPage = () => {
     const navigate = useNavigate();
@@ -80,8 +82,10 @@ const MenuPage = () => {
     };
 
     return (
-        <div className="bg-gradient-to-b from-gray-900 to-black text-white min-h-screen p-6 relative">
-            <h1 className="text-3xl font-bold mb-6">Feed de Publications</h1>
+        <div className="bg-gradient-to-b from-gray-900 to-black text-white min-h-screen p-6 relative mb-10">
+        <Navbar/>
+        <SearchBar/>
+            <h1 className="text-3xl font-bold mb-6 mt-4">Feed de Publications</h1>
 
             <div className="space-y-6">
                 {loading ? (
@@ -167,7 +171,7 @@ const MenuPage = () => {
 
             {/* Bouton pour créer une nouvelle publication */}
             <button
-                className="fixed bottom-8 right-8 bg-orange-500 hover:bg-orange-600 text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center text-3xl transform transition-transform hover:scale-105"
+                className="fixed bottom-24 right-8 bg-orange-500 hover:bg-orange-600 text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center text-3xl transform transition-transform hover:scale-105"
                 onClick={() => navigate('/create-post')}
             >
                 +
