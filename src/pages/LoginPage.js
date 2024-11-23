@@ -25,7 +25,7 @@ const LoginPage = () => {
                 sessionStorage.setItem('user', JSON.stringify(data.user));
 
                 console.log('User logged in successfully:', data);
-                navigate('/Profil');
+                navigate('/MenuPage');
             }
 
         } catch (err) {

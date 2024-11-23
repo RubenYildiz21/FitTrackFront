@@ -66,14 +66,6 @@ const ProfilPage = () => {
     if (error) return <div className="text-red-500">{error}</div>;
     if (!user) return <div className="text-gray-500">Loading...</div>;
 
-    const getProfilePicturePath = (base64String) => {
-        try {
-            return `data:image/jpeg;base64,${base64String}`;
-        } catch (e) {
-            console.error("Failed to decode Base64 profile picture string", e);
-            return '/src/assets/images/profile.png'; // Default path
-        }
-    };
 
     return (
         <div className="bg-gradient-to-b from-gray-900 to-black text-white min-h-screen p-6 pb-20 mb-10">
@@ -89,7 +81,7 @@ const ProfilPage = () => {
             <div className="flex flex-col items-center mb-8 bg-gray-800 p-6 rounded-lg shadow-lg space-y-4">
                 <div className="w-28 h-28 rounded-full overflow-hidden">
                     <img
-                        src={user.profilePicture ? getProfilePicturePath(user.profilePicture) : require('../assets/images/profile.png')}
+                        src={user.profilePicture ? user.profilePicture : require('../assets/images/profile.png')}
                         alt="Profile"
                         className="object-cover w-full h-full"
                     />

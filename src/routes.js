@@ -16,6 +16,7 @@ import ProgressPage from "./pages/ProgressPage";
 
 
 
+
 import PrivateRoute from './components/PrivateRoutes';
 import AdminPanel from "./pages/AdminPanel";
 
@@ -29,6 +30,7 @@ const AppRoutes = () => (
             <Route path="/MenuPage" element={<MenuPage />} />
             <Route path="/create-post" element={<CreatePostPage />} />
             <Route path="/AdminPanel" element={<AdminPanel />} />
+            <Route path="/create-post" element={<CreatePostPage />} />
 
             {/* Routes protégées */}
             <Route path="/Profil" element={
