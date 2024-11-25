@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getChallenges } from '../services/challengeService';
-import Navbar from "./shared/NavBar";
+import Navbar from "./shared/Navbar";
 
 const Challenges = () => {
     const navigate = useNavigate();
