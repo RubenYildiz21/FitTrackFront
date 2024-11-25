@@ -66,6 +66,7 @@ const ProfilPage = () => {
     if (error) return <div className="text-red-500">{error}</div>;
     if (!user) return <div className="text-gray-500">Loading...</div>;
 
+
     return (
         <div className="bg-gradient-to-b from-gray-900 to-black text-white min-h-screen p-6 pb-20 mb-10">
             <Navbar/>
