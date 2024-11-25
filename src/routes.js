@@ -83,6 +83,12 @@ const AppRoutes = () => (
                     <Challenges />
                 </PrivateRoute>
             } />
+
+            <Route path="/CreateChallenge" element={
+                <PrivateRoute>
+                    <CreateChallenge />
+                </PrivateRoute>
+            } />
         </Routes>
 
     </Router>

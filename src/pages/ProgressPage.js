@@ -110,7 +110,7 @@ const ProgressPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-black p-4 text-white mb-24">
+    <div className="bg-gradient-to-b from-gray-900 min-h-screen p-4 text-white mb-24">
       <Navbar />
 
       {/* Calendrier des Séances */}
