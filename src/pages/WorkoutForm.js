@@ -47,12 +47,10 @@ const WorkoutForm = () => {
       const workoutSession = {
         name: sessionName,
         dateSeance: new Date(sessionDate).toISOString(),
-        user: {
-          id: user.id
-        },
+        userId: user.id,
         blocs: uniqueExercises.map(ex => ({
           exercice: {
-            idExercice: ex.id
+            idExercice: ex.idExercice
           },
           series: ex.sets.map((set, index) => ({
             serie: index + 1,

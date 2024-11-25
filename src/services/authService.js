@@ -37,7 +37,6 @@ export const logoutUser = () => {
 export const loginUser = async (credentials) => {
     try {
         const response = await apiRequest('/auth/login', 'POST', credentials);
-        console.log('User logged in successfully:', response);
 
         if(response.token){
             localStorage.setItem('token', response.token);
