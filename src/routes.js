@@ -10,9 +10,8 @@ import EditProfile from './pages/EditProfile';
 import LoaderPage from './pages/LoaderPage';
 import WorkoutForm from './pages/WorkoutForm';
 import UserSearchPage from "./pages/UserSearchPage";
-import MenuPage from "./pages/MenuPage";
-import CreatePostPage from "./pages/CreatePostPage";
-import ProgressPage from "./pages/ProgressPage";
+import Challenges from "./pages/Challenges";
+import CreateChallenge from "./pages/CreateChallenge";
 
 
 
@@ -26,46 +25,9 @@ const AppRoutes = () => (
             <Route path="/LoginPage" element={<LoginPage />} />
             <Route path="/MultiStepForm" element={<MultiStepForm />} />
             <Route path="/LoaderPage" element={<LoaderPage />} />
-            <Route path="/MenuPage" element={<MenuPage />} />
-            <Route path="/create-post" element={<CreatePostPage />} />
-
-            {/* Routes protégées */}
-            <Route path="/AdminPanel" element={
-                <PrivateRoute>
-                    <AdminPanel />
-                </PrivateRoute>
-            } />
-            <Route path="/Profil" element={
-                <PrivateRoute>
-                    <ProfilPage />
-                </PrivateRoute>
-            } />
-            <Route path="/EditGoals" element={
-                <PrivateRoute>
-                    <EditGoals />
-                </PrivateRoute>
-            } />
-            <Route path="/EditProfile" element={
-                <PrivateRoute>
-                    <EditProfile />
-                </PrivateRoute>
-            } />
-            <Route path="/WorkoutForm" element={
-                <PrivateRoute>
-                    <WorkoutForm />
-                </PrivateRoute>
-            } />
-            <Route path="/Search" element={
-                <PrivateRoute>
-                    <UserSearchPage />
-                </PrivateRoute>
-            } />
-
-            <Route path="/progress" element={
-                <PrivateRoute>
-                    <ProgressPage />
-                </PrivateRoute>
-            } />
+            <Route path="/Search" element={<UserSearchPage />} />
+            <Route path="/CreateChallenge" element={<CreateChallenge/>} />
+            <Route path="/Challenges" element={<Challenges/>} />
         </Routes>
     </Router>
 );
