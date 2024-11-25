@@ -4,10 +4,10 @@ import ExerciseList from './ExerciseList';
 import FilterSection from './FilterSection';
 import { createWorkoutSession } from '../services/workoutService';
 import Navbar from './shared/Navbar';
-import Modal from 'react-modal'; // Import de react-modal
+import Modal from 'react-modal';
 import { useNavigate } from 'react-router-dom';
 
-// Définir l'élément racine pour react-modal
+
 Modal.setAppElement('#root');
 
 const WorkoutForm = () => {
@@ -33,29 +33,40 @@ const WorkoutForm = () => {
       if (!userData) throw new Error('Utilisateur non authentifié.');
       const user = JSON.parse(userData);
 
+      // Filtrer les exercices dupliqués
+      const uniqueExercises = selectedExercises.reduce((acc, current) => {
+        const x = acc.find(ex => ex.idExercice === current.idExercice);
+        if (!x) {
+          return acc.concat([current]);
+        } else {
+          return acc;
+        }
+      }, []);
+
+
       const workoutSession = {
         name: sessionName,
-        date: sessionDate,
-        user: {
-          id: user.id
-        },
-        blocs: selectedExercises.map(ex => ({
-          exercice: { 
-            idExercice: ex.idExercice // Assurez-vous que 'idExercice' est le bon champ
+        dateSeance: new Date(sessionDate).toISOString(),
+        userId: user.id,
+        blocs: uniqueExercises.map(ex => ({
+          exercice: {
+            idExercice: ex.idExercice
           },
-          reps: ex.sets.reduce((acc, set) => acc + set.reps, 0), // Total des répétitions
-          serie: ex.sets.length,
-          poids: ex.sets.reduce((acc, set) => acc + set.weight, 0) / ex.sets.length, // Moyenne des poids
-          tempsRepos: ex.tempsRepos, // Temps de repos dynamique
-          tempsDeRepetition: ex.tempsDeRepetition // Temps de répétition dynamique
+          series: ex.sets.map((set, index) => ({
+            serie: index + 1,
+            reps: set.reps,
+            poids: set.weight,
+            tempsRepos: ex.tempsRepos,
+            tempsDeRepetition: ex.tempsDeRepetition
+          }))
         }))
       };
 
       console.log('Session à créer:', workoutSession); // Pour déboguer
+
       
       await createWorkoutSession(workoutSession);
-      
-      // Optionnel : Réinitialiser le formulaire
+      // Réinitialiser le formulaire
       setSessionName('');
       setSessionDate('');
       setSelectedExercises([]);
@@ -80,25 +91,25 @@ const WorkoutForm = () => {
     setCurrentVideoUrl('');
   };
 
-  const removeExercise = (idExercice) => {
-    setSelectedExercises(selectedExercises.filter(ex => ex.idExercice !== idExercice));
+  const removeExercise = (id) => {
+    setSelectedExercises(selectedExercises.filter(ex => ex.id !== id));
   };
 
-  const updateSet = (idExercice, newSets) => {
-    setSelectedExercises(selectedExercises.map(ex => 
-      ex.idExercice === idExercice ? { ...ex, sets: newSets } : ex
+  const updateSet = (id, newSets) => {
+    setSelectedExercises(selectedExercises.map(ex =>
+      ex.id === id ? { ...ex, sets: newSets } : ex
     ));
   };
 
-  const updateTempsRepos = (idExercice, newTempsRepos) => {
-    setSelectedExercises(selectedExercises.map(ex => 
-      ex.idExercice === idExercice ? { ...ex, tempsRepos: newTempsRepos } : ex
+  const updateTempsRepos = (id, newTempsRepos) => {
+    setSelectedExercises(selectedExercises.map(ex =>
+      ex.id === id ? { ...ex, tempsRepos: newTempsRepos } : ex
     ));
   };
 
-  const updateTempsDeRepetition = (idExercice, newTempsDeRepetition) => {
-    setSelectedExercises(selectedExercises.map(ex => 
-      ex.idExercice === idExercice ? { ...ex, tempsDeRepetition: newTempsDeRepetition } : ex
+  const updateTempsDeRepetition = (id, newTempsDeRepetition) => {
+    setSelectedExercises(selectedExercises.map(ex =>
+      ex.id === id ? { ...ex, tempsDeRepetition: newTempsDeRepetition } : ex
     ));
   };
 
@@ -127,7 +138,7 @@ const WorkoutForm = () => {
           />
         </div>
 
-        <FilterSection 
+        <FilterSection
           activeFilters={activeFilters}
           setActiveFilters={setActiveFilters}
         />
@@ -198,7 +209,7 @@ const WorkoutForm = () => {
                             placeholder="Nombre"
                             value={set.reps}
                             onChange={(e) => {
-                              const newSets = exercise.sets.map((s, i) => 
+                              const newSets = exercise.sets.map((s, i) =>
                                 i === index ? { ...s, reps: parseInt(e.target.value) || 0 } : s
                               );
                               updateSet(exercise.idExercice, newSets);
@@ -215,7 +226,7 @@ const WorkoutForm = () => {
                             placeholder="Poids"
                             value={set.weight}
                             onChange={(e) => {
-                              const newSets = exercise.sets.map((s, i) => 
+                              const newSets = exercise.sets.map((s, i) =>
                                 i === index ? { ...s, weight: parseFloat(e.target.value) || 0 } : s
                               );
                               updateSet(exercise.idExercice, newSets);

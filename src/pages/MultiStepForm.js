@@ -85,7 +85,6 @@ const MultiStepForm = () => {
     const handleSubmit = async () => {
         if (!validateStep()) return;
 
-        // Créer un FormData pour envoyer les données, y compris l'image
         const formDataToSend = new FormData();
         formDataToSend.append("firstName", formData.firstName);
         formDataToSend.append("lastName", formData.lastName);
@@ -116,9 +115,10 @@ const MultiStepForm = () => {
             }
             navigate('/LoaderPage');
         } catch (error) {
-            console.error('Error:', error);
+            console.error("Error:", error);
         }
     };
+
 
     const renderBackButton = () => {
         return (
