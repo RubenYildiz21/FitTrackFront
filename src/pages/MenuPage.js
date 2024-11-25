@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getLoggedInUser } from '../services/authService';
-import { ChatBubbleLeftEllipsisIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { ChatBubbleLeftEllipsisIcon, XMarkIcon,HeartIcon } from '@heroicons/react/24/outline';
+import { HeartIcon as HeartSolidIcon } from '@heroicons/react/24/solid';
 import Navbar from './shared/Navbar';
 import SearchBar from './shared/Searchbar';
+
 
 const CommentModal = ({ isOpen, onClose, post, comments, onAddComment, newComment, setNewComment }) => {
     const formatDate = (dateString) => {
@@ -97,6 +99,7 @@ const MenuPage = () => {
     const [selectedPost, setSelectedPost] = useState(null);
     const [commentaires, setCommentaires] = useState({});
     const [newComment, setNewComment] = useState('');
+    const [likedPosts, setLikedPosts] = useState(new Set());
 
     useEffect(() => {
         loadPosts();
@@ -193,6 +196,90 @@ const MenuPage = () => {
         });
     };
 
+
+    const handleLike = async (postId) => {
+        const user = getLoggedInUser();
+        if (!user?.id) return;
+
+        const token = localStorage.getItem('token');
+        const isLiked = likedPosts.has(postId);
+
+        try {
+            const response = await fetch(
+                `http://localhost:8080/api/posts/${postId}/like?userId=${user.id}`,
+                {
+                    method: isLiked ? 'DELETE' : 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const updatedPost = await response.json();
+            setPosts(posts.map(p => p.idPost === postId ? updatedPost : p));
+
+            setLikedPosts(prev => {
+                const newSet = new Set(prev);
+                if (isLiked) {
+                    newSet.delete(postId);
+                } else {
+                    newSet.add(postId);
+                }
+                return newSet;
+            });
+        } catch (error) {
+            console.error("Erreur lors du like/unlike", error);
+        }
+    };
+
+// Modifiez également la vérification initiale des likes
+    useEffect(() => {
+        const checkLikedPosts = async () => {
+            const user = getLoggedInUser();
+            if (!user?.id) return;
+
+            const token = localStorage.getItem('token');
+            if (!token) return;
+
+            for (const post of posts) {
+                try {
+                    const response = await fetch(
+                        `http://localhost:8080/api/posts/${post.idPost}/hasLiked?userId=${user.id}`,
+                        {
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json'
+                            }
+                        }
+                    );
+
+                    if (!response.ok) {
+                        if (response.status === 403) {
+                            console.error("Erreur d'authentification");
+                            continue;
+                        }
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const hasLiked = await response.json();
+                    if (hasLiked) {
+                        setLikedPosts(prev => new Set([...prev, post.idPost]));
+                    }
+                } catch (error) {
+                    console.error("Erreur lors de la vérification des likes", error);
+                }
+            }
+        };
+
+        if (posts.length > 0) {
+            checkLikedPosts();
+        }
+    }, [posts]);
+
     return (
         <div className="bg-gradient-to-b from-gray-900 to-black text-white min-h-screen p-6 relative mb-10">
             <Navbar/>
@@ -206,7 +293,8 @@ const MenuPage = () => {
                     <div className="text-gray-500">Aucune publication disponible.</div>
                 ) : (
                     posts.map((post) => (
-                        <div key={post.idPost} className="bg-gray-800 p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                        <div key={post.idPost}
+                             className="bg-gray-800 p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
                             {/* En-tête du post avec les informations de l'utilisateur */}
                             <div className="flex items-center mb-4">
                                 {post.userProfilePicture && (
@@ -240,16 +328,25 @@ const MenuPage = () => {
                                 </div>
                             )}
 
-                            {/* Bouton commentaires */}
-                            <div className="mt-4 flex items-center space-x-2">
+
+                            <div className="mt-4 flex items-center space-x-4">
+                                <button
+                                    onClick={() => handleLike(post.idPost)}
+                                    className="flex items-center space-x-2 text-gray-400 hover:text-orange-500 transition-colors"
+                                >
+                                    {likedPosts.has(post.idPost) ? (
+                                        <HeartSolidIcon className="h-6 w-6 text-orange-500"/>
+                                    ) : (
+                                        <HeartIcon className="h-6 w-6"/>
+                                    )}
+                                    <span>{post.nombreLikes} likes</span>
+                                </button>
                                 <button
                                     onClick={() => handleOpenComments(post)}
                                     className="flex items-center space-x-2 text-gray-400 hover:text-orange-500 transition-colors"
                                 >
-                                    <ChatBubbleLeftEllipsisIcon className="h-6 w-6" />
-                                    <span>
-                                        {commentaires[post.idPost]?.length || 0} commentaires
-                                    </span>
+                                    <ChatBubbleLeftEllipsisIcon className="h-6 w-6"/>
+                                    <span>commentaires</span>
                                 </button>
                             </div>
                         </div>
