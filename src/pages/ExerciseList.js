@@ -12,7 +12,6 @@ const ExerciseList = ({ selectedExercises, setSelectedExercises, filters, openMo
       try {
         setLoading(true);
         const data = await fetchExercises();
-        console.log('Exercices récupérés:', data); // Log pour vérifier les données
         setExercises(data);
       } catch (err) {
         setError('Erreur lors du chargement des exercices');
