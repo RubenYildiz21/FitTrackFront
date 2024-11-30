@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaRulerVertical } from 'react-icons/fa';
-import { IoScaleOutline } from 'react-icons/io5';
-import { FaBirthdayCake } from 'react-icons/fa';
 import Navbar from "./shared/Navbar";
 import apiRequest from '../services/api';
 
@@ -10,6 +7,7 @@ const EditProfile = () => {
   const [userId, setUserId] = useState(null);
   const [user, setUser] = useState(null);
   const [profilePicture, setProfilePicture] = useState('');
+  const [selectedFile, setSelectedFile] = useState(null); // To store the selected file
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [height, setHeight] = useState('');
@@ -49,6 +47,36 @@ const EditProfile = () => {
     fetchUserProfile();
   }, []);
 
+  const uploadedImage = async (file) => {
+    if(!file) return '';
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+
+    try{
+      const response = await apiRequest(`/users/${userId}/profile-picture`, 'POST', formData);
+      return response.profilePicture;
+    } catch (err) {
+      console.error("Erreur lors de l'upload de l'image : ", err);
+      setError("Could not upload image.");
+      return '';
+    }
+  }
+
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+
+    if(file){
+      setSelectedFile(file);
+
+      const uploadedImageUrl = await uploadedImage(file);
+      if(uploadedImageUrl){
+        setProfilePicture(uploadedImageUrl);
+      }
+    }
+  }
+
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
     try {
@@ -61,7 +89,6 @@ const EditProfile = () => {
         mainGoal,
         goalWeight,
         profilePicture,
-        // Inclure d'autres champs si nécessaire
       };
       console.log(updatedProfile);
 
@@ -92,18 +119,11 @@ const EditProfile = () => {
     }
   };
 
-  const getProfilePicturePath = (base64String) => {
-    try {
-      return `data:image/jpeg;base64,${base64String}`;
-    } catch (e) {
-      console.error("Échec du décodage de l'image de profil", e);
-      return require('../assets/images/profile.png'); // Chemin par défaut
-    }
-  };
-
   if (error) return <div className="text-red-500">{error}</div>;
   if (!user) return <div className="text-gray-500">Loading...</div>;
 
+
+  
   return (
     <div className="bg-black text-white min-h-screen p-6 mb-10">
       <Navbar />
@@ -126,13 +146,7 @@ const EditProfile = () => {
             <input
               type="file"
               accept="image/*"
-              onChange={async (e) => {
-                const file = e.target.files[0];
-                if (file) {
-                  const base64 = await convertToBase64(file);
-                  setProfilePicture(base64.split(',')[1]);
-                }
-              }}
+              onChange={handleImageChange}
               className="hidden"
             />
             <span className="bg-orange-500 hover:bg-orange-400 py-2 px-4 rounded cursor-pointer">

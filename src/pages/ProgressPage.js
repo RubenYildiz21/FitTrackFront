@@ -95,7 +95,7 @@ const ProgressPage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white flex items-center justify-center">
         Chargement des données...
       </div>
     );
@@ -103,18 +103,18 @@ const ProgressPage = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-black text-red-500 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-red-500 flex items-center justify-center">
         Erreur lors de la récupération des données.
       </div>
     );
   }
 
   return (
-    <div className="bg-gradient-to-b from-gray-900 min-h-screen p-4 text-white mb-24">
+    <div className="bg-gradient-to-b from-gray-900 to-black text-white min-h-screen p-4 mb-24">
       <Navbar />
 
       {/* Calendrier des Séances */}
-      <div className="bg-zinc-800 p-4 rounded-lg mt-6 mb-8">
+      <div className="bg-gray-800 p-4 rounded-lg mt-6 mb-8">
         <h2 className="text-xl font-semibold mb-4">Calendrier des Séances prestées</h2>
         <Calendar
           tileClassName={({ date, view }) => {
@@ -164,7 +164,7 @@ const ProgressPage = () => {
         <select
           value={period}
           onChange={handlePeriodChange}
-          className="p-2 rounded bg-zinc-800 text-white"
+          className="p-2 rounded bg-gray-700 text-white"
         >
           <option value="weekly">Hebdomadaire</option>
           <option value="monthly">Mensuel</option>
@@ -176,7 +176,7 @@ const ProgressPage = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
         {/* Meilleure Série */}
         <motion.div
-          className="bg-zinc-800 p-4 rounded-lg text-center flex flex-col items-center"
+          className="bg-gray-800 p-4 rounded-lg text-center flex flex-col items-center"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
@@ -189,7 +189,7 @@ const ProgressPage = () => {
 
         {/* Calories Brûlées */}
         <motion.div
-          className="bg-zinc-800 p-4 rounded-lg text-center flex flex-col items-center"
+          className="bg-gray-8000 p-4 rounded-lg text-center flex flex-col items-center"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
@@ -205,7 +205,7 @@ const ProgressPage = () => {
         {/* Poids Total Soulevé */}
         {/* Poids Max Soulevé */}
         <motion.div
-          className="bg-zinc-800 p-4 rounded-lg text-center flex flex-col items-center"
+          className="bg-gray-800 p-4 rounded-lg text-center flex flex-col items-center"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
@@ -232,7 +232,7 @@ const ProgressPage = () => {
 
         {/* Distance Parcourue */}
         <motion.div
-          className="bg-zinc-800 p-4 rounded-lg text-center flex flex-col items-center"
+          className="bg-gray-800 p-4 rounded-lg text-center flex flex-col items-center"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
@@ -250,7 +250,7 @@ const ProgressPage = () => {
       {/* Records Personnels */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
         <motion.div
-          className="bg-zinc-800 p-4 rounded-lg text-center flex flex-col items-center"
+          className="bg-gray-800 p-4 rounded-lg text-center flex flex-col items-center"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >

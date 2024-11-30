@@ -70,14 +70,14 @@ const ExerciseList = ({ selectedExercises, setSelectedExercises, filters, openMo
       {filteredExercises.map((exercise) => (
         <div
           key={exercise.idExercice}
-          className="bg-zinc-800 rounded-lg shadow-lg overflow-hidden"
+          className="bg-gray-800 rounded-lg shadow-lg overflow-hidden"
         >
           <div className="flex justify-between items-center p-4">
             <div className="flex space-x-4 items-center">
               {exercise.icon ? (
                 exercise.icon
               ) : (
-                <div className="w-24 h-16 bg-zinc-700 rounded flex items-center justify-center">
+                <div className="w-24 h-16 bg-gray-700 rounded flex items-center justify-center">
                   <span className="text-gray-400">No image</span>
                 </div>
               )}

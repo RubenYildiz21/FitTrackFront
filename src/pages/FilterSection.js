@@ -30,7 +30,7 @@ const FilterSection = ({ activeFilters, setActiveFilters }) => {
             className={`px-4 py-2 rounded-full transition-colors ${
               activeFilters.includes(filter.id)
                 ? 'bg-orange-500 text-white'
-                : 'bg-zinc-800 text-white hover:bg-zinc-700'
+                : 'bg-gray-700 text-white hover:bg-zinc-700'
             }`}
           >
             {filter.label}

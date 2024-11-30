@@ -147,7 +147,7 @@ const MultiStepForm = () => {
         switch (step) {
             case 1:
                 return (
-                    <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white px-4 sm:px-6 lg:px-8 animate-fadeIn">
+                    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-gray-900 to-black text-white px-4 sm:px-6 lg:px-8 animate-fadeIn">
                         {renderBackButton()}
                         <h2 className="text-4xl font-bold mb-12">Sign Up</h2>
                         <div className="space-y-4 w-full max-w-md">
@@ -216,7 +216,7 @@ const MultiStepForm = () => {
                 );
             case 2:
                 return (
-                    <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white px-4 sm:px-6 lg:px-8 animate-fadeIn">
+                    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-gray-900 to-black text-white px-4 sm:px-6 lg:px-8 animate-fadeIn">
                         {renderBackButton()}
                         <h2 className="text-4xl font-bold mb-12">Choose Gender</h2>
                         <div className="space-y-4 w-full max-w-md">
@@ -250,7 +250,7 @@ const MultiStepForm = () => {
                 );
             case 3:
                 return (
-                    <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white px-4 sm:px-6 lg:px-8 animate-fadeIn">
+                    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-gray-900 to-black text-white px-4 sm:px-6 lg:px-8 animate-fadeIn">
                         {renderBackButton()}
                         <h2 className="text-4xl font-bold mb-12">Choose Main Goal</h2>
                         <div className="space-y-4 w-full max-w-md">
@@ -290,7 +290,7 @@ const MultiStepForm = () => {
                 );
             case 4:
                 return (
-                    <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white px-4 sm:px-6 lg:px-8 animate-fadeIn">
+                    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-gray-900 to-black text-white px-4 sm:px-6 lg:px-8 animate-fadeIn">
                         {renderBackButton()}
                         <h2 className="text-4xl font-bold mb-12">Choose Training Level</h2>
                         <div className="space-y-4 w-full max-w-md">
@@ -330,7 +330,7 @@ const MultiStepForm = () => {
                 );
             case 5:
                 return (
-                    <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white px-4 sm:px-6 lg:px-8 animate-fadeIn">
+                    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-gray-900 to-black text-white px-4 sm:px-6 lg:px-8 animate-fadeIn">
                         {renderBackButton()}
                         <h2 className="text-4xl font-bold mb-12">Select Height</h2>
                         <div className="space-y-4 w-full max-w-md">
@@ -351,7 +351,7 @@ const MultiStepForm = () => {
                 );
             case 6:
                 return (
-                    <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white px-4 sm:px-6 lg:px-8 animate-fadeIn">
+                    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-gray-900 to-black text-white px-4 sm:px-6 lg:px-8 animate-fadeIn">
                         {renderBackButton()}
                         <h2 className="text-4xl font-bold mb-12">Select Weight</h2>
                         <div className="space-y-4 w-full max-w-md">
@@ -372,9 +372,9 @@ const MultiStepForm = () => {
                 );
             case 7:
                 return (
-                    <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white px-4 sm:px-6 lg:px-8 animate-fadeIn">
+                    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-gray-900 to-black text-white px-4 sm:px-6 lg:px-8 animate-fadeIn">
                         {renderBackButton()}
-                        <h2 className="text-4xl font-bold mb-12">Enter Your Goal Weight</h2>
+                        <h2 className="text-4xl font-bold mb-12 text-center">Enter Your Goal Weight</h2>
                         <div className="space-y-4 w-full max-w-md">
                             <input
                                 type="number"
@@ -393,7 +393,7 @@ const MultiStepForm = () => {
                 );
             case 8:
                 return (
-                    <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white px-4 sm:px-6 lg:px-8 animate-fadeIn">
+                    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-gray-900 to-black text-white px-4 sm:px-6 lg:px-8 animate-fadeIn mb-8">
                         {renderBackButton()}
                         <h2 className="text-4xl font-bold mb-12">Choose Your Place</h2>
                         <div className="space-y-4 w-full max-w-md">

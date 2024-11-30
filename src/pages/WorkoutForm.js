@@ -114,7 +114,7 @@ const WorkoutForm = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black p-4 text-white mb-20">
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black p-4 text-white mb-20">
       <Navbar />
       <h1 className="text-2xl font-bold mb-6">
         Nouvelle séance
@@ -127,14 +127,14 @@ const WorkoutForm = () => {
             placeholder="Nom de la séance"
             value={sessionName}
             onChange={(e) => setSessionName(e.target.value)}
-            className="w-full p-3 rounded bg-zinc-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500"
+            className="w-full p-3 rounded bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500"
           />
 
           <input
             type="date"
             value={sessionDate}
             onChange={(e) => setSessionDate(e.target.value)}
-            className="w-full p-3 rounded bg-zinc-800 text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
+            className="w-full p-3 rounded bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
           />
         </div>
 
