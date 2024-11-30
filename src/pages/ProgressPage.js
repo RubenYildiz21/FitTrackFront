@@ -189,7 +189,7 @@ const ProgressPage = () => {
 
         {/* Calories Brûlées */}
         <motion.div
-          className="bg-gray-8000 p-4 rounded-lg text-center flex flex-col items-center"
+          className="bg-gray-800 p-4 rounded-lg text-center flex flex-col items-center"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
