@@ -232,77 +232,99 @@ const MenuPage = () => {
     }, [posts]);
 
     return (
-        <div className="bg-gradient-to-b from-gray-900 to-black text-white min-h-screen p-6 relative mb-10">
+        <div className="bg-black text-white min-h-screen">
             <Navbar />
             <SearchBar />
-            <h1 className="text-3xl font-bold mb-6 mt-4">Feed de Publications</h1>
 
-            <div className="space-y-6">
+            {/* Container principal avec largeur maximale */}
+            <div className="max-w-2xl mx-auto px-4 py-6">
+                <h1 className="text-2xl font-semibold mb-8">Feed</h1>
+
+                {/* État de chargement */}
                 {loading ? (
-                    <div className="text-gray-500">Chargement...</div>
+                    <div className="text-gray-400 text-center py-8">Chargement...</div>
                 ) : posts.length === 0 ? (
-                    <div className="text-gray-500">Aucune publication disponible.</div>
+                    <div className="text-gray-400 text-center py-8">Aucune publication disponible.</div>
                 ) : (
-                    posts.map((post) => (
-                        <div
-                            key={post.idPost}
-                            className="bg-gray-800 p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
-                        >
-                            {/* En-tête du post avec les informations de l'utilisateur */}
-                            <div className="flex items-center mb-4">
-                                {post.userProfilePicture && (
+                    <div className="space-y-8">
+                        {posts.map((post) => (
+                            <div
+                                key={post.idPost}
+                                className="bg-gray-900 rounded-xl overflow-hidden"
+                            >
+                                {/* Header du post */}
+                                <div className="flex items-center p-4">
                                     <img
-                                        src={post.userProfilePicture}
-                                        alt={`${post.userFirstName} ${post.userLastName}`}
-                                        className="w-12 h-12 rounded-full mr-4 object-cover"
+                                        src={post.userProfilePicture || '/default-avatar.png'}
+                                        alt={`${post.userFirstName}`}
+                                        className="w-10 h-10 rounded-full object-cover ring-2 ring-gray-800"
                                     />
+                                    <div className="ml-3">
+                                        <h3 className="font-medium">
+                                            {post.userFirstName} {post.userLastName}
+                                        </h3>
+                                        <p className="text-xs text-gray-400">
+                                            {formatDate(post.dateCreation)}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {/* Image du post */}
+                                {post.imageUrl && (
+                                    <div className="aspect-square">
+                                        <img
+                                            src={post.imageUrl}
+                                            alt="Post"
+                                            className="w-full h-full object-cover"
+                                        />
+                                    </div>
                                 )}
-                                <div>
-                                    <h3 className="text-lg font-semibold">
-                                        {post.userFirstName} {post.userLastName}
-                                    </h3>
-                                    <p className="text-gray-400 text-sm">
-                                        {formatDate(post.dateCreation)}
-                                    </p>
+
+                                {/* Actions */}
+                                <div className="p-4">
+                                    <div className="flex items-center gap-4 mb-3">
+                                        <button
+                                            onClick={() => handleLike(post.idPost)}
+                                            className="hover:scale-110 transition-transform"
+                                        >
+                                            {likedPosts.has(post.idPost) ? (
+                                                <HeartSolidIcon className="h-7 w-7 text-red-500" />
+                                            ) : (
+                                                <HeartIcon className="h-7 w-7" />
+                                            )}
+                                        </button>
+                                        <button
+                                            onClick={() => handleOpenComments(post)}
+                                            className="hover:scale-110 transition-transform"
+                                        >
+                                            <ChatBubbleLeftEllipsisIcon className="h-7 w-7" />
+                                        </button>
+                                    </div>
+
+                                    {/* Likes count */}
+                                    <div className="font-medium mb-2">
+                                        {post.nombreLikes} j'aime
+                                    </div>
+
+                                    {/* Contenu du post */}
+                                    <div className="text-sm">
+                                    <span className="font-medium mr-2">
+                                        {post.userFirstName}
+                                    </span>
+                                        {post.contenu}
+                                    </div>
+
+                                    {/* Bouton commentaires */}
+                                    <button
+                                        onClick={() => handleOpenComments(post)}
+                                        className="text-gray-400 text-sm mt-2"
+                                    >
+                                        Voir les commentaires
+                                    </button>
                                 </div>
                             </div>
-
-                            {/* Contenu du post */}
-                            <p className="text-gray-300 mb-4">{post.contenu}</p>
-
-                            {/* Image du post */}
-                            {post.imageUrl && (
-                                <div className="mt-4">
-                                    <img
-                                        src={post.imageUrl}
-                                        alt="Post"
-                                        className="rounded-lg max-h-96 w-full object-cover"
-                                    />
-                                </div>
-                            )}
-
-                            <div className="mt-4 flex items-center space-x-4">
-                                <button
-                                    onClick={() => handleLike(post.idPost)}
-                                    className="flex items-center space-x-2 text-gray-400 hover:text-orange-500 transition-colors"
-                                >
-                                    {likedPosts.has(post.idPost) ? (
-                                        <HeartSolidIcon className="h-6 w-6 text-orange-500" />
-                                    ) : (
-                                        <HeartIcon className="h-6 w-6" />
-                                    )}
-                                    <span>{post.nombreLikes} likes</span>
-                                </button>
-                                <button
-                                    onClick={() => handleOpenComments(post)}
-                                    className="flex items-center space-x-2 text-gray-400 hover:text-orange-500 transition-colors"
-                                >
-                                    <ChatBubbleLeftEllipsisIcon className="h-6 w-6" />
-                                    <span>commentaires</span>
-                                </button>
-                            </div>
-                        </div>
-                    ))
+                        ))}
+                    </div>
                 )}
             </div>
 
@@ -320,7 +342,7 @@ const MenuPage = () => {
 
             {/* Bouton création post */}
             <button
-                className="fixed bottom-24 right-8 bg-orange-500 hover:bg-orange-600 text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center text-3xl transform transition-transform hover:scale-105"
+                className="fixed bottom-24 right-8 bg-orange-500 hover:bg-orange-600-600 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center text-2xl transform transition-all hover:scale-110 active:scale-95"
                 onClick={() => navigate('/create-post')}
             >
                 +

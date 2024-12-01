@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getLoggedInUser } from '../services/authService';
+import { XMarkIcon, PhotoIcon } from '@heroicons/react/24/outline';
 
 const CreatePostPage = () => {
     const navigate = useNavigate();
@@ -71,60 +72,92 @@ const CreatePostPage = () => {
     };
 
     return (
-        <div className="bg-gradient-to-b from-gray-900 to-black text-white min-h-screen p-6">
-            <h1 className="text-3xl font-bold mb-6">Créer une Publication</h1>
-
-            {error && (
-                <div className="text-red-500 mb-4 p-3 bg-red-100 rounded">{error}</div>
-            )}
-
-            <form onSubmit={handleCreatePost} className="space-y-4">
-                <div>
-                    <textarea
-                        value={postContent}
-                        onChange={(e) => setPostContent(e.target.value)}
-                        placeholder="Quoi de neuf ?"
-                        className="w-full p-4 bg-gray-800 text-white rounded resize-none h-40"
-                        required
-                    ></textarea>
+        <div className="min-h-screen bg-black text-white">
+            {/* Container principal */}
+            <div className="max-w-2xl mx-auto px-4 py-8">
+                <div className="flex items-center justify-between mb-8">
+                    <h1 className="text-2xl font-semibold">Nouvelle publication</h1>
+                    <button
+                        onClick={() => navigate(-1)}
+                        className="text-gray-400 hover:text-white"
+                    >
+                        <XMarkIcon className="h-6 w-6" />
+                    </button>
                 </div>
 
-                <div className="space-y-2">
-                    <label className="block">
-                        <span className="text-white">Ajouter une image</span>
-                        <input
-                            type="file"
-                            onChange={handleImageChange}
-                            accept="image/*"
-                            className="mt-1 block w-full text-sm text-gray-300
-                                file:mr-4 file:py-2 file:px-4
-                                file:rounded-full file:border-0
-                                file:text-sm file:font-semibold
-                                file:bg-orange-500 file:text-white
-                                hover:file:bg-orange-600"
-                        />
-                    </label>
+                {error && (
+                    <div className="mb-6 px-4 py-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-500 text-sm">
+                        {error}
+                    </div>
+                )}
 
-                    {imagePreview && (
-                        <div className="mt-2">
+                <form onSubmit={handleCreatePost} className="space-y-6">
+                    {/* Zone de prévisualisation d'image */}
+                    {imagePreview ? (
+                        <div className="relative aspect-square bg-gray-900 rounded-lg overflow-hidden">
                             <img
                                 src={imagePreview}
                                 alt="Aperçu"
-                                className="max-w-xs rounded-lg shadow-lg"
+                                className="w-full h-full object-cover"
                             />
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    setImagePreview(null);
+                                    setSelectedImage(null);
+                                }}
+                                className="absolute top-4 right-4 bg-black/50 p-2 rounded-full hover:bg-black/70"
+                            >
+                                <XMarkIcon className="h-5 w-5" />
+                            </button>
+                        </div>
+                    ) : (
+                        <div className="relative aspect-square bg-gray-900 rounded-lg flex flex-col items-center justify-center">
+                            <input
+                                type="file"
+                                onChange={handleImageChange}
+                                accept="image/*"
+                                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                            />
+                            <PhotoIcon className="h-12 w-12 text-gray-500 mb-2" />
+                            <span className="text-gray-500 text-sm">Ajouter une photo</span>
                         </div>
                     )}
-                </div>
 
-                <button
-                    type="submit"
-                    disabled={isLoading}
-                    className={`mt-4 bg-orange-500 hover:bg-orange-600 text-white py-2 px-6 rounded w-full
+                    {/* Zone de texte */}
+                    <div className="relative">
+                    <textarea
+                        value={postContent}
+                        onChange={(e) => setPostContent(e.target.value)}
+                        placeholder="Écrivez une légende..."
+                        className="w-full p-4 bg-transparent text-white placeholder-gray-500 resize-none focus:outline-none"
+                        rows="4"
+                        required
+                    ></textarea>
+                        <div className="absolute bottom-2 right-2 text-xs text-gray-500">
+                            {postContent.length}/500
+                        </div>
+                    </div>
+
+                    {/* Bouton de publication */}
+                    <button
+                        type="submit"
+                        disabled={isLoading}
+                        className={`w-full py-3 px-4 rounded-lg bg-orange-500 hover:bg-orange-600 
+                        transition-colors font-medium
                         ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
-                >
-                    {isLoading ? 'Publication en cours...' : 'Publier'}
-                </button>
-            </form>
+                    >
+                        {isLoading ? (
+                            <div className="flex items-center justify-center gap-2">
+                                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                                Publication en cours...
+                            </div>
+                        ) : (
+                            'Publier'
+                        )}
+                    </button>
+                </form>
+            </div>
         </div>
     );
 };

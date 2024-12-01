@@ -27,63 +27,64 @@ const CommentItem = ({ comment, onReply }) => {
     };
 
     return (
-        <div className="ml-4">
-            <div className="flex space-x-3 p-3 bg-gray-700 rounded-lg">
+        <div className="group">
+            <div className="flex gap-3">
                 <img
                     src={comment.userProfilePicture || '/default-avatar.png'}
-                    alt={`${comment.userFirstName} ${comment.userLastName}`}
-                    className="w-10 h-10 rounded-full object-cover"
+                    alt={`${comment.userFirstName}`}
+                    className="w-8 h-8 rounded-full"
                 />
                 <div className="flex-1">
-                    <div className="flex items-center justify-between">
-            <span className="font-semibold">
-              {comment.userFirstName} {comment.userLastName}
-            </span>
-                        <span className="text-sm text-gray-400">
-              {formatDate(comment.dateCommentaire)}
-            </span>
+                    <div className="flex items-baseline gap-2">
+                        <span className="font-semibold text-sm">
+                            {comment.userFirstName}
+                        </span>
+                        <p className="text-sm text-gray-300 inline">{comment.message}</p>
                     </div>
-                    <p className="text-gray-300 mt-1">{comment.message}</p>
-                    <button
-                        onClick={handleReply}
-                        className="text-sm text-gray-400 hover:text-orange-500 mt-1"
-                    >
-                        Répondre
-                    </button>
+                    <div className="flex items-center gap-3 mt-1">
+                        <span className="text-xs text-gray-500">
+                            {formatDate(comment.dateCommentaire)}
+                        </span>
+                        <button
+                            onClick={handleReply}
+                            className="text-xs text-gray-500 hover:text-gray-300"
+                        >
+                            Répondre
+                        </button>
+                    </div>
                 </div>
             </div>
 
+            {/* Zone de réponse */}
             {showReplyForm && (
-                <div className="ml-12 mt-2">
-                    <div className="flex space-x-3">
-                        <img
-                            src={getLoggedInUser()?.profilePicture || '/default-avatar.png'}
-                            alt="Votre avatar"
-                            className="w-8 h-8 rounded-full object-cover"
+                <div className="ml-11 mt-2">
+                    <div className="flex items-end gap-2">
+                        <textarea
+                            value={replyMessage}
+                            onChange={(e) => setReplyMessage(e.target.value)}
+                            placeholder="Votre réponse..."
+                            className="flex-1 bg-transparent text-sm resize-none focus:outline-none"
+                            rows="1"
                         />
-                        <div className="flex-1">
-              <textarea
-                  value={replyMessage}
-                  onChange={(e) => setReplyMessage(e.target.value)}
-                  placeholder="Votre réponse..."
-                  className="w-full p-2 bg-gray-700 text-white rounded-lg resize-none"
-                  rows="2"
-              />
-                            <button
-                                onClick={submitReply}
-                                className="mt-2 bg-orange-500 hover:bg-orange-600 text-white px-3 py-1 rounded-lg transition-colors"
-                            >
-                                Répondre
-                            </button>
-                        </div>
+                        <button
+                            onClick={submitReply}
+                            className="text-blue-500 font-semibold text-sm hover:text-blue-400"
+                        >
+                            Publier
+                        </button>
                     </div>
                 </div>
             )}
 
-            {comment.replies && comment.replies.length > 0 && (
-                <div className="ml-8 mt-4 space-y-4">
+            {/* Réponses */}
+            {comment.replies?.length > 0 && (
+                <div className="ml-11 mt-3 space-y-3">
                     {comment.replies.map((reply) => (
-                        <CommentItem key={reply.idCommentaire} comment={reply} onReply={onReply} />
+                        <CommentItem
+                            key={reply.idCommentaire}
+                            comment={reply}
+                            onReply={onReply}
+                        />
                     ))}
                 </div>
             )}
