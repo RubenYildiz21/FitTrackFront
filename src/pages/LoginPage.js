@@ -86,9 +86,15 @@ const LoginPage = () => {
                 </form>
 
                 {/* Forgot Password */}
-                <div className="text-center mt-6 animate-fadeIn">
-                    <button className="text-gray-400 hover:underline">Forgot Password?</button>
-                </div>
+                <p className="mt-8 text-center text-gray-400 animate-fadeIn">
+                    {' '}
+                    <button
+                        onClick={() => navigate('/ForgotPassword')}
+                        className="text-orange-500 hover:underline"
+                    >
+                        Mot de passe oublié ?
+                    </button>
+                </p>
 
 
                 {/* Sign Up Link */}

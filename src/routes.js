@@ -15,6 +15,7 @@ import CreatePostPage from "./pages/CreatePostPage";
 import ProgressPage from "./pages/ProgressPage";
 import Challenges from "./pages/Challenges";
 import CreateChallenge from "./pages/CreateChallenge";
+import ForgotPassword from "./pages/ForgotPassword"
 
 
 
@@ -28,6 +29,8 @@ const AppRoutes = () => (
             <Route path="/LoginPage" element={<LoginPage />} />
             <Route path="/MultiStepForm" element={<MultiStepForm />} />
             <Route path="/LoaderPage" element={<LoaderPage />} />
+            <Route path="/ForgotPassword" element={<ForgotPassword />} />
+
 
 
             {/* Routes protégées */}
@@ -89,6 +92,8 @@ const AppRoutes = () => (
                     <CreateChallenge />
                 </PrivateRoute>
             } />
+
+
         </Routes>
 
     </Router>
