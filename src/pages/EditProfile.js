@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from "./shared/Navbar";
 import apiRequest from '../services/api';
+import { ArrowLeftIcon, CameraIcon } from '@heroicons/react/24/outline';
 
 const EditProfile = () => {
   const [userId, setUserId] = useState(null);
@@ -123,98 +124,127 @@ const EditProfile = () => {
   if (!user) return <div className="text-gray-500">Loading...</div>;
 
 
-  
+
   return (
-    <div className="bg-black text-white min-h-screen p-6 mb-10">
-      <Navbar />
-      <button
-        className="text-gray-400 hover:text-white mb-4 text-2xl p-2"
-        onClick={() => navigate(-1)}
-      >
-        &#8592; {/* Flèche gauche */}
-      </button>
-      <form onSubmit={handleUpdateProfile}>
-        <div className="flex flex-col items-center mb-6">
-          <div className="w-24 h-24 rounded-full overflow-hidden mb-4">
-            <img
-              src={profilePicture ? profilePicture : require('../assets/images/profile.png')}
-              alt="Photo de profil"
-              className="object-cover w-full h-full"
-            />
+      <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white">
+        <Navbar />
+
+        {/* Container principal */}
+        <div className="max-w-2xl mx-auto px-4 py-6">
+          {/* Header */}
+          <div className="flex items-center justify-between mb-8">
+            <button
+                onClick={() => navigate(-1)}
+                className="flex items-center gap-2 text-orange-400 hover:text-white transition-colors"
+            >
+              <ArrowLeftIcon className="h-5 w-5" />
+              <span>Retour</span>
+            </button>
           </div>
-          <label className="text-center mb-2">
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-              className="hidden"
-            />
-            <span className="bg-orange-500 hover:bg-orange-400 py-2 px-4 rounded cursor-pointer">
-              Changer la photo de profil
-            </span>
-          </label>
+
+          <form onSubmit={handleUpdateProfile} className="space-y-8">
+            {/* Photo de profil */}
+            <div className="flex flex-col items-center">
+              <div className="relative group">
+                <div className="w-32 h-32 rounded-full overflow-hidden ring-4 ring-gray-800">
+                  <img
+                      src={profilePicture || require('../assets/images/profile.png')}
+                      alt="Photo de profil"
+                      className="w-full h-full object-cover"
+                  />
+                </div>
+                <label className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 rounded-full cursor-pointer transition-opacity">
+                  <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      className="hidden"
+                  />
+                  <CameraIcon className="h-8 w-8 text-white" />
+                </label>
+              </div>
+              <p className="mt-2 text-sm text-gray-400">Cliquez pour modifier</p>
+            </div>
+
+            {/* Informations personnelles */}
+            <div className="space-y-6">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-400">
+                    Prénom
+                  </label>
+                  <input
+                      type="text"
+                      value={firstName}
+                      onChange={(e) => setFirstName(e.target.value)}
+                      className="w-full px-4 py-3 bg-gray-800/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all"
+                      required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-400">
+                    Nom
+                  </label>
+                  <input
+                      type="text"
+                      value={lastName}
+                      onChange={(e) => setLastName(e.target.value)}
+                      className="w-full px-4 py-3 bg-gray-800/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all"
+                      required
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-3 gap-4">
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-400">
+                    Taille (cm)
+                  </label>
+                  <input
+                      type="number"
+                      value={height}
+                      onChange={(e) => setHeight(e.target.value)}
+                      className="w-full px-4 py-3 bg-gray-800/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all"
+                      required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-400">
+                    Poids (kg)
+                  </label>
+                  <input
+                      type="number"
+                      value={weight}
+                      onChange={(e) => setWeight(e.target.value)}
+                      className="w-full px-4 py-3 bg-gray-800/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all"
+                      required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-400">
+                    Âge
+                  </label>
+                  <input
+                      type="number"
+                      value={age}
+                      onChange={(e) => setAge(e.target.value)}
+                      className="w-full px-4 py-3 bg-gray-800/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all"
+                      required
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Bouton de sauvegarde */}
+            <button
+                type="submit"
+                className="w-full py-4 bg-orange-500 hover:bg-orange-600 rounded-xl font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500/50"
+            >
+              Sauvegarder les modifications
+            </button>
+          </form>
         </div>
-        <div className="mb-4">
-          <label className="block text-white mb-2">Prénom</label>
-          <input
-            type="text"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            className="w-full px-4 py-2 text-white bg-gray-800 rounded-md"
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-white mb-2">Nom</label>
-          <input
-            type="text"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            className="w-full px-4 py-2 text-white bg-gray-800 rounded-md"
-            required
-          />
-        </div>
-        <div className="flex space-x-4 mb-4">
-          <div className="w-1/2">
-            <label className="block text-white mb-2">Taille (cm)</label>
-            <input
-              type="number"
-              value={height}
-              onChange={(e) => setHeight(e.target.value)}
-              className="w-full px-4 py-2 text-white bg-gray-800 rounded-md"
-              required
-            />
-          </div>
-          <div className="w-1/2">
-            <label className="block text-white mb-2">Poids (kg)</label>
-            <input
-              type="number"
-              value={weight}
-              onChange={(e) => setWeight(e.target.value)}
-              className="w-full px-4 py-2 text-white bg-gray-800 rounded-md"
-              required
-            />
-          </div>
-        </div>
-        <div className="mb-4">
-          <label className="block text-white mb-2">Âge</label>
-          <input
-            type="number"
-            value={age}
-            onChange={(e) => setAge(e.target.value)}
-            className="w-full px-4 py-2 text-white bg-gray-800 rounded-md"
-            required
-          />
-        </div>
-        {/* Ajouter d'autres champs si nécessaire */}
-        <button
-          type="submit"
-          className="bg-orange-500 hover:bg-orange-400 py-2 px-4 rounded w-full"
-        >
-          Sauvegarder les modifications
-        </button>
-      </form>
-    </div>
+      </div>
   );
 };
 
