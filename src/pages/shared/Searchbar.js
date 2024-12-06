@@ -134,7 +134,7 @@ const Searchbar = () => {
                 <div key={user.id} className="flex items-center justify-between p-4 bg-gray-800 shadow">
                     <div className="flex items-center">
                         <img
-                            src={user.profilePicture ? getProfilePicturePath(user.profilePicture) : require('../../assets/images/profile.png')}
+                            src={user.profilePicture ? user.profilePicture : require('../../assets/images/profile.png')}
                             alt="User profile"
                             className="w-12 h-12 rounded-full mr-4"
                         />

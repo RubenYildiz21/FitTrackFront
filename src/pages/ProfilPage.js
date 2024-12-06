@@ -69,7 +69,7 @@ const ProfilPage = () => {
 
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white">
+        <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white mb-20">
             <Navbar />
 
             {/* Header avec bouton retour */}
