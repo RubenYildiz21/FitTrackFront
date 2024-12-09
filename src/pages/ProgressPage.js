@@ -158,6 +158,8 @@ const ProgressPage = () => {
         `}</style>
       </div>
 
+      <h1 className="text-2xl font-bold mb-6 text-center">Mon Avancement</h1>
+
       <div className="text-center mb-6">
         <button
           onClick={() => navigate("/AllSeance")}
@@ -166,8 +168,6 @@ const ProgressPage = () => {
           Consulter les séances
         </button>
       </div>
-
-      <h1 className="text-2xl font-bold mb-6 text-center">Mon Avancement</h1>
 
       {/* Sélecteur de période */}
       <div className="mb-6 text-center">

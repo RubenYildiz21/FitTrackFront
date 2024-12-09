@@ -8,28 +8,35 @@ const AllSeance = () => {
     const navigate = useNavigate();
     const [seances, setSeances] = useState([]);
     const [error, setError] = useState(null);
+    
+    // On va stocker l'utilisateur dans un state stable, une seule fois.
+    const [userState, setUserState] = useState(null);
 
-    // Récupération de l'utilisateur connecté
-    const user = JSON.parse(sessionStorage.getItem('user'));
+    // Récupération de l'utilisateur connecté une seule fois au montage
+    useEffect(() => {
+        const storedUser = sessionStorage.getItem('user');
+        if (storedUser) {
+            const parsedUser = JSON.parse(storedUser);
+            setUserState(parsedUser);
+        }
+    }, []);
 
     useEffect(() => {
-        if (!user || !user.id) return;
+        // On vérifie que userState est bien défini
+        if (!userState || !userState.id) return;
+
         const fetchSeances = async () => {
             try {
-                if (!user || !user.id) {
-                    throw new Error("Utilisateur non authentifié.");
-                }
-                // Appel à l'API pour récupérer les séances de l'utilisateur
-                const data = await apiRequest(`/seances/user/${user.id}`, 'GET');
+                const data = await apiRequest(`/seances/user/${userState.id}`, 'GET');
                 setSeances(data);
             } catch (error) {
                 console.error("Erreur lors de la récupération des séances", error);
                 setError("Impossible de récupérer les séances.");
             }
         };
+
         fetchSeances();
-        
-    }, [user]);
+    }, [userState]);
 
     if (error) {
         return (
@@ -56,7 +63,7 @@ const AllSeance = () => {
     }
 
     return (
-        <div className="min-h-screen bg-black text-white">
+        <div className="min-h-screen bg-black text-white mb-20">
             <Navbar />
             <div className="max-w-3xl mx-auto px-4 py-6">
                 <h2 className="text-2xl font-semibold mb-8">Mes séances</h2>
@@ -67,6 +74,7 @@ const AllSeance = () => {
                             className="bg-gray-900 rounded-xl p-4 flex items-center justify-between"
                         >
                             <div>
+                                
                                 <h3 className="text-xl font-medium">{seance.nameSeance}</h3>
                                 <p className="text-sm text-gray-400">
                                     {new Date(seance.dateSeance).toLocaleDateString('fr-FR', {
@@ -76,7 +84,6 @@ const AllSeance = () => {
                                     })}
                                 </p>
                             </div>
-                            {/* Bouton détails, si vous souhaitez afficher plus d'infos plus tard */}
                             <button
                                 className="bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 rounded"
                                 onClick={() => navigate(`/seance/${seance.idSeance}`)}
