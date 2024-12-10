@@ -45,25 +45,29 @@ const Challenges = () => {
         fetchChallenges();
     }, [userId]);
 
-    return (
-        <div className="min-h-screen flex flex-col bg-black text-white animate-fadeIn">
-            {/* Main content */}
-            <div className="flex-1 overflow-visible p-4 sm:px-6 lg:px-8">
-                <div className="max-w-md mx-auto p-6 bg-black bg-opacity-90 rounded-lg">
-                    {/* Header */}
-                    <div className="flex items-center justify-between mb-6">
-                        <h2 className="text-2xl font-semibold">Mes défis</h2>
-                        <button
-                            className="bg-orange-600 text-white px-4 py-2 rounded-md hover:bg-orange-700"
-                            onClick={() => navigate('/CreateChallenge')}
-                        >
-                            Créer un défi
-                        </button>
-                    </div>
+//             const updatedChallenges = await getChallengesByUser(userId);
+//             setParticipatingChallenges(updatedChallenges.participating);
+//             setJoinableChallenges(updatedChallenges.joinable);
+//         } catch (err) {
+//             console.error('Failed to join challenge:', err);
+//             alert('An error occurred while joining the challenge.');
+//         }
+//     };
 
-                    {/* Loading or Error State */}
-                    {loading && <p className="text-center">Loading challenges...</p>}
-                    {error && <p className="text-center text-red-500">{error}</p>}
+//     // Fetch challenges from the backend
+//     useEffect(() => {
+//         const fetchChallenges = async () => {
+//             try {
+//                 const data = await getChallengesByUser(userId);
+//                 setParticipatingChallenges(data.participating);
+//                 setJoinableChallenges(data.joinable);
+//             } catch (err) {
+//                 console.error('Error fetching challenges:', err);
+//                 setError('Failed to load challenges. Please try again later.');
+//             } finally {
+//                 setLoading(false);
+//             }
+//         };
 
                     {/* Participating Challenges */}
                     <h3 className="text-xl font-bold mt-4">Vos défis : </h3>
@@ -109,10 +113,20 @@ const Challenges = () => {
                 </div>
             </div>
 
-            {/* Navbar */}
-            <Navbar />
-        </div>
-    );
-};
+//     return (
+//         <div className="min-h-screen flex flex-col bg-black text-white animate-fadeIn">
+//             {/* Main content */}
+//             <div className="flex-1 overflow-visible p-4 sm:px-6 lg:px-8">
+//                 <div className="max-w-md mx-auto p-6 bg-black bg-opacity-90 rounded-lg">
+//                     {/* Header */}
+//                     <div className="flex items-center justify-between mb-6">
+//                         <h2 className="text-2xl font-semibold">Mes défis</h2>
+//                         <button
+//                             className="bg-orange-600 text-white px-4 py-2 rounded-md hover:bg-orange-700"
+//                             onClick={() => navigate('/CreateChallenge')}
+//                         >
+//                             Créer un défi
+//                         </button>
+//                     </div>
 
 export default Challenges;

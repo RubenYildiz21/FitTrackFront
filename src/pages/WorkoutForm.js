@@ -1,12 +1,13 @@
-// WorkoutForm.js
-import React, { useState, useEffect } from 'react';
+// src/pages/WorkoutForm.js
+import React, { useState } from 'react';
 import ExerciseList from './ExerciseList';
 import FilterSection from './FilterSection';
 import { createWorkoutSession } from '../services/workoutService';
 import Navbar from './shared/Navbar';
-import Modal from 'react-modal'; // Import de react-modal
+import Modal from 'react-modal';
+import { useNavigate } from 'react-router-dom';
 
-// Définir l'élément racine pour react-modal
+
 Modal.setAppElement('#root');
 
 const WorkoutForm = () => {
@@ -18,6 +19,8 @@ const WorkoutForm = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentVideoUrl, setCurrentVideoUrl] = useState('');
 
+  const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!sessionName || !sessionDate || selectedExercises.length === 0) {
@@ -26,26 +29,52 @@ const WorkoutForm = () => {
     }
 
     try {
+      const userData = sessionStorage.getItem('user');
+      if (!userData) throw new Error('Utilisateur non authentifié.');
+      const user = JSON.parse(userData);
+
+      // Filtrer les exercices dupliqués
+      const uniqueExercises = selectedExercises.reduce((acc, current) => {
+        const x = acc.find(ex => ex.idExercice === current.idExercice);
+        if (!x) {
+          return acc.concat([current]);
+        } else {
+          return acc;
+        }
+      }, []);
+
+
       const workoutSession = {
-        name: sessionName,
-        date: sessionDate,
-        exercises: selectedExercises.map(ex => ({
-          ...ex,
-          sets: ex.sets || [{ reps: 0, weight: 0 }] // Assure qu'il y a au moins une série
+        nameSeance: sessionName,
+        dateSeance: new Date(sessionDate).toISOString(),
+        userId: user.id,
+        blocs: uniqueExercises.map(ex => ({
+          exercice: {
+            idExercice: ex.idExercice
+          },
+          series: ex.sets.map((set, index) => ({
+            serie: index + 1,
+            reps: set.reps,
+            poids: set.weight,
+            tempsRepos: ex.tempsRepos,
+            tempsDeRepetition: ex.tempsDeRepetition
+          }))
         }))
       };
 
       console.log('Session à créer:', workoutSession); // Pour déboguer
+
       
       await createWorkoutSession(workoutSession);
-      // Redirection ou message de succès
-      alert('Séance enregistrée avec succès !');
-      // Optionnel : Réinitialiser le formulaire
+      // Réinitialiser le formulaire
       setSessionName('');
       setSessionDate('');
       setSelectedExercises([]);
       setActiveFilters([]);
       setError('');
+
+      // Redirection ou message de succès
+      navigate('/progress');
     } catch (err) {
       setError('Erreur lors de la création de la séance');
       console.error('Error creating session:', err);
@@ -62,18 +91,30 @@ const WorkoutForm = () => {
     setCurrentVideoUrl('');
   };
 
-  const removeExercise = (idExercice) => {
-    setSelectedExercises(selectedExercises.filter(ex => ex.idExercice !== idExercice));
+  const removeExercise = (id) => {
+    setSelectedExercises(selectedExercises.filter(ex => ex.id !== id));
   };
 
-  const updateSet = (idExercice, newSets) => {
-    setSelectedExercises(selectedExercises.map(ex => 
-      ex.idExercice === idExercice ? { ...ex, sets: newSets } : ex
+  const updateSet = (id, newSets) => {
+    setSelectedExercises(selectedExercises.map(ex =>
+      ex.id === id ? { ...ex, sets: newSets } : ex
+    ));
+  };
+
+  const updateTempsRepos = (id, newTempsRepos) => {
+    setSelectedExercises(selectedExercises.map(ex =>
+      ex.id === id ? { ...ex, tempsRepos: newTempsRepos } : ex
+    ));
+  };
+
+  const updateTempsDeRepetition = (id, newTempsDeRepetition) => {
+    setSelectedExercises(selectedExercises.map(ex =>
+      ex.id === id ? { ...ex, tempsDeRepetition: newTempsDeRepetition } : ex
     ));
   };
 
   return (
-    <div className="min-h-screen bg-black p-4 text-white mb-20">
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black p-4 text-white mb-20">
       <Navbar />
       <h1 className="text-2xl font-bold mb-6">
         Nouvelle séance
@@ -86,18 +127,18 @@ const WorkoutForm = () => {
             placeholder="Nom de la séance"
             value={sessionName}
             onChange={(e) => setSessionName(e.target.value)}
-            className="w-full p-3 rounded bg-zinc-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500"
+            className="w-full p-3 rounded bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500"
           />
 
           <input
             type="date"
             value={sessionDate}
             onChange={(e) => setSessionDate(e.target.value)}
-            className="w-full p-3 rounded bg-zinc-800 text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
+            className="w-full p-3 rounded bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
           />
         </div>
 
-        <FilterSection 
+        <FilterSection
           activeFilters={activeFilters}
           setActiveFilters={setActiveFilters}
         />
@@ -108,9 +149,8 @@ const WorkoutForm = () => {
             <h2 className="text-xl font-semibold mb-4">Exercices sélectionnés</h2>
             <div className="space-y-4">
               {selectedExercises.map((exercise) => {
-                console.log('Exercice sélectionné:', exercise); // Log pour vérifier videoUrl
                 return (
-                  <div key={exercise.idExercice} className="bg-zinc-800 rounded-lg p-4">
+                  <div key={exercise.idExercice} className="bg-gray-800 rounded-lg p-4">
                     <div className="flex justify-between items-center mb-2">
                       <h3 className="font-medium">{exercise.nom}</h3>
                       <button
@@ -121,6 +161,33 @@ const WorkoutForm = () => {
                         Supprimer
                       </button>
                     </div>
+
+                    {/* Champs pour tempsRepos et tempsDeRepetition */}
+                    <div className="flex flex-col md:flex-row gap-4 mb-4">
+                      <div className="flex flex-col">
+                        <label className="text-sm text-gray-400 mb-1">Temps de repos (HH:mm:ss)</label>
+                        <input
+                          type="time"
+                          step="1"
+                          value={exercise.tempsRepos || ""}
+                          onChange={(e) => updateTempsRepos(exercise.idExercice, e.target.value)}
+                          className="w-full p-2 rounded bg-zinc-700 text-white"
+                          required
+                        />
+                      </div>
+                      <div className="flex flex-col">
+                        <label className="text-sm text-gray-400 mb-1">Temps de répétition (HH:mm:ss)</label>
+                        <input
+                          type="time"
+                          step="1"
+                          value={exercise.tempsDeRepetition || ""}
+                          onChange={(e) => updateTempsDeRepetition(exercise.idExercice, e.target.value)}
+                          className="w-full p-2 rounded bg-zinc-700 text-white"
+                          required
+                        />
+                      </div>
+                    </div>
+
                     <button
                       type="button"
                       onClick={() => {
@@ -141,7 +208,7 @@ const WorkoutForm = () => {
                             placeholder="Nombre"
                             value={set.reps}
                             onChange={(e) => {
-                              const newSets = exercise.sets.map((s, i) => 
+                              const newSets = exercise.sets.map((s, i) =>
                                 i === index ? { ...s, reps: parseInt(e.target.value) || 0 } : s
                               );
                               updateSet(exercise.idExercice, newSets);
@@ -158,7 +225,7 @@ const WorkoutForm = () => {
                             placeholder="Poids"
                             value={set.weight}
                             onChange={(e) => {
-                              const newSets = exercise.sets.map((s, i) => 
+                              const newSets = exercise.sets.map((s, i) =>
                                 i === index ? { ...s, weight: parseFloat(e.target.value) || 0 } : s
                               );
                               updateSet(exercise.idExercice, newSets);

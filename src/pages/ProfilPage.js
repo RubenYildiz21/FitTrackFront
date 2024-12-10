@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import height from '../assets/images/height.png';
 import weight from '../assets/images/dumbbell.png';
 import sablier from '../assets/images/sablier.png';
+import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 
 import Navbar from "./shared/Navbar"; 
 import apiRequest from '../services/api';
@@ -66,106 +67,111 @@ const ProfilPage = () => {
     if (error) return <div className="text-red-500">{error}</div>;
     if (!user) return <div className="text-gray-500">Loading...</div>;
 
-    const getProfilePicturePath = (base64String) => {
-        try {
-            return `data:image/jpeg;base64,${base64String}`;
-        } catch (e) {
-            console.error("Failed to decode Base64 profile picture string", e);
-            return '/src/assets/images/profile.png'; // Default path
-        }
-    };
 
     return (
-        <div className="bg-gradient-to-b from-gray-900 to-black text-white min-h-screen p-6 pb-20 mb-10">
-            <Navbar/>
-            <button
-                className="text-gray-400 hover:text-white mb-4 text-2xl p-2 transition duration-200"
-                onClick={() => navigate(-1)}
-            >
-                &#8592; {/* Flèche gauche */}
-            </button>
+        <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white mb-20">
+            <Navbar />
 
-            {/* Profil Utilisateur */}
-            <div className="flex flex-col items-center mb-8 bg-gray-800 p-6 rounded-lg shadow-lg space-y-4">
-                <div className="w-28 h-28 rounded-full overflow-hidden">
-                    <img
-                        src={user.profilePicture ? getProfilePicturePath(user.profilePicture) : require('../assets/images/profile.png')}
-                        alt="Profile"
-                        className="object-cover w-full h-full"
-                    />
-                </div>
-                <h1 className="text-3xl font-bold">{user.firstName} {user.lastName}</h1>
-                <div className="flex space-x-6 text-center mt-2">
-                    <div>
-                        <p className="text-lg font-semibold">{followersCount}</p>
-                        <p className="text-sm text-gray-400">Followers</p>
-                    </div>
-                    <div>
-                        <p className="text-lg font-semibold">{followingCount}</p>
-                        <p className="text-sm text-gray-400">Following</p>
-                    </div>
-                </div>
-            </div>
-
-            {/* Informations sur l'utilisateur */}
-            <div className="flex flex-wrap justify-center gap-6 mb-6">
-                <div className="flex flex-col items-center bg-gray-800 p-4 rounded-lg shadow-md space-y-2">
-                    <img src={height} alt="Height Icon" className="w-12 h-12" />
-                    <span className="font-semibold">{user.height} CM</span>
-                    <p className="text-sm text-gray-400">Height</p>
-                </div>
-
-                <div className="flex flex-col items-center bg-gray-800 p-4 rounded-lg shadow-md space-y-2">
-                    <img src={weight} alt="Weight Icon" className="w-12 h-12" />
-                    <span className="font-semibold">{user.weight} KG</span>
-                    <p className="text-sm text-gray-400">Weight</p>
-                </div>
-
-                <div className="flex flex-col items-center bg-gray-800 p-4 rounded-lg shadow-md space-y-2">
-                    <img src={sablier} alt="Age Icon" className="w-12 h-12" />
-                    <span className="font-semibold">{user.age} Years</span>
-                    <p className="text-sm text-gray-400">Age</p>
-                </div>
-            </div>
-
-            <hr className="border-gray-600 mb-6" />
-
-            {/* Objectifs */}
-            <div className="text-center mb-6">
-                <h2 className="font-bold text-2xl mb-4">Main Goal</h2>
-                <span className="text-lg italic text-orange-400">{user.mainGoal}</span>
-            </div>
-
-            <div className="text-center mb-6">
-                <h2 className="font-bold text-2xl mb-4">Personal Goals</h2>
-                <div className="flex flex-col items-center bg-gray-800 p-4 rounded-lg shadow-md space-y-2">
-                    <img src={weight} alt="Goal Weight Icon" className="w-12 h-12" />
-                    <span className="font-semibold">{user.goalWeight} KG</span>
-                    <p className="text-sm text-gray-400">Goal Weight</p>
-                </div>
-            </div>
-
-            <hr className="border-gray-600 mb-6" />
-
-            {/* Boutons */}
-            <div className="flex flex-col space-y-4">
-                <button className="bg-orange-500 hover:bg-orange-600 py-3 rounded-md font-semibold shadow-md transition duration-300"
-                onClick={() => navigate('/EditGoals')}>
-                    Edit Goals
-                </button>
-                <button className="bg-orange-500 hover:bg-orange-600 py-3 rounded-md font-semibold shadow-md transition duration-300"
-                onClick={() => navigate('/EditProfile')}>
-                    Edit Info
-                </button>
+            {/* Header avec bouton retour */}
+            <div className="max-w-3xl mx-auto px-4 py-6">
                 <button
-                    className="bg-red-600 hover:bg-red-500 py-3 rounded-md font-semibold shadow-md transition duration-300"
-                    onClick={() => {
-                        sessionStorage.clear(); // Clear session storage
-                        navigate('/'); // Redirect to the homepage
-                    }}
+                    onClick={() => navigate(-1)}
+                    className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
                 >
-                    Sign Out
+                    <ArrowLeftIcon className="h-5 w-5" />
+                    <span>Retour</span>
                 </button>
+
+                {/* Section profil */}
+                <div className="mt-8 flex flex-col items-center">
+                    <div className="w-32 h-32 rounded-full ring-4 ring-gray-800 overflow-hidden">
+                        <img
+                            src={user.profilePicture || require('../assets/images/profile.png')}
+                            alt="Profile"
+                            className="w-full h-full object-cover"
+                        />
+                    </div>
+
+                    <h1 className="mt-4 text-2xl font-bold">
+                        {user.firstName} {user.lastName}
+                    </h1>
+
+                    {/* Stats */}
+                    <div className="flex gap-12 mt-6">
+                        <div className="text-center">
+                            <p className="text-2xl font-bold">{followersCount}</p>
+                            <p className="text-sm text-gray-400">Followers</p>
+                        </div>
+                        <div className="text-center">
+                            <p className="text-2xl font-bold">{followingCount}</p>
+                            <p className="text-sm text-gray-400">Following</p>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Cartes d'informations */}
+                <div className="mt-12 grid grid-cols-3 gap-4">
+                    <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 flex flex-col items-center">
+                        <img src={height} alt="Height" className="w-10 h-10 mb-3" />
+                        <span className="text-xl font-bold">{user.height}</span>
+                        <span className="text-sm text-gray-400">CM</span>
+                    </div>
+
+                    <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 flex flex-col items-center">
+                        <img src={weight} alt="Weight" className="w-10 h-10 mb-3" />
+                        <span className="text-xl font-bold">{user.weight}</span>
+                        <span className="text-sm text-gray-400">KG</span>
+                    </div>
+
+                    <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 flex flex-col items-center">
+                        <img src={sablier} alt="Age" className="w-10 h-10 mb-3" />
+                        <span className="text-xl font-bold">{user.age}</span>
+                        <span className="text-sm text-gray-400">ANS</span>
+                    </div>
+                </div>
+
+                {/* Objectifs */}
+                <div className="mt-12 space-y-8">
+                    <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6">
+                        <h2 className="text-lg font-medium mb-2">Objectif principal</h2>
+                        <p className="text-orange-400">{user.mainGoal}</p>
+                    </div>
+
+                    <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6">
+                        <h2 className="text-lg font-medium mb-4">Objectif de poids</h2>
+                        <div className="flex items-center gap-4">
+                            <img src={weight} alt="Goal Weight" className="w-8 h-8" />
+                            <span className="text-xl font-bold">{user.goalWeight} KG</span>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Actions */}
+                <div className="mt-12 space-y-3">
+                    <button
+                        onClick={() => navigate('/EditGoals')}
+                        className="w-full py-3.5 rounded-xl bg-gray-800/50 backdrop-blur-sm hover:bg-gray-700/50 transition-colors"
+                    >
+                        Modifier les objectifs
+                    </button>
+
+                    <button
+                        onClick={() => navigate('/EditProfile')}
+                        className="w-full py-3.5 rounded-xl bg-gray-800/50 backdrop-blur-sm hover:bg-gray-700/50 transition-colors"
+                    >
+                        Modifier le profil
+                    </button>
+
+                    <button
+                        onClick={() => {
+                            sessionStorage.clear();
+                            navigate('/');
+                        }}
+                        className="w-full py-3.5 rounded-xl bg-red-500/10 text-red-500 hover:bg-red-500/20 transition-colors"
+                    >
+                        Déconnexion
+                    </button>
+                </div>
             </div>
         </div>
     );

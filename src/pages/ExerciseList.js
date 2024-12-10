@@ -12,7 +12,6 @@ const ExerciseList = ({ selectedExercises, setSelectedExercises, filters, openMo
       try {
         setLoading(true);
         const data = await fetchExercises();
-        console.log('Exercices récupérés:', data); // Log pour vérifier les données
         setExercises(data);
       } catch (err) {
         setError('Erreur lors du chargement des exercices');
@@ -26,10 +25,10 @@ const ExerciseList = ({ selectedExercises, setSelectedExercises, filters, openMo
   }, []);
 
   const filteredExercises = exercises.filter(exercise => {
-    if(filters.length === 0) return true;
+    if (filters.length === 0) return true;
 
     return filters.some(filter => {
-      if(typeof exercise.equipementNecessaire !== 'string'){
+      if (typeof exercise.equipementNecessaire !== 'string') {
         console.warn(`Exercise ${exercise.nom} has an invalid equipementNecessaire type. It should be a string.`);
         return false;
       }
@@ -40,8 +39,13 @@ const ExerciseList = ({ selectedExercises, setSelectedExercises, filters, openMo
 
   const addExercise = (exercise) => {
     console.log('Ajout de l\'exercice:', exercise); // Log pour vérifier les données
-    if (!selectedExercises.find(ex => ex.idExercice === exercise.idExercice)) {
-      setSelectedExercises([...selectedExercises, { ...exercise, sets: [{ reps: 0, weight: 0 }] }]);
+    const isAlreadySelected = selectedExercises.some(ex => ex.idExercice === exercise.idExercice);
+    if (!isAlreadySelected) {
+      setSelectedExercises([...selectedExercises, {
+        ...exercise, sets: [{ reps: 0, weight: 0 }],
+        tempsRepos: "00:00:30", // Initialiser le temps de repos
+        tempsDeRepetition: "00:01:00"
+      }]);
     }
   };
 
@@ -64,16 +68,16 @@ const ExerciseList = ({ selectedExercises, setSelectedExercises, filters, openMo
   return (
     <div className="flex flex-col space-y-4">
       {filteredExercises.map((exercise) => (
-        <div 
+        <div
           key={exercise.idExercice}
-          className="bg-zinc-800 rounded-lg shadow-lg overflow-hidden"
+          className="bg-gray-800 rounded-lg shadow-lg overflow-hidden"
         >
           <div className="flex justify-between items-center p-4">
             <div className="flex space-x-4 items-center">
               {exercise.icon ? (
                 exercise.icon
               ) : (
-                <div className="w-24 h-16 bg-zinc-700 rounded flex items-center justify-center">
+                <div className="w-24 h-16 bg-gray-700 rounded flex items-center justify-center">
                   <span className="text-gray-400">No image</span>
                 </div>
               )}
@@ -88,14 +92,14 @@ const ExerciseList = ({ selectedExercises, setSelectedExercises, filters, openMo
             </div>
             <div className="flex flex-col space-y-1">
               {exercise.lienVideo && (
-                <button 
+                <button
                   onClick={() => openModal(exercise.lienVideo)}
                   className="px-3 py-1 bg-orange-400 text-white rounded hover:bg-orange-500 transition-colors text-sm"
                 >
                   Exemple
                 </button>
               )}
-              <button 
+              <button
                 onClick={() => addExercise(exercise)}
                 className="px-3 py-1 bg-orange-600 text-white rounded hover:bg-orange-500 transition-colors text-sm"
               >

@@ -17,7 +17,7 @@ const MultiStepForm = () => {
         password: '',
         age: 0,
         trainingLevel: '',
-        profilePicture: '', // Stocke le chemin de l’image ici
+        profilePicture: null, 
         gender: '',
         mainGoal: '',
         goalWeight: 0,
@@ -28,6 +28,7 @@ const MultiStepForm = () => {
 
     const [errors, setErrors] = useState({ email: '', password: '', checkbox: '' });
     const [isPrivacyChecked, setIsPrivacyChecked] = useState(false);
+    const [uploadedImageUrl, setUploadedImageUrl] = useState(null);
 
     const selectOption = (value, field) => {
         setSelectedOption(value);
@@ -84,7 +85,6 @@ const MultiStepForm = () => {
     const handleSubmit = async () => {
         if (!validateStep()) return;
 
-        // Créer un FormData pour envoyer les données, y compris l'image
         const formDataToSend = new FormData();
         formDataToSend.append("firstName", formData.firstName);
         formDataToSend.append("lastName", formData.lastName);
@@ -110,11 +110,15 @@ const MultiStepForm = () => {
         try {
             const data = await registerUser(formDataToSend);
             console.log('User registered successfully:', data);
+            if(data.user && data.user.profilePicture){
+                setUploadedImageUrl(data.user.profilePicture);
+            }
             navigate('/LoaderPage');
         } catch (error) {
-            console.error('Error:', error);
+            console.error("Error:", error);
         }
     };
+
 
     const renderBackButton = () => {
         return (
@@ -143,7 +147,7 @@ const MultiStepForm = () => {
         switch (step) {
             case 1:
                 return (
-                    <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white px-4 sm:px-6 lg:px-8 animate-fadeIn">
+                    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-gray-900 to-black text-white px-4 sm:px-6 lg:px-8 animate-fadeIn">
                         {renderBackButton()}
                         <h2 className="text-4xl font-bold mb-12">Sign Up</h2>
                         <div className="space-y-4 w-full max-w-md">
@@ -212,7 +216,7 @@ const MultiStepForm = () => {
                 );
             case 2:
                 return (
-                    <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white px-4 sm:px-6 lg:px-8 animate-fadeIn">
+                    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-gray-900 to-black text-white px-4 sm:px-6 lg:px-8 animate-fadeIn">
                         {renderBackButton()}
                         <h2 className="text-4xl font-bold mb-12">Choose Gender</h2>
                         <div className="space-y-4 w-full max-w-md">
@@ -246,7 +250,7 @@ const MultiStepForm = () => {
                 );
             case 3:
                 return (
-                    <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white px-4 sm:px-6 lg:px-8 animate-fadeIn">
+                    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-gray-900 to-black text-white px-4 sm:px-6 lg:px-8 animate-fadeIn">
                         {renderBackButton()}
                         <h2 className="text-4xl font-bold mb-12">Choose Main Goal</h2>
                         <div className="space-y-4 w-full max-w-md">
@@ -286,7 +290,7 @@ const MultiStepForm = () => {
                 );
             case 4:
                 return (
-                    <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white px-4 sm:px-6 lg:px-8 animate-fadeIn">
+                    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-gray-900 to-black text-white px-4 sm:px-6 lg:px-8 animate-fadeIn">
                         {renderBackButton()}
                         <h2 className="text-4xl font-bold mb-12">Choose Training Level</h2>
                         <div className="space-y-4 w-full max-w-md">
@@ -326,7 +330,7 @@ const MultiStepForm = () => {
                 );
             case 5:
                 return (
-                    <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white px-4 sm:px-6 lg:px-8 animate-fadeIn">
+                    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-gray-900 to-black text-white px-4 sm:px-6 lg:px-8 animate-fadeIn">
                         {renderBackButton()}
                         <h2 className="text-4xl font-bold mb-12">Select Height</h2>
                         <div className="space-y-4 w-full max-w-md">
@@ -347,7 +351,7 @@ const MultiStepForm = () => {
                 );
             case 6:
                 return (
-                    <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white px-4 sm:px-6 lg:px-8 animate-fadeIn">
+                    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-gray-900 to-black text-white px-4 sm:px-6 lg:px-8 animate-fadeIn">
                         {renderBackButton()}
                         <h2 className="text-4xl font-bold mb-12">Select Weight</h2>
                         <div className="space-y-4 w-full max-w-md">
@@ -368,9 +372,9 @@ const MultiStepForm = () => {
                 );
             case 7:
                 return (
-                    <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white px-4 sm:px-6 lg:px-8 animate-fadeIn">
+                    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-gray-900 to-black text-white px-4 sm:px-6 lg:px-8 animate-fadeIn">
                         {renderBackButton()}
-                        <h2 className="text-4xl font-bold mb-12">Enter Your Goal Weight</h2>
+                        <h2 className="text-4xl font-bold mb-12 text-center">Enter Your Goal Weight</h2>
                         <div className="space-y-4 w-full max-w-md">
                             <input
                                 type="number"
@@ -389,7 +393,7 @@ const MultiStepForm = () => {
                 );
             case 8:
                 return (
-                    <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white px-4 sm:px-6 lg:px-8 animate-fadeIn">
+                    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-gray-900 to-black text-white px-4 sm:px-6 lg:px-8 animate-fadeIn mb-8">
                         {renderBackButton()}
                         <h2 className="text-4xl font-bold mb-12">Choose Your Place</h2>
                         <div className="space-y-4 w-full max-w-md">
@@ -418,7 +422,7 @@ const MultiStepForm = () => {
             case 9:
                 return (
                     <div
-                        className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-gray-900 to-black text-white px-4 sm:px-6 lg:px-8 animate-fadeIn">
+                        className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-gray-900 to-black text-white px-4 sm:px-6 lg:px-8 animate-fadeIn mb-8">
                         {renderBackButton()}
                         <h2 className="text-4xl font-bold mb-12 text-center"></h2>
                         <div

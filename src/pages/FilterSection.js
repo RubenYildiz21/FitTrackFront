@@ -24,12 +24,13 @@ const FilterSection = ({ activeFilters, setActiveFilters }) => {
       <div className="flex flex-wrap gap-2">
         {filters.map((filter) => (
           <button
+          type='button'
             key={filter.id}
             onClick={() => toggleFilter(filter.id)}
             className={`px-4 py-2 rounded-full transition-colors ${
               activeFilters.includes(filter.id)
                 ? 'bg-orange-500 text-white'
-                : 'bg-zinc-800 text-white hover:bg-zinc-700'
+                : 'bg-gray-700 text-white hover:bg-zinc-700'
             }`}
           >
             {filter.label}
