@@ -120,7 +120,8 @@ const ProgressPage = () => {
         <h2 className="text-xl font-semibold mb-4">Calendrier des Séances prestées</h2>
         <Calendar
           tileClassName={({ date, view }) => {
-            if (progress.workoutsPerDay[date.toISOString().split('T')[0]]) {
+            const localDateString = date.toLocaleDateString('fr-CA');
+            if (progress.workoutsPerDay[localDateString]) {
               return 'workout-day';
             }
           }}
