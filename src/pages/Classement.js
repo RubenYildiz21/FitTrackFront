@@ -43,7 +43,7 @@ const Classement = () => {
         try {
             const response = await quitChallenge(getLoggedInUser().id, challengeId);
             console.log('Successfully quit challenge:', response);
-            navigate('/Challenges');
+            navigate('/Challenge');
         } catch (err) {
             console.error('Error quitting challenge:', err);
             setError('Failed to quit challenge. Please try again later.');
@@ -73,10 +73,10 @@ const Classement = () => {
                         <div className="text-center mb-6">
                             <h3 className="text-xl font-bold text-orange-500 mb-2">{challengeDetails.title}</h3>
                             <p className="text-sm text-gray-400 mb-2">
-                                <strong>Début:</strong> {new Date(challengeDetails.beginingDate).toLocaleDateString()}
+                                <strong>Début:</strong> {new Date(challengeDetails.beginDate).toLocaleDateString()}
                             </p>
                             <p className="text-sm text-gray-400 mb-4">
-                                <strong>Fin:</strong> {new Date(challengeDetails.endingDate).toLocaleDateString()}
+                                <strong>Fin:</strong> {new Date(challengeDetails.endDate).toLocaleDateString()}
                             </p>
                             <p className="text-gray-300"><strong>Exercice:</strong> {challengeDetails.exercise}</p>
                             <p className="text-gray-300"><strong>Description:</strong> {challengeDetails.description}</p>

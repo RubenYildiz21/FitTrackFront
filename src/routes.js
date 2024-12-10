@@ -17,6 +17,8 @@ import CreateChallenge from "./pages/CreateChallenge";
 import ForgotPassword from "./pages/ForgotPassword";
 import AllSeance from './pages/AllSeance';
 import SeanceDetail from './pages/SeanceDetail';
+import WorkoutForm from './pages/WorkoutForm';
+import Classement from './pages/Classement';
 
 
 import PrivateRoute from './components/PrivateRoutes';
@@ -30,7 +32,7 @@ const AppRoutes = () => (
             <Route path="/EditGoals" element={<EditGoals />} />
             <Route path="/MultiStepForm" element={<MultiStepForm />} />
             <Route path="/Profil" element={<ProfilPage />} />
-            <Route path='/EditProfile' element={<EditProfile />}/>
+            <Route path='/EditProfile' element={<EditProfile />} />
             <Route path="/LoaderPage" element={<LoaderPage />} />
             <Route path="/ForgotPassword" element={<ForgotPassword />} />
 
@@ -87,6 +89,12 @@ const AppRoutes = () => (
             <Route path="/Challenges" element={
                 <PrivateRoute>
                     <Challenges />
+                </PrivateRoute>
+            } />
+
+            <Route path="/Classement/:challengeId" element={
+                <PrivateRoute>
+                    <Classement />
                 </PrivateRoute>
             } />
 
