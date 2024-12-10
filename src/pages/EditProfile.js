@@ -49,13 +49,13 @@ const EditProfile = () => {
   }, []);
 
   const uploadedImage = async (file) => {
-    if(!file) return '';
+    if (!file) return '';
 
     const formData = new FormData();
     formData.append('file', file);
 
 
-    try{
+    try {
       const response = await apiRequest(`/users/${userId}/profile-picture`, 'POST', formData);
       return response.profilePicture;
     } catch (err) {
@@ -68,11 +68,11 @@ const EditProfile = () => {
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
 
-    if(file){
+    if (file) {
       setSelectedFile(file);
 
       const uploadedImageUrl = await uploadedImage(file);
-      if(uploadedImageUrl){
+      if (uploadedImageUrl) {
         setProfilePicture(uploadedImageUrl);
       }
     }
@@ -126,125 +126,125 @@ const EditProfile = () => {
 
 
   return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white">
-        <Navbar />
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white">
+      <Navbar />
 
-        {/* Container principal */}
-        <div className="max-w-2xl mx-auto px-4 py-6">
-          {/* Header */}
-          <div className="flex items-center justify-between mb-8">
-            <button
-                onClick={() => navigate(-1)}
-                className="flex items-center gap-2 text-orange-400 hover:text-white transition-colors"
-            >
-              <ArrowLeftIcon className="h-5 w-5" />
-              <span>Retour</span>
-            </button>
+      {/* Container principal */}
+      <div className="max-w-2xl mx-auto px-4 py-6">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-8">
+          <button
+            onClick={() => navigate(-1)}
+            className="flex items-center gap-2 text-orange-400 hover:text-white transition-colors"
+          >
+            <ArrowLeftIcon className="h-5 w-5" />
+            <span>Retour</span>
+          </button>
+        </div>
+
+        <form onSubmit={handleUpdateProfile} className="space-y-8">
+          {/* Photo de profil */}
+          <div className="flex flex-col items-center">
+            <div className="relative group">
+              <div className="w-32 h-32 rounded-full overflow-hidden ring-4 ring-gray-800">
+                <img
+                  src={profilePicture || require('../assets/images/profile.png')}
+                  alt="Photo de profil"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <label className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 rounded-full cursor-pointer transition-opacity">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="hidden"
+                />
+                <CameraIcon className="h-8 w-8 text-white" />
+              </label>
+            </div>
+            <p className="mt-2 text-sm text-gray-400">Cliquez pour modifier</p>
           </div>
 
-          <form onSubmit={handleUpdateProfile} className="space-y-8">
-            {/* Photo de profil */}
-            <div className="flex flex-col items-center">
-              <div className="relative group">
-                <div className="w-32 h-32 rounded-full overflow-hidden ring-4 ring-gray-800">
-                  <img
-                      src={profilePicture || require('../assets/images/profile.png')}
-                      alt="Photo de profil"
-                      className="w-full h-full object-cover"
-                  />
-                </div>
-                <label className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 rounded-full cursor-pointer transition-opacity">
-                  <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleImageChange}
-                      className="hidden"
-                  />
-                  <CameraIcon className="h-8 w-8 text-white" />
+          {/* Informations personnelles */}
+          <div className="space-y-6">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-400">
+                  Prénom
                 </label>
+                <input
+                  type="text"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  className="w-full px-4 py-3 bg-gray-800/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all"
+                  required
+                />
               </div>
-              <p className="mt-2 text-sm text-gray-400">Cliquez pour modifier</p>
-            </div>
-
-            {/* Informations personnelles */}
-            <div className="space-y-6">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-400">
-                    Prénom
-                  </label>
-                  <input
-                      type="text"
-                      value={firstName}
-                      onChange={(e) => setFirstName(e.target.value)}
-                      className="w-full px-4 py-3 bg-gray-800/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all"
-                      required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-400">
-                    Nom
-                  </label>
-                  <input
-                      type="text"
-                      value={lastName}
-                      onChange={(e) => setLastName(e.target.value)}
-                      className="w-full px-4 py-3 bg-gray-800/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all"
-                      required
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-3 gap-4">
-                <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-400">
-                    Taille (cm)
-                  </label>
-                  <input
-                      type="number"
-                      value={height}
-                      onChange={(e) => setHeight(e.target.value)}
-                      className="w-full px-4 py-3 bg-gray-800/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all"
-                      required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-400">
-                    Poids (kg)
-                  </label>
-                  <input
-                      type="number"
-                      value={weight}
-                      onChange={(e) => setWeight(e.target.value)}
-                      className="w-full px-4 py-3 bg-gray-800/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all"
-                      required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-400">
-                    Âge
-                  </label>
-                  <input
-                      type="number"
-                      value={age}
-                      onChange={(e) => setAge(e.target.value)}
-                      className="w-full px-4 py-3 bg-gray-800/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all"
-                      required
-                  />
-                </div>
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-400">
+                  Nom
+                </label>
+                <input
+                  type="text"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  className="w-full px-4 py-3 bg-gray-800/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all"
+                  required
+                />
               </div>
             </div>
 
-            {/* Bouton de sauvegarde */}
-            <button
-                type="submit"
-                className="w-full py-4 bg-orange-500 hover:bg-orange-600 rounded-xl font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500/50"
-            >
-              Sauvegarder les modifications
-            </button>
-          </form>
-        </div>
+            <div className="grid grid-cols-3 gap-4">
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-400">
+                  Taille (cm)
+                </label>
+                <input
+                  type="number"
+                  value={height}
+                  onChange={(e) => setHeight(e.target.value)}
+                  className="w-full px-4 py-3 bg-gray-800/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all"
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-400">
+                  Poids (kg)
+                </label>
+                <input
+                  type="number"
+                  value={weight}
+                  onChange={(e) => setWeight(e.target.value)}
+                  className="w-full px-4 py-3 bg-gray-800/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all"
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-400">
+                  Âge
+                </label>
+                <input
+                  type="number"
+                  value={age}
+                  onChange={(e) => setAge(e.target.value)}
+                  className="w-full px-4 py-3 bg-gray-800/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Bouton de sauvegarde */}
+          <button
+            type="submit"
+            className="w-full py-4 bg-orange-500 hover:bg-orange-600 rounded-xl font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500/50"
+          >
+            Sauvegarder les modifications
+          </button>
+        </form>
       </div>
+    </div>
   );
 };
 

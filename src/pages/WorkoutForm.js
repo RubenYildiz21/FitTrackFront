@@ -45,7 +45,7 @@ const WorkoutForm = () => {
 
 
       const workoutSession = {
-        name: sessionName,
+        nameSeance: sessionName,
         dateSeance: new Date(sessionDate).toISOString(),
         userId: user.id,
         blocs: uniqueExercises.map(ex => ({
@@ -74,7 +74,7 @@ const WorkoutForm = () => {
       setError('');
 
       // Redirection ou message de succès
-      navigate('/Profil');
+      navigate('/progress');
     } catch (err) {
       setError('Erreur lors de la création de la séance');
       console.error('Error creating session:', err);
@@ -149,9 +149,8 @@ const WorkoutForm = () => {
             <h2 className="text-xl font-semibold mb-4">Exercices sélectionnés</h2>
             <div className="space-y-4">
               {selectedExercises.map((exercise) => {
-                console.log('Exercice sélectionné:', exercise); // Log pour vérifier videoUrl
                 return (
-                  <div key={exercise.idExercice} className="bg-zinc-800 rounded-lg p-4">
+                  <div key={exercise.idExercice} className="bg-gray-800 rounded-lg p-4">
                     <div className="flex justify-between items-center mb-2">
                       <h3 className="font-medium">{exercise.nom}</h3>
                       <button

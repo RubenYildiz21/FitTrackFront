@@ -6,6 +6,7 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { motion } from 'framer-motion';
 import { FaFireAlt, FaDumbbell, FaRunning, FaTrophy } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 const ProgressPage = () => {
   const [period, setPeriod] = useState('weekly');
@@ -23,6 +24,7 @@ const ProgressPage = () => {
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const navigate = useNavigate();
 
   const fetchProgress = async () => {
     setLoading(true);
@@ -118,7 +120,8 @@ const ProgressPage = () => {
         <h2 className="text-xl font-semibold mb-4">Calendrier des Séances prestées</h2>
         <Calendar
           tileClassName={({ date, view }) => {
-            if (progress.workoutsPerDay[date.toISOString().split('T')[0]]) {
+            const localDateString = date.toLocaleDateString('fr-CA');
+            if (progress.workoutsPerDay[localDateString]) {
               return 'workout-day';
             }
           }}
@@ -157,6 +160,15 @@ const ProgressPage = () => {
       </div>
 
       <h1 className="text-2xl font-bold mb-6 text-center">Mon Avancement</h1>
+
+      <div className="text-center mb-6">
+        <button
+          onClick={() => navigate("/AllSeance")}
+          className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded"
+        >
+          Consulter les séances
+        </button>
+      </div>
 
       {/* Sélecteur de période */}
       <div className="mb-6 text-center">

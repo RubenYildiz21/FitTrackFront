@@ -15,8 +15,9 @@ import CreatePostPage from "./pages/CreatePostPage";
 import ProgressPage from "./pages/ProgressPage";
 import Challenges from "./pages/Challenges";
 import CreateChallenge from "./pages/CreateChallenge";
-import ForgotPassword from "./pages/ForgotPassword"
-
+import ForgotPassword from "./pages/ForgotPassword";
+import AllSeance from './pages/AllSeance';
+import SeanceDetail from './pages/SeanceDetail';
 
 
 import PrivateRoute from './components/PrivateRoutes';
@@ -93,6 +94,17 @@ const AppRoutes = () => (
                 </PrivateRoute>
             } />
 
+            <Route path="/AllSeance" element={
+                <PrivateRoute>
+                    <AllSeance />
+                </PrivateRoute>
+            } />
+
+            <Route path="/seance/:idSeance" element={
+                <PrivateRoute>
+                    <SeanceDetail />
+                </PrivateRoute>
+            } />
 
         </Routes>
 
