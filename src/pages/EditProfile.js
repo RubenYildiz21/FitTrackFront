@@ -8,7 +8,7 @@ const EditProfile = () => {
   const [userId, setUserId] = useState(null);
   const [user, setUser] = useState(null);
   const [profilePicture, setProfilePicture] = useState('');
-  //const [selectedFile, setSelectedFile] = useState(null); // To store the selected file
+  const [setSelectedFile] = useState(null); // To store the selected file
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [height, setHeight] = useState('');
