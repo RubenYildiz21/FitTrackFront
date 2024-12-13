@@ -16,10 +16,11 @@
     "react-modal": "^3.16.1",
     "react-router-dom": "^6.27.0",
     "react-scripts": "5.0.1",
+    "serve": "^14.2.4",
     "styled-components": "^6.1.13"
   },
   "scripts": {
-    "start": "serve -s build",
+    "start": "npx serve -s build",
     "build": "CI=false react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
