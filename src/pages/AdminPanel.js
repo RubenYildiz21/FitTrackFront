@@ -30,14 +30,7 @@ const AdminPanel = () => {
     const [error, setError] = useState('');
 
     useEffect(() => {
-        const loadPosts = async () => {
-            try {
-                const data = await apiRequest(`/posts/all`, "GET");
-                setPosts(data);
-            } catch (error) {
-                setError('Erreur lors du chargement des posts.');
-            }
-        };
+        
 
         //loadPosts();
     }, []);

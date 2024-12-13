@@ -1,6 +1,6 @@
 // src/components/CommentItem.js
 import React, { useState } from 'react';
-import { getLoggedInUser } from '../services/authService';
+
 
 const CommentItem = ({ comment, onReply }) => {
     const [showReplyForm, setShowReplyForm] = useState(false);

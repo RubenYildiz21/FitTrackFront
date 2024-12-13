@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import height from '../assets/images/height.png';
 import weight from '../assets/images/dumbbell.png';
 import sablier from '../assets/images/sablier.png';

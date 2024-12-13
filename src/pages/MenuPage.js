@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { getLoggedInUser } from '../services/authService';
 import {
     ChatBubbleLeftEllipsisIcon,
-    XMarkIcon,
     HeartIcon,
 } from '@heroicons/react/24/outline';
 import { HeartIcon as HeartSolidIcon } from '@heroicons/react/24/solid';

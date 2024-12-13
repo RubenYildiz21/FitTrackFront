@@ -14,15 +14,7 @@ const CommentModal = ({
                           newComment,
                           setNewComment,
                       }) => {
-    const formatDate = (dateString) => {
-        return new Date(dateString).toLocaleDateString('fr-FR', {
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-        });
-    };
+    
 
     if (!isOpen) return null;
 

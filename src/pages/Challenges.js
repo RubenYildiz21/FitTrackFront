@@ -16,7 +16,7 @@ const Challenges = () => {
     const handleJoinChallenge = async (challengeId) => {
         try {
             console.log('Attempting to join challenge with ID:', challengeId);
-            const response = await joinChallenge(userId, challengeId);
+            await joinChallenge(userId, challengeId);
 
             const updatedChallenges = await getChallengesByUser(userId);
             setParticipatingChallenges(updatedChallenges.participating);

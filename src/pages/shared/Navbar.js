@@ -1,5 +1,5 @@
-import { text } from 'framer-motion/client';
-import React, { useState } from 'react';
+//import { text } from 'framer-motion/client';
+import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const Navbar = () => {

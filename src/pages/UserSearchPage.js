@@ -8,11 +8,11 @@ const UserSearchPage = () => {
     const [error, setError] = useState(null);
     const [followingUsers, setFollowingUsers] = useState([]);
     const loggedInUserId = JSON.parse(sessionStorage.getItem('user')).id;
-    const [formData, setFormData] = useState({
-        id: 0,
-        followId: 0,
-        followerId: 0,
-    });
+    // const [formData, setFormData] = useState({
+    //     id: 0,
+    //     followId: 0,
+    //     followerId: 0,
+    // });
 
     useEffect(() => {
         // Fonction pour lancer la recherche à chaque modification du terme

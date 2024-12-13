@@ -8,11 +8,6 @@ const Searchbar = () => {
     const [error, setError] = useState(null);
     const [followingUsers, setFollowingUsers] = useState([]);
     const loggedInUserId = JSON.parse(sessionStorage.getItem('user')).id;
-    const [formData, setFormData] = useState({
-        id: 0,
-        followId: 0,
-        followerId: 0,
-    });
 
     useEffect(() => {
         // Fonction pour lancer la recherche à chaque modification du terme
@@ -107,15 +102,15 @@ const Searchbar = () => {
         }
     };
 
-    const getProfilePicturePath = (base64String) => {
-        try {
-            return `data:image/jpeg;base64,${base64String}`;
-            //return require(`../assets/images/${atob(base64String.replace(/^\.\/|=+$/g, ''))}`);
-        } catch (e) {
-            console.error("Failed to decode Base64 profile picture string", e);
-            return '/src/assets/images/profile.png'; // Default path
-        }
-    };
+    // const getProfilePicturePath = (base64String) => {
+    //     try {
+    //         return `data:image/jpeg;base64,${base64String}`;
+    //         //return require(`../assets/images/${atob(base64String.replace(/^\.\/|=+$/g, ''))}`);
+    //     } catch (e) {
+    //         console.error("Failed to decode Base64 profile picture string", e);
+    //         return '/src/assets/images/profile.png'; // Default path
+    //     }
+    // };
 
     return (
         <div>
