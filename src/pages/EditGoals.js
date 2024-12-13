@@ -4,7 +4,7 @@ import Navbar from "./shared/Navbar";
 import apiRequest from '../services/api';
 
 const EditGoals = () => {
-    const [userId, setUserId] = useState(null);
+    const [setUserId] = useState(null);
     const [user, setUser] = useState(null);
     const [goalWeight, setGoalWeight] = useState('');
     const [mainGoal, setMainGoal] = useState('');

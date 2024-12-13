@@ -8,7 +8,7 @@ const EditProfile = () => {
   const [userId, setUserId] = useState(null);
   const [user, setUser] = useState(null);
   const [profilePicture, setProfilePicture] = useState('');
-  const [selectedFile, setSelectedFile] = useState(null); // To store the selected file
+  //const [selectedFile, setSelectedFile] = useState(null); // To store the selected file
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [height, setHeight] = useState('');
@@ -149,7 +149,7 @@ const EditProfile = () => {
               <div className="w-32 h-32 rounded-full overflow-hidden ring-4 ring-gray-800">
                 <img
                   src={profilePicture || require('../assets/images/profile.png')}
-                  alt="Photo de profil"
+                  alt="Profile Picture"
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -246,19 +246,6 @@ const EditProfile = () => {
       </div>
     </div>
   );
-};
-
-const convertToBase64 = (file) => {
-  return new Promise((resolve, reject) => {
-    const fileReader = new FileReader();
-    fileReader.readAsDataURL(file);
-    fileReader.onload = () => {
-      resolve(fileReader.result);
-    };
-    fileReader.onerror = (error) => {
-      reject(error);
-    };
-  });
 };
 
 export default EditProfile;

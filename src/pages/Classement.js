@@ -8,7 +8,7 @@ const Classement = () => {
     const { challengeId } = useParams();
     const [leaderboardData, setLeaderboardData] = useState([]);
     const [challengeDetails, setChallengeDetails] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [ setLoading] = useState(true);
     const [error, setError] = useState('');
 
     const navigate = useNavigate();

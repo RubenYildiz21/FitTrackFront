@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import apiRequest from "../services/api";
+//import apiRequest from "../services/api";
 
 const AdminPanel = () => {
     const [posts, setPosts] = useState([
