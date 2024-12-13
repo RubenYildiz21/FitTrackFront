@@ -8,6 +8,8 @@ const apiRequest = async (endpoint, method = 'GET', body = null, isFormUrlEncode
     let options = {
         method,
         headers: {},
+        credentials: 'include', // Toujours inclure les credentials
+        mode: 'cors' // Explicitement définir le mode CORS
     };
     // Ajouter le token JWT si il est présent dans le local storage
     if (!endpoint.startsWith('/auth/login') && !endpoint.startsWith('/auth/register')) {
