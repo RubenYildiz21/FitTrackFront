@@ -4,7 +4,7 @@
 
 // services/api.js
 const apiRequest = async (endpoint, method = 'GET', body = null, isFormUrlEncoded = false) => {
-    const baseUrl = 'https://fit-track-latest-ns4a.onrender.com/api';
+    const baseUrl = '3.75.158.163/api';
     let options = {
         method,
         headers: {},
