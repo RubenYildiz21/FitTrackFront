@@ -4,7 +4,7 @@
 
 // services/api.js
 const apiRequest = async (endpoint, method = 'GET', body = null, isFormUrlEncoded = false) => {
-    const baseUrl = 'http://localhost:8080/api';
+    const baseUrl = 'https://fit-track-z972.onrender.com/api';
     let options = {
         method,
         headers: {},
