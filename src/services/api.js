@@ -4,12 +4,15 @@
 
 // services/api.js
 const apiRequest = async (endpoint, method = 'GET', body = null, isFormUrlEncoded = false) => {
-    const baseUrl = 'https://fit-track-z972.onrender.com:8080/api';
+    const baseUrl = 'https://fittrackfront-production.up.railway.app/api';
     let options = {
         method,
-        headers: {},
-        credentials: 'include', // Toujours inclure les credentials
-        mode: 'cors' // Explicitement définir le mode CORS
+        headers: {
+            'Accept': 'application/json',
+            'Origin': window.location.origin
+        },
+        credentials: 'include',
+        mode: 'cors'
     };
     // Ajouter le token JWT si il est présent dans le local storage
     if (!endpoint.startsWith('/auth/login') && !endpoint.startsWith('/auth/register')) {
