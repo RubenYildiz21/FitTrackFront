@@ -4,7 +4,7 @@
 
 // services/api.js
 const apiRequest = async (endpoint, method = 'GET', body = null, isFormUrlEncoded = false) => {
-    const baseUrl = 'https://fittrackfront-production.up.railway.app/api';
+    const baseUrl = 'http://91.86.112.186/api';
     let options = {
         method,
         headers: {

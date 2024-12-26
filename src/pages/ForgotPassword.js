@@ -55,7 +55,7 @@ const ForgotPassword = () => {
         setError('');
 
         try {
-            const response = await fetch('http://localhost:8080/api/password/reset', {
+            const response = await fetch('http://91.86.112.186/api/password/reset', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',

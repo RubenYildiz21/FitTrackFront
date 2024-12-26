@@ -27,7 +27,7 @@ const MenuPage = () => {
     const loadPosts = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch('http://localhost:8080/api/posts', {
+            const response = await fetch('http://91.86.112.186/api/posts', {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -49,7 +49,7 @@ const MenuPage = () => {
         try {
             const token = localStorage.getItem('token');
             const response = await fetch(
-                `http://localhost:8080/api/commentaires/post/${postId}`,
+                `http://91.86.112.186/api/commentaires/post/${postId}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -86,7 +86,7 @@ const MenuPage = () => {
 
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch('http://localhost:8080/api/commentaires', {
+            const response = await fetch('http://91.86.112.186/api/commentaires', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -116,7 +116,7 @@ const MenuPage = () => {
 
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch('http://localhost:8080/api/commentaires', {
+            const response = await fetch('http://91.86.112.186/api/commentaires', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -157,7 +157,7 @@ const MenuPage = () => {
 
         try {
             const response = await fetch(
-                `http://localhost:8080/api/posts/${postId}/like?userId=${user.id}`,
+                `http://91.86.112.186/api/posts/${postId}/like?userId=${user.id}`,
                 {
                     method: isLiked ? 'DELETE' : 'POST',
                     headers: {
@@ -198,7 +198,7 @@ const MenuPage = () => {
             for (const post of posts) {
                 try {
                     const response = await fetch(
-                        `http://localhost:8080/api/posts/${post.idPost}/hasLiked?userId=${user.id}`,
+                        `http://91.86.112.186/api/posts/${post.idPost}/hasLiked?userId=${user.id}`,
                         {
                             headers: {
                                 Authorization: `Bearer ${token}`,

@@ -13,7 +13,7 @@ const Searchbar = () => {
         // Fonction pour lancer la recherche à chaque modification du terme
         const searchUsers = async () => {
             try {
-                /**const response = await fetch(`http://localhost:8080/api/users/search?query=${searchTerm}`);
+                /**const response = await fetch(`http://91.86.112.186/api/users/search?query=${searchTerm}`);
                 if (!response.ok) {
                     throw new Error('Erreur lors de la recherche d\'utilisateurs');
                 }
@@ -52,7 +52,7 @@ const Searchbar = () => {
     // Fonction pour récupérer les user deja follow
     const userFollow = async () => {
         try {
-            /**const response = await fetch(`http://localhost:8080/api/follows/${loggedInUserId}/following`);
+            /**const response = await fetch(`http://91.86.112.186/api/follows/${loggedInUserId}/following`);
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }

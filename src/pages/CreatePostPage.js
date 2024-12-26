@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getLoggedInUser } from '../services/authService';
 import { XMarkIcon, PhotoIcon } from '@heroicons/react/24/outline';
+import apiRequest from '../services/api';
 
 const CreatePostPage = () => {
     const navigate = useNavigate();
@@ -46,7 +47,7 @@ const CreatePostPage = () => {
 
             const token = localStorage.getItem('token'); // Assurez-vous d'avoir le token stocké
 
-            const response = await fetch('http://localhost:8080/api/posts', {
+            const response = await fetch('http://91.86.112.186/api/posts', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
